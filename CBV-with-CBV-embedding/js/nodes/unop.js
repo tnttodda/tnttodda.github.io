@@ -1,8 +1,7 @@
 define(function(require) {
 
 	var Node = require('node');
-	var CompData = require('token').CompData();
-	var RewriteFlag = require('token').RewriteFlag();
+	var Flag = require('token').Flag();
 	var Link = require('link');
 	var BoxWrapper = require('box-wrapper');
 	var Promo = require('nodes/promo');

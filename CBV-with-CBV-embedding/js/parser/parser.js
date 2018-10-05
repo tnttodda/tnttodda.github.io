@@ -17,7 +17,7 @@ define(function(require) {
       const result = this.term([]);
       // make sure we consumed all the program, otherwise there was a syntax error
       this.lexer.match(Token.EOF);
-
+      
       return result;
     }
 

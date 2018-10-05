@@ -61,8 +61,9 @@ define('ast/binding', function() {
      */
     
   class Binding extends Term {
-    constructor(param, body) {
+    constructor(id, param, body) {
       super(0);
+      this.id = id;
       this.param = param;
       this.body = body;
     }

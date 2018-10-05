@@ -14,7 +14,7 @@ define('term', function(require) {
 			this.set(prin, auxs)
 		}
 
-		set(prin, auxs){
+		set(prin, auxs) {
 			this.prin = prin;
 			this.auxs = auxs;
 			return this;
