@@ -21,11 +21,11 @@ define('goi-machine',
 		var BoxWrapper = require('box-wrapper');
 
 		var Expo = require('nodes/expo');
-		var Abs = require('nodes/abs');
 		var Const = require('nodes/const');
 		var Contract = require('nodes/contract');
-		var Var = require('nodes/var');
 		var Start = require('nodes/start');
+		var Der = require('nodes/der');
+		var Var = require('nodes/var')
 		var UnOp = require('nodes/unop');
 		var Weak = require('nodes/weak');
 

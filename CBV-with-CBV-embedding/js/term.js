@@ -18,27 +18,25 @@ define('term', function(require) {
 			this.auxs = auxs;
 			return this;
 		}
-		
-		// DISTRIBUTED NETS
 
-		// createPaxsOnTopOf(auxs) {
-			// var newPaxs = [];
-			// for (let pax of auxs) {
-				// var newPax = new Pax(pax.name).addToGroup(this);
-				// 
-				// if (pax.findLinksOutOf(null).length == 0)
-					// new Link(pax.key, newPax.key, "n", "s").addToGroup(this);
-				// else {
-					// var outLink = pax.findLinksOutOf(null)[0];
-					// new Link(newPax.key, outLink.to, "n", outLink.toPort).addToGroup(this.group);
-					// outLink.changeTo(newPax.key, "s");
-					// outLink.changeToGroup(this);
-				// }
-				// newPaxs.push(newPax);
-			// }
-			// return newPaxs;
-		// }
-// 
+		createPaxsOnTopOf(auxs) {
+			var newPaxs = [];
+			for (let pax of auxs) {
+				var newPax = new Der(pax.name).addToGroup(this);
+				
+				if (pax.findLinksOutOf(null).length == 0)
+					new Link(pax.key, newPax.key, "n", "s").addToGroup(this);
+				else {
+					var outLink = pax.findLinksOutOf(null)[0];
+					new Link(newPax.key, outLink.to, "n", outLink.toPort).addToGroup(this.group);
+					outLink.changeTo(newPax.key, "s");
+					outLink.changeToGroup(this);
+				}
+				newPaxs.push(newPax);
+			}
+			return newPaxs;
+		}
+
 		static joinAuxs(leftAuxs, rightAuxs, group) {
 			var newAuxs = leftAuxs.concat(rightAuxs);
 			outter:
@@ -74,7 +72,7 @@ define('box-wrapper', function(require) {
 	var Link = require('link');
 	var Term = require('term');
 	var Box = require('box');
-	var Promo = require('nodes/promo');
+	var Der = require('nodes/der');
 
 	// !-box 
 	class BoxWrapper extends Term {
@@ -87,7 +85,7 @@ define('box-wrapper', function(require) {
 		static create() {
 			var wrapper = new BoxWrapper();
 			var box = new Box().addToGroup(wrapper);
-			var promo = new Promo().addToGroup(wrapper);
+			var promo = new Der().addToGroup(wrapper);
 			wrapper.set(promo, box, []);
 			return wrapper;
 		}
