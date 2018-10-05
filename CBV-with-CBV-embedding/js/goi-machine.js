@@ -2,15 +2,12 @@ var graph = null;
 
 define('goi-machine', 
 	function(require) {
-		var Abstraction = require('ast/abstraction');
-		var Application = require('ast/application');
-		var Identifier = require('ast/identifier');
-		var Constant = require('ast/constant');
-		var Operation = require('ast/operation');
-		var UnaryOp = require('ast/unary-op');
-		var BinaryOp = require('ast/binary-op');
-		var IfThenElse = require('ast/if-then-else');
-		var Recursion = require('ast/recursion');
+		var Var = require('ast/var');
+		var Atom = require('ast/atom');
+		var Operation = requre('ast/operation');
+		var Binding = require('ast/binding');
+		var Reference = require('ast/reference');
+		var Thunk = require('ast/thunk');
 
 		var Lexer = require('parser/lexer');
 		var Parser = require('parser/parser');
