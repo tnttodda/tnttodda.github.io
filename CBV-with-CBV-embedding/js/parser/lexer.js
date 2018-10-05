@@ -51,7 +51,7 @@ define(function(require) {
           break;
 
         case '=':
-          this._token = new Token(Token.DEFINE);
+          this._token = new Token(Token.DEF);
           break;
 
         default:

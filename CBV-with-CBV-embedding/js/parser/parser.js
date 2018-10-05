@@ -29,7 +29,7 @@ define(function(require) {
       if (this.lexer.skip(Token.BIND)) {
         const id = this.lexer.token(Token.LCID);
         
-        if (this.lexer.skip(Token.DEFINE)) {        
+        if (this.lexer.skip(Token.DEF)) {        
           const P = this.term(ctx);
           this.lexer.match(Token.IN);
           const B = this.term([id].concat(ctx));
@@ -39,7 +39,7 @@ define(function(require) {
       if (this.lexer.skip(Token.NEW)) {
         const id = this.lexer.token(Token.LCID);
         
-        if (this.lexer.skip(Token.DEFINE)) {        
+        if (this.lexer.skip(Token.DEF)) {        
           const P = this.term(ctx);
           this.lexer.match(Token.IN);
           const B = this.term([id].concat(ctx));
