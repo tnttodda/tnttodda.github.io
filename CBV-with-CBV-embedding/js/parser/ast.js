@@ -78,8 +78,9 @@ define('ast/reference', function() {
      */
     
   class Reference extends Term {
-    constructor(param, body) {
+    constructor(id, param, body) {
       super(0);
+      this.id = id;
       this.param = param;
       this.body = body;
     }
@@ -87,6 +88,7 @@ define('ast/reference', function() {
   return Reference;
 });
 
+// not sure if thunks are in the ast...
 define('ast/thunk', function() {
   var Term = require('ast/term');
   class Thunk extends Term {

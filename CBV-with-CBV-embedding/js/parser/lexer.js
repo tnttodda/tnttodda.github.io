@@ -34,15 +34,6 @@ define(function(require) {
       } while (/\s/.test(c));
 
       switch (c) {
-        case 'λ':
-        case '\\':
-          this._token = new Token(Token.LAMBDA);
-          break;
-
-        case '.':
-          this._token = new Token(Token.DOT);
-          break;
-
         case ',':
           this._token = new Token(Token.COMMA);
           break;
@@ -80,6 +71,8 @@ define(function(require) {
               this._token = new Token(Token.LET);
             else if (str == "in")
               this._token = new Token(Token.IN);
+            else if (str == "new")
+              this._token = new Token(Token.NEW); 
             else
               this._token = new Token(Token.LCID, str);
           }

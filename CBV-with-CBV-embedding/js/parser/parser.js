@@ -20,8 +20,8 @@ define(function(require) {
 
       return result;
     }
-    
-    //  T ::= BIND LCID IN term
+
+    //  T ::= BIND LCID DEF term IN term (LET x = PARAM in BODY)
     //      | NEW  LCID IN term
     //      | op? ( EAS ; DAS )
 
@@ -30,20 +30,26 @@ define(function(require) {
         const id = this.lexer.token(Token.LCID);
         
         if (this.lexer.skip(Token.DEFINE)) {        
-          const N = this.term(ctx);
+          const P = this.term(ctx);
           this.lexer.match(Token.IN);
-          const M = this.term([id].concat(ctx));
-          return new Application(new Abstraction(id, M), N);
+          const B = this.term([id].concat(ctx));
+          return new Binding(id,P,B);
         }
-      } 
+      }
+      if (this.lexer.skip(Token.NEW)) {
+        const id = this.lexer.token(Token.LCID);
+        
+        if (this.lexer.skip(Token.DEFINE)) {        
+          const P = this.term(ctx);
+          this.lexer.match(Token.IN);
+          const B = this.term([id].concat(ctx));
+          return new Reference(id,P,B);
+        }
+      }
     }
 
     // atom ::= LPAREN term RPAREN
     //        | LCID
-    //        | INT
-    //        | TRUE
-    //        | FALSE
-    //        | NOT term
     atom(ctx) {
       if (this.lexer.skip(Token.LPAREN)) {
         const term = this.term(ctx);

@@ -14,39 +14,14 @@ define(function() {
 
   [
     'EOF', // we augment the tokens with EOF, to indicate the end of the input.
-    'LAMBDA',
     'LPAREN',
     'RPAREN',
     'LCID',
-    'DOT', 
-    'COMMA',
-    
-    'APP',
 
-    'LET',
-    'DEFINE',
+    'BIND',
+    'NEW',
+    'DEF',
     'IN',
-
-    'REC',
-
-    'INT',
-
-    'TRUE',
-    'FALSE',
-
-    'NOT',
-
-    'AND',
-    'OR',
-    'PLUS',
-    'SUB',
-    'MULT',
-    'DIV',
-    'LTE',
-    
-    'IF',
-    'THEN',
-    'ELSE',
   ].forEach(token => Token[token] = token);
 
   return Token;
