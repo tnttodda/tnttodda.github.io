@@ -3,7 +3,7 @@ define(function(require) {
   var Token = require('parser/token');
   var Var = require('ast/var');
   var Atom = require('ast/atom');
-  var Operation = requre('ast/operation');
+  var Operation = require('ast/operation');
   var Binding = require('ast/binding');
   var Reference = require('ast/reference');
   var Thunk = require('ast/thunk');

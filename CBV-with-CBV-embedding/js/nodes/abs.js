@@ -1,6 +1,6 @@
 define(function(require) {
 	var Node = require('node');
-	var Flag = require('token').Flag();
+	var Flag = require('token').Flag;
 	var Expo = require('nodes/expo');
 
 	class Abs extends Node {

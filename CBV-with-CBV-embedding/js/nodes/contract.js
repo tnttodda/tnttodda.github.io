@@ -1,6 +1,6 @@
 define(function(require) {
 
-	var Flag = require('token').Flag();
+	var Flag = require('token').Flag;
 
 	var Expo = require('nodes/expo');
 
