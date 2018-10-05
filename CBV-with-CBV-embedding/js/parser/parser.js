@@ -21,12 +21,12 @@ define(function(require) {
       return result;
     }
 
-    //  T ::= BIND LCID DEF term IN term  (LET x = PARAM in BODY)
+    //  T ::= BIND LCID DEF term IN term  (BIND x = PARAM in BODY)
     //      | NEW  LCID IN term           (NEW x = PARAM in BODY)
     //      | op? ( EAS ; DAS )
 
     term(ctx) {
-      if (this.lexer.skip(Token.LET)) {
+      if (this.lexer.skip(Token.BIND)) {
         const id = this.lexer.token(Token.LCID);
         
         if (this.lexer.skip(Token.DEFINE)) {        

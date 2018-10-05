@@ -67,8 +67,8 @@ define(function(require) {
             // put back the last char which is not part of the identifier
             this._index--;
 
-            if (str == "let")
-              this._token = new Token(Token.LET);
+            if (str == "bind")
+              this._token = new Token(Token.BIND);
             else if (str == "in")
               this._token = new Token(Token.IN);
             else if (str == "new")
