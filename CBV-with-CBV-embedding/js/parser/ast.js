@@ -1,6 +1,6 @@
 // edited by todd
 
-define('ast/term'), function(require) {
+define('ast/term', function(require) {
   class Term {
     constructor(type) {
       this.type = type;
