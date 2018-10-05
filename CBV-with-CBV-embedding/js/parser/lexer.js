@@ -59,54 +59,6 @@ define(function(require) {
           this._token = new Token(Token.EOF);
           break;
 
-        case '~':
-          this._token = new Token(Token.NOT);
-          break;
-
-        case '&':
-          if (this._nextChar() == '&')
-            this._token = new Token(Token.AND, null, 5);
-          else {
-            this._index--;
-            this.fail();
-          }
-          break;
-
-        case '|':
-          var c2 = this._nextChar();
-          if (c2 == '|')
-            this._token = new Token(Token.OR, null, 4);
-          else {
-            this._index--;
-            this.fail();
-          }
-          break;
-
-        case '+':
-          this._token = new Token(Token.PLUS, null, 12);
-          break;
-
-        case '-':
-          this._token = new Token(Token.SUB, null, 12);
-          break;
-
-        case '*':
-          this._token = new Token(Token.MULT, null, 13);
-          break;
-
-        case '/':
-          this._token = new Token(Token.DIV, null, 13);
-          break;
-
-        case '<':
-          if (this._nextChar() == '=')
-            this._token = new Token(Token.LTE, null, 10);
-          else {
-            this._index--;
-            this.fail();
-          }
-          break;
-
         case '=':
           this._token = new Token(Token.DEFINE);
           break;
@@ -128,41 +80,9 @@ define(function(require) {
               this._token = new Token(Token.LET);
             else if (str == "in")
               this._token = new Token(Token.IN);
-            else if (str == "rec")
-              this._token = new Token(Token.REC);
-            else if (str == "true")
-              this._token = new Token(Token.TRUE);
-            else if (str == "false")
-              this._token = new Token(Token.FALSE);
-            else if (str == "if")
-              this._token = new Token(Token.IF);
-            else if (str == "then")
-              this._token = new Token(Token.THEN);
-            else if (str == "else")
-              this._token = new Token(Token.ELSE);
             else
               this._token = new Token(Token.LCID, str);
-          } 
-          // text for numbers
-          else if (/[0-9]/.test(c)) {
-            let str = '';
-            do {
-              str += c;
-              c = this._nextChar();
-            } while (/[0-9]/.test(c));
-
-            if (c == '.') {
-              do {
-                str += c;
-                c = this._nextChar();
-              } while (/[0-9]/.test(c));
-            }
-
-            // put back the last char which is not part of the identifier
-            this._index--;
-
-            this._token = new Token(Token.INT, parseFloat(str));
-          } 
+          }
           else {
             this.fail();
           }
