@@ -14,7 +14,7 @@ define('ast/var', function(require) {
     /**
      * name is the string matched for this identifier.
      */
-  class Var {
+  class Var extends Term {
     constructor(value, name) {
       super(0);
       this.value = value;

@@ -8,9 +8,9 @@ requirejs.config({
 	//never includes a ".js" extension since
 	//the paths config could be for a directory.
 	bundles: {
-        'parser/ast': ['ast/abstraction', 'ast/application', 'ast/identifier'
-        			 , 'ast/constant', 'ast/operation', 'ast/unary-op'
-        			 , 'ast/binary-op', 'ast/if-then-else', 'ast/recursion'],
+        'parser/ast': ['ast/term', 'ast/var', 'ast/atom'
+        			 , 'ast/binding', 'ast/reference', 'ast/thunk'
+        			 , 'ast/operation'],
         //'op': ['unop-type', 'biop-type'],
         'group': ['group', 'box'],
         'term': ['term', 'box-wrapper'],
