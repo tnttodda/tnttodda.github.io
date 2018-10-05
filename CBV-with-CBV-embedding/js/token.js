@@ -30,7 +30,7 @@ define(function() {
 			
 			this.link = null;
 			
-			this.rewriteFlag = RewriteFlag.SEARCH;
+			this.rewriteFlag = Flag.SEARCH;
 		}
 	}
 
