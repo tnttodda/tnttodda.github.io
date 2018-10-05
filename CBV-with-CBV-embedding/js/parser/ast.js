@@ -7,7 +7,7 @@ define('ast/term'), function(require) {
     }
   }
   return Term;
-}
+});
 
 define('ast/var', function(require) {
   var Term = require('ast/term');
