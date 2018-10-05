@@ -2,6 +2,8 @@ var graph = null;
 
 define('goi-machine', 
 	function(require) {
+		var Term = require('ast/term');
+
 		var Variable = require('ast/var');
 		var Atom = require('ast/atom');
 		var Operation = requre('ast/operation');
