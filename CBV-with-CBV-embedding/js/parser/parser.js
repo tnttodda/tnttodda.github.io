@@ -21,8 +21,8 @@ define(function(require) {
       return result;
     }
 
-    //  T ::= BIND LCID DEF term IN term (LET x = PARAM in BODY)
-    //      | NEW  LCID IN term
+    //  T ::= BIND LCID DEF term IN term  (LET x = PARAM in BODY)
+    //      | NEW  LCID IN term           (NEW x = PARAM in BODY)
     //      | op? ( EAS ; DAS )
 
     term(ctx) {

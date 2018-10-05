@@ -1,26 +1,14 @@
 define(function() {
 
-	var CompData = {
-		PROMPT: '*',
-		LAMBDA: 'λ',
-		R: '@',
-	}
-
-	var RewriteFlag = {
-		EMPTY: '□',
-		F_LAMBDA: '<λ>',
-		F_OP: '<$>',
-		F_IF: '<if>',
-		F_C: '<C>',
-		F_PROMO: '<!>',
-		F_RECUR: '<μ>',
+	var Flag = {
+		SEARCH:  '?',
+		REWRITE: '↯',
+		RETURN:	 '✓',
 	}
 
 	class MachineToken {
 
-		static CompData() { return CompData; }
-
-		static RewriteFlag() { return RewriteFlag; }
+		static RewriteFlag() { return Flag; }
 
 		constructor() {
 			this.reset();
@@ -42,9 +30,7 @@ define(function() {
 			
 			this.link = null;
 			
-			this.rewriteFlag = RewriteFlag.EMPTY;
-			this.dataStack = [CompData.PROMPT];
-			this.boxStack = [];
+			this.rewriteFlag = RewriteFlag.SEARCH;
 		}
 	}
 
