@@ -1,7 +1,7 @@
 define(function(require) {
 
 	var Node = require('node');
-	var Flag = require('token').Flag();
+	var Flag = require('token').Flag;
 
 	class Const extends Node {
 
