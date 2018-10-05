@@ -33,6 +33,8 @@ define(function(require) {
         c = this._nextChar();
       } while (/\s/.test(c));
 
+      console.log(c);
+
       switch (c) {
         case ',':
           this._token = new Token(Token.COMMA);
