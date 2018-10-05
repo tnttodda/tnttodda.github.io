@@ -4,7 +4,6 @@ define('term', function(require) {
 
 	var Group = require('group');
 	var Link = require('link');
-	var Pax = require('nodes/pax');
 	var Contract = require('nodes/contract');
 
 	class Term extends Group {
@@ -19,25 +18,27 @@ define('term', function(require) {
 			this.auxs = auxs;
 			return this;
 		}
+		
+		// DISTRIBUTED NETS
 
-		createPaxsOnTopOf(auxs) {
-			var newPaxs = [];
-			for (let pax of auxs) {
-				var newPax = new Pax(pax.name).addToGroup(this);
-				
-				if (pax.findLinksOutOf(null).length == 0)
-					new Link(pax.key, newPax.key, "n", "s").addToGroup(this);
-				else {
-					var outLink = pax.findLinksOutOf(null)[0];
-					new Link(newPax.key, outLink.to, "n", outLink.toPort).addToGroup(this.group);
-					outLink.changeTo(newPax.key, "s");
-					outLink.changeToGroup(this);
-				}
-				newPaxs.push(newPax);
-			}
-			return newPaxs;
-		}
-
+		// createPaxsOnTopOf(auxs) {
+			// var newPaxs = [];
+			// for (let pax of auxs) {
+				// var newPax = new Pax(pax.name).addToGroup(this);
+				// 
+				// if (pax.findLinksOutOf(null).length == 0)
+					// new Link(pax.key, newPax.key, "n", "s").addToGroup(this);
+				// else {
+					// var outLink = pax.findLinksOutOf(null)[0];
+					// new Link(newPax.key, outLink.to, "n", outLink.toPort).addToGroup(this.group);
+					// outLink.changeTo(newPax.key, "s");
+					// outLink.changeToGroup(this);
+				// }
+				// newPaxs.push(newPax);
+			// }
+			// return newPaxs;
+		// }
+// 
 		static joinAuxs(leftAuxs, rightAuxs, group) {
 			var newAuxs = leftAuxs.concat(rightAuxs);
 			outter:

@@ -22,16 +22,9 @@ define('goi-machine',
 
 		var Expo = require('nodes/expo');
 		var Abs = require('nodes/abs');
-		var App = require('nodes/app');
-		var BinOp = require('nodes/binop');
 		var Const = require('nodes/const');
 		var Contract = require('nodes/contract');
-		var Der = require('nodes/der');
 		var Var = require('nodes/var');
-		var If = require('nodes/if');
-		var Pax = require('nodes/pax');
-		var Promo = require('nodes/promo');
-		var Recur = require('nodes/recur');
 		var Start = require('nodes/start');
 		var UnOp = require('nodes/unop');
 		var Weak = require('nodes/weak');
@@ -75,11 +68,9 @@ define('goi-machine',
 				else if (ast instanceof Binding) {
 					var param = ast.param;
 					var wrapper = BoxWrapper.create().addToGroup(group);
-					var abs = new Abs().addToGroup(wrapper.box);
 					var term = this.toGraph(ast.body, wrapper.box);
 
-					new Link(wrapper.prin.key, abs.key, "n", "s").addToGroup(wrapper);
-					new Link(abs.key, term.prin.key, "e", "s").addToGroup(abs.group);
+					new Link(wrapper.prin.key, term.prin.key, "n", "s").addToGroup(wrapper);
 
 					var auxs = Array.from(term.auxs);
 					var paramUsed = false;
