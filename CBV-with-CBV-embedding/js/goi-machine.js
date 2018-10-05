@@ -65,6 +65,7 @@ define('goi-machine',
 				if (ast instanceof Variable) {
 					var v = new Var(ast.name).addToGroup(group)
 					return new Term(v, [v]);
+					console.log("0");
 				} 
 
 				else if (ast instanceof Binding) {
