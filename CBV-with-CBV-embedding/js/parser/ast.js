@@ -1,6 +1,6 @@
 // edited by todd
 
-define('ast/term'), function() {
+define('ast/term'), function(require) {
   class Term {
     constructor(type) {
       this.type = type;
@@ -9,7 +9,7 @@ define('ast/term'), function() {
   return Term;
 }
 
-define('ast/var', function() {
+define('ast/var', function(require) {
   var Term = require('ast/term');
     /**
      * name is the string matched for this identifier.
@@ -24,7 +24,7 @@ define('ast/var', function() {
   return Var;
 });
 
-define('ast/atom', function() {
+define('ast/atom', function(require) {
   var Term = require('ast/term');
     /**
      * name is the string matched for this identifier.
@@ -38,7 +38,7 @@ define('ast/atom', function() {
   return Atom;
 });
 
-define('ast/operation', function() {
+define('ast/operation', function(require) {
   var Term = require('ast/term');
   
   class Operation extends Term {
@@ -53,7 +53,7 @@ define('ast/operation', function() {
   return Operation;
 });
 
-define('ast/binding', function() {
+define('ast/binding', function(require) {
   var Term = require('ast/term');
     /**
      * param here is the name of the variable of the abstraction. Body is the
@@ -71,7 +71,7 @@ define('ast/binding', function() {
   return Binding;
 });
 
-define('ast/reference', function() {
+define('ast/reference', function(require) {
   var Term = require('ast/term');
     /**
      * param here is the name of the variable of the reference. Body is the
@@ -90,7 +90,7 @@ define('ast/reference', function() {
 });
 
 // not sure if thunks are in the ast...
-define('ast/thunk', function() {
+define('ast/thunk', function(require) {
   var Term = require('ast/term');
   class Thunk extends Term {
     constructor(name,num) {
