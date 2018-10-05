@@ -71,12 +71,14 @@ define('goi-machine',
 					var param = ast.param;
 					var wrapper = BoxWrapper.create().addToGroup(group);
 					var term = this.toGraph(ast.body, wrapper.box);
+					console.log("1");
 
 					new Link(wrapper.prin.key, term.prin.key, "n", "s").addToGroup(wrapper);
 
 					var auxs = Array.from(term.auxs);
 					var paramUsed = false;
 					var auxNode;
+					console.log("2");
 					for (let aux of term.auxs) {
 						if (aux.name == param) {
 							paramUsed = true;
@@ -84,15 +86,17 @@ define('goi-machine',
 							break;
 						}
 					}
+					console.log("3");
 					if (paramUsed) {
 						auxs.splice(auxs.indexOf(auxNode), 1);
 					} else {
 						auxNode = new Weak(param).addToGroup(abs.group);
 					}
+					console.log("4");
 					new Link(auxNode.key, abs.key, "nw", "w", true).addToGroup(abs.group);
 
 					wrapper.auxs = wrapper.createPaxsOnTopOf(auxs);
-
+					console.log("5");
 					return new Term(wrapper.prin, wrapper.auxs);
 				} 
 
