@@ -4,7 +4,6 @@ define(function(require) {
 	var Flag = require('token').Flag();
 	var Link = require('link');
 	var BoxWrapper = require('box-wrapper');
-	var Promo = require('nodes/promo');
 	var Const = require('nodes/const');
 	var UnOpType = require('op').UnOpType;
 
