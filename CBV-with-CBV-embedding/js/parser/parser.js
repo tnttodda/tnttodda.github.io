@@ -47,6 +47,7 @@ define(function(require) {
           return new Reference(id,P,B);
         }
       }
+      return atom(ctx);
     }
 
     // atom ::= LPAREN term RPAREN
