@@ -87,17 +87,17 @@ define('goi-machine',
 							break;
 						}
 					}
-					console.log("3");
-					if (paramUsed) {
-						auxs.splice(auxs.indexOf(auxNode), 1);
-					} else {
-						auxNode = new Weak(param).addToGroup(abs.group);
-					}
-					console.log("4");
-					new Link(auxNode.key, abs.key, "nw", "w", true).addToGroup(abs.group);
+					// console.log("3");
+					// if (paramUsed) {
+					// 	auxs.splice(auxs.indexOf(auxNode), 1);
+					// } else {
+					// 	auxNode = new Weak(param).addToGroup(abs.group);
+					// }
+					// console.log("4");
+					// new Link(auxNode.key, abs.key, "nw", "w", true).addToGroup(abs.group);
 
-					wrapper.auxs = wrapper.createPaxsOnTopOf(auxs);
-					console.log("5");
+					// wrapper.auxs = wrapper.createPaxsOnTopOf(auxs);
+					// console.log("5");
 					return new Term(wrapper.prin, wrapper.auxs);
 				} 
 
