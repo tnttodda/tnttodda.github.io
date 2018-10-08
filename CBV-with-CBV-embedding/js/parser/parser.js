@@ -60,7 +60,7 @@ define(function(require) {
       } 
       else if (this.lexer.next(Token.LCID)) {
         const id = this.lexer.token(Token.LCID);
-        return new Variable(ctx.indexOf(id), id);
+        return new Var(ctx.indexOf(id), id);
       } 
       else {
         return undefined;
