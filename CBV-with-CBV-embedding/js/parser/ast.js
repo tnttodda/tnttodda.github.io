@@ -1,6 +1,6 @@
 // edited by todd
 
-define('ast/term', function(require) {
+define('ast/term', function() {
   class Term {
     constructor(type) {
       this.type = type;
@@ -43,8 +43,7 @@ define('ast/operation', function(require) {
   
   class Operation extends Term {
     constructor(type, name, eas, das) {
-      super(0);
-      this.type = type;
+      super(type);
       this.name = name;
       this.eas = eas;
       this.das = das;

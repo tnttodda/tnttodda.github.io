@@ -63,9 +63,34 @@ define(function(require) {
         return new Var(ctx.indexOf(id), id);
       } 
       else {
+        return this.operation(ctx);
+      }
+    }
+    
+    // op ::= 
+    operation(ctx) {
+      if (this.lexer.skip(Token.PLUS)) {
+        eas = gatherEAs(ctx);
+        console.log("yes");
+        return new Operation(0,"+",[],[]);
+      } else {
+        console.log("no");
         return undefined;
       }
     }
+    
+    gatherEAs(ctx,type) {
+      this.lexer.match(Token.LPAREN);
+      eas = [];
+      for (i=0; i < type; i++) {
+        const term = this.term(ctx);
+        eas.push(term);
+        if (this.lexer.next(Token.COMMA)) {
+          this.lexer.match(Token.COMMA);
+        }
+      }
+    }
+    
   }
 
   return Parser;

@@ -10,18 +10,22 @@ define(function() {
       this.value = value;
       this.pred = pred;
     }
-  };
+  }
 
   [
     'EOF', // we augment the tokens with EOF, to indicate the end of the input.
+    'LCID',
+    
     'LPAREN',
     'RPAREN',
-    'LCID',
+    'SEMIC',
 
     'BIND',
     'NEW',
     'DEF',
     'IN',
+    
+    'PLUS',
   ].forEach(token => Token[token] = token);
 
   return Token;

@@ -39,6 +39,10 @@ define(function(require) {
         case ',':
           this._token = new Token(Token.COMMA);
           break;
+        
+        case ';':
+          this._token = new Token(Token.SEMIC);
+          break;
 
         case '(':
           this._token = new Token(Token.LPAREN);
@@ -54,6 +58,10 @@ define(function(require) {
 
         case '=':
           this._token = new Token(Token.DEF);
+          break;
+        
+        case '+':
+          this._token = new Token(Token.PLUS);
           break;
 
         default:

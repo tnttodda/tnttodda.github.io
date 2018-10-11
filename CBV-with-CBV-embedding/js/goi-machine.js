@@ -2,7 +2,7 @@ var graph = null;
 
 define('goi-machine', 
 	function(require) {
-		var Term = require('ast/term');
+		var Termast = require('ast/term');
 
 		var Variable = require('ast/var');
 		var Atom = require('ast/atom');
@@ -30,6 +30,7 @@ define('goi-machine',
 		var Var = require('nodes/var')
 		var UnOp = require('nodes/unop');
 		var Weak = require('nodes/weak');
+		var Op = require('nodes/op');
 
 		var GC = require('gc');
 
@@ -63,8 +64,7 @@ define('goi-machine',
 				var graph = this.graph;
 
 				if (ast instanceof Variable) {
-					var v = new Var(ast.name).addToGroup(group)
-					console.log("0");
+					var v = new Var(ast.name).addToGroup(group);
 					return new Term(v, [v]);
 				} 
 
@@ -72,14 +72,12 @@ define('goi-machine',
 					var param = ast.param;
 					var wrapper = BoxWrapper.create().addToGroup(group);
 					var term = this.toGraph(ast.body, wrapper.box);
-					console.log("1");
 
 					new Link(wrapper.prin.key, term.prin.key, "n", "s").addToGroup(wrapper);
 
-					var auxs = Array.from(term.auxs);
+					//var auxs = Array.from(term.auxs);
 					var paramUsed = false;
 					var auxNode;
-					console.log("2");
 					for (let aux of term.auxs) {
 						if (aux.name == param) {
 							paramUsed = true;
@@ -93,13 +91,17 @@ define('goi-machine',
 					// } else {
 					// 	auxNode = new Weak(param).addToGroup(abs.group);
 					// }
-					// console.log("4");
 					// new Link(auxNode.key, abs.key, "nw", "w", true).addToGroup(abs.group);
 
 					// wrapper.auxs = wrapper.createPaxsOnTopOf(auxs);
-					// console.log("5");
 					return new Term(wrapper.prin, wrapper.auxs);
-				} 
+				} else if (ast instanceof Operation) {
+					var name = ast.name;
+					var eas = ast.eas;
+					var op = new Op(name).addToGroup(group);
+					return new Term(op,name,eas);
+				}
+				
 
 				// else if (ast instanceof Application) {
 				// 	var app = new App().addToGroup(group);

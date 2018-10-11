@@ -7,7 +7,7 @@ define(function(require) {
 	class Contract extends Expo {
 
 		constructor(name) {
-			super(null, "C", name);
+			super(null, "⏺", name);
 		}
 
 		transition(token, link) {
