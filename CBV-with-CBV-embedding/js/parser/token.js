@@ -26,6 +26,7 @@ define(function() {
     'IN',
     
     'PLUS',
+    'INT',
   ].forEach(token => Token[token] = token);
 
   return Token;
