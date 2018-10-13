@@ -17,7 +17,6 @@ define(function(require) {
 			const result = this.term([]);
 			// make sure we consumed all the program, otherwise there was a syntax error
 			this.lexer.match(Token.EOF);
-
 			return result;
 		}
 
@@ -35,8 +34,7 @@ define(function(require) {
 					const B = this.term([id].concat(ctx));
 					return new Binding(id,P,B);
 				}
-			}
-			if (this.lexer.skip(Token.NEW)) {
+			} else if (this.lexer.skip(Token.NEW)) {
 				const id = this.lexer.token(Token.LCID);
 
 				if (this.lexer.skip(Token.DEF)) {        
@@ -45,8 +43,9 @@ define(function(require) {
 					const B = this.term([id].concat(ctx));
 					return new Reference(id,P,B);
 				}
+			} else {
+				return this.atom(ctx);
 			}
-			return this.atom(ctx);
 		}
 
 		// atom ::= LPAREN term RPAREN
@@ -56,16 +55,10 @@ define(function(require) {
 				const term = this.term(ctx);
 				this.lexer.match(Token.RPAREN);
 				return term;
-			} 
-			else if (this.lexer.next(Token.LCID)) {
+			} else if (this.lexer.next(Token.LCID)) {
 				const id = this.lexer.token(Token.LCID);
 				return new Var(ctx.indexOf(id), id);
-			} 
-			else if (this.lexer.next(Token.INT)) {
-				const n = this.lexer.token(Token.INT);
-				//return new operation int
-			}
-			else {
+			} else {
 				return this.operation(ctx);
 			}
 		}
@@ -73,11 +66,11 @@ define(function(require) {
 		// op ::= 
 		operation(ctx) {
 			if (this.lexer.skip(Token.PLUS)) {
-				eas = this.gatherEAs(ctx);
-				console.log("yes");
+				var eas = this.gatherEAs(ctx,2);
 				return new Operation(2,"+",eas,[]);
-			} else if (this.lexer.skip(Token.INT)) {
-
+			} else if (this.lexer.next(Token.INT)) {
+				const n = this.lexer.token(Token.INT);
+				return new Operation(0,n,[],[]);
 			} else {
 				console.log("no");
 				return undefined;
@@ -86,14 +79,17 @@ define(function(require) {
 
 		gatherEAs(ctx,type) {
 			this.lexer.match(Token.LPAREN);
-			eas = [];
-			for (i=0; i < type; i++) {
+			var eas = [];
+			for (var i = 0; i < type; i++) {
+				console.log(" >" + parseInt(i));
 				const term = this.term(ctx);
 				eas.push(term);
 				if (this.lexer.next(Token.COMMA)) {
 					this.lexer.match(Token.COMMA);
 				}
 			}
+			this.lexer.match(Token.RPAREN);
+			return eas;
 		}
 
 	}

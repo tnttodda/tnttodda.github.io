@@ -66,9 +66,7 @@ define('goi-machine',
 				if (ast instanceof Variable) {
 					var v = new Var(ast.name).addToGroup(group);
 					return new Term(v, [v]);
-				} 
-
-				else if (ast instanceof Binding) {
+				} else if (ast instanceof Binding) {
 					var param = ast.param;
 					var wrapper = BoxWrapper.create().addToGroup(group);
 					var term = this.toGraph(ast.body, wrapper.box);
@@ -96,9 +94,15 @@ define('goi-machine',
 					// wrapper.auxs = wrapper.createPaxsOnTopOf(auxs);
 					return new Term(wrapper.prin, wrapper.auxs);
 				} else if (ast instanceof Operation) {
+					var type = ast.type;
 					var name = ast.name;
 					var eas = ast.eas;
 					var op = new Op(name).addToGroup(group);
+					for (var i = 0; i < type; i++) {
+						console.log("doop");
+						var next = this.toGraph(eas[i], group);
+						new Link(op.key, next.prin.key, "n", "s").addToGroup(group);
+					}
 					return new Term(op,name,eas);
 				}
 				
