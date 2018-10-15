@@ -1,6 +1,6 @@
 var graph = null;
 
-define('goi-machine', 
+define('goi-machine',
 	function(require) {
 		var Termast = require('ast/term');
 
@@ -15,7 +15,7 @@ define('goi-machine',
 		var Parser = require('parser/parser');
 
 		var MachineToken = require('token');
-		var Link = require('link');		
+		var Link = require('link');
 
 		var Graph = require('graph');
 		var Group = require('group');
@@ -35,7 +35,7 @@ define('goi-machine',
 		var GC = require('gc');
 
 		class GoIMachine {
-			
+
 			constructor() {
 				this.graph = new Graph();
 				graph = this.graph; // cheating!
@@ -63,49 +63,54 @@ define('goi-machine',
 			toGraph(ast, group) {
 				var graph = this.graph;
 
+				// VARIABLES
 				if (ast instanceof Variable) {
 					var v = new Var(ast.name).addToGroup(group);
 					return new Term(v, [v]);
+
+				// BINDINGS
 				} else if (ast instanceof Binding) {
-					var param = ast.param;
-					var wrapper = BoxWrapper.create().addToGroup(group);
-					var term = this.toGraph(ast.body, wrapper.box);
+					var id = ast.id;
+					var term = this.toGraph(ast.body, group);
 
-					new Link(wrapper.prin.key, term.prin.key, "n", "s").addToGroup(wrapper);
-
-					//var auxs = Array.from(term.auxs);
+					var auxs = Array.from(term.auxs);
 					var paramUsed = false;
 					var auxNode;
+
 					for (let aux of term.auxs) {
-						if (aux.name == param) {
+						console.log(aux.name + " || " + id)
+						if (aux.name == id) {
 							paramUsed = true;
 							auxNode = aux;
 							break;
 						}
 					}
-					// console.log("3");
-					// if (paramUsed) {
-					// 	auxs.splice(auxs.indexOf(auxNode), 1);
-					// } else {
-					// 	auxNode = new Weak(param).addToGroup(abs.group);
-					// }
-					// new Link(auxNode.key, abs.key, "nw", "w", true).addToGroup(abs.group);
+
+					if (paramUsed) {
+						var param = this.toGraph(ast.param, group).addToGroup(group);
+						auxNode = param.prin;
+						auxs.splice(auxs.indexOf(auxNode), 1);
+					} else {
+						auxNode = new Weak(param).addToGroup(group);
+					}
+					new Link(term.prin.key, auxNode.key, "n", "s").addToGroup(group);
 
 					// wrapper.auxs = wrapper.createPaxsOnTopOf(auxs);
-					return new Term(wrapper.prin, wrapper.auxs);
+					return new Term(term.prin, term.auxs);
+
+				// OPERATIONS
 				} else if (ast instanceof Operation) {
-					var type = ast.type;
-					var name = ast.name;
-					var eas = ast.eas;
-					var op = new Op(name).addToGroup(group);
-					for (var i = 0; i < type; i++) {
-						console.log("doop");
-						var next = this.toGraph(eas[i], group);
+					var op = new Op(ast.name).addToGroup(group);
+
+					for (var i = 0; i < ast.type; i++) {
+						var next = this.toGraph(ast.eas[i], group);
 						new Link(op.key, next.prin.key, "n", "s").addToGroup(group);
 					}
-					return new Term(op,name,eas);
+
+					return new Term(op,ast.eas);
+
 				}
-				
+
 
 				// else if (ast instanceof Application) {
 				// 	var app = new App().addToGroup(group);
@@ -114,13 +119,13 @@ define('goi-machine',
 				// 	var der = new Der(left.prin.name).addToGroup(group);
 				// 	new Link(der.key, left.prin.key, "n", "s").addToGroup(group);
 				// 	// rhs
-				// 	var right = this.toGraph(ast.rhs, group);		
-					
+				// 	var right = this.toGraph(ast.rhs, group);
+
 				// 	new Link(app.key, der.key, "w", "s").addToGroup(group);
 				// 	new Link(app.key, right.prin.key, "e", "s").addToGroup(group);
 
 				// 	return new Term(app, Term.joinAuxs(left.auxs, right.auxs, group));
-				// } 
+				// }
 
 				// else if (ast instanceof Constant) {
 				// 	var wrapper = BoxWrapper.create().addToGroup(group);
@@ -158,13 +163,13 @@ define('goi-machine',
 				for (let node of Array.from(group.nodes)) {
 					if (node instanceof Group)
 						this.deleteVarNode(node);
-					else if (node instanceof Var) 
+					else if (node instanceof Var)
 						node.deleteAndPreserveOutLink();
 				}
 			}
 
 			// machine step
-			pass(flag, dataStack, boxStack) {	
+			pass(flag, dataStack, boxStack) {
 				if (!finished) {
 					this.count++;
 					if (this.count == 200) {
@@ -187,7 +192,7 @@ define('goi-machine',
 						var nextLink = node.transition(this.token, this.token.link);
 						if (nextLink != null) {
 							this.token.setLink(nextLink);
-							this.printHistory(flag, dataStack, boxStack); 
+							this.printHistory(flag, dataStack, boxStack);
 							this.token.transited = true;
 						}
 						else {
@@ -224,6 +229,6 @@ define('goi-machine',
 
 		}
 
-		return GoIMachine;	
+		return GoIMachine;
 	}
 );
