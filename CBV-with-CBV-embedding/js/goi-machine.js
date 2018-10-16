@@ -56,7 +56,7 @@ define('goi-machine',
 				var start = new Start().addToGroup(this.graph.child);
 				var term = this.toGraph(ast, this.graph.child);
 				new Link(start.key, term.prin.key, "n", "s").addToGroup(this.graph.child);
-				this.deleteVarNode(this.graph.child);
+				//this.deleteVarNode(this.graph.child);
 			}
 
 			// translation
@@ -65,8 +65,12 @@ define('goi-machine',
 
 				// VARIABLES
 				if (ast instanceof Variable) {
-					var v = new Var(ast.name).addToGroup(group);
-					return new Term(v, [v]);
+					//var v = new Var(ast.name).addToGroup(group);
+					var c = new Contract("C").addToGroup(group);
+
+					//new Link(v.key,c.key, "n", "s").addToGroup(group);
+
+					return new Term(c, []);
 
 				// BINDINGS
 				} else if (ast instanceof Binding) {
@@ -76,10 +80,12 @@ define('goi-machine',
 					var auxs = Array.from(term.auxs);
 					var paramUsed = false;
 					var auxNode;
+					var paramNode;
 
 					for (let aux of term.auxs) {
-						console.log(aux.name + " || " + id)
-						if (aux.name == id) {
+						console.log(aux.name + " || " + id.name)
+						console.log(aux);
+						if (aux.name == id.name) {
 							paramUsed = true;
 							auxNode = aux;
 							break;
@@ -88,12 +94,12 @@ define('goi-machine',
 
 					if (paramUsed) {
 						var param = this.toGraph(ast.param, group).addToGroup(group);
-						auxNode = param.prin;
-						auxs.splice(auxs.indexOf(auxNode), 1);
+						paramNode = param.prin;
+						new Link(auxNode.prin.key, paramNode.key, "n", "s").addToGroup(group);
+						//auxs.splice(auxs.indexOf(auxNode), 1);
 					} else {
-						auxNode = new Weak(param).addToGroup(group);
+						paramNode = new Weak(param).addToGroup(group);
 					}
-					new Link(term.prin.key, auxNode.key, "n", "s").addToGroup(group);
 
 					// wrapper.auxs = wrapper.createPaxsOnTopOf(auxs);
 					return new Term(term.prin, term.auxs);
@@ -101,13 +107,15 @@ define('goi-machine',
 				// OPERATIONS
 				} else if (ast instanceof Operation) {
 					var op = new Op(ast.name).addToGroup(group);
+					var eas = [];
 
 					for (var i = 0; i < ast.type; i++) {
 						var next = this.toGraph(ast.eas[i], group);
 						new Link(op.key, next.prin.key, "n", "s").addToGroup(group);
+						eas.push(next);
 					}
 
-					return new Term(op,ast.eas);
+					return new Term(op,eas);
 
 				}
 

@@ -27,7 +27,7 @@ define('nodes/var', function(require) {
 
 	class Var extends Der {
 
-		deleteAndPreserveOutLink() { 
+		deleteAndPreserveOutLink() {
 			var inLink = this.findLinksInto(null)[0];
 			var outLink = this.findLinksOutOf(null)[0];
 			var inNode = this.graph.findNodeByKey(inLink.from);

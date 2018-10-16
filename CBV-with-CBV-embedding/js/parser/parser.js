@@ -26,9 +26,9 @@ define(function(require) {
 
 		term(ctx) {
 			if (this.lexer.skip(Token.BIND)) {
-				const id = this.lexer.token(Token.LCID);
+				const id = this.term(ctx);
 
-				if (this.lexer.skip(Token.DEF)) {        
+				if (this.lexer.skip(Token.DEF)) {
 					const P = this.term(ctx);
 					this.lexer.match(Token.IN);
 					const B = this.term([id].concat(ctx));
@@ -37,7 +37,7 @@ define(function(require) {
 			} else if (this.lexer.skip(Token.NEW)) {
 				const id = this.lexer.token(Token.LCID);
 
-				if (this.lexer.skip(Token.DEF)) {        
+				if (this.lexer.skip(Token.DEF)) {
 					const P = this.term(ctx);
 					this.lexer.match(Token.IN);
 					const B = this.term([id].concat(ctx));
@@ -63,7 +63,7 @@ define(function(require) {
 			}
 		}
 
-		// op ::= 
+		// op ::=
 		operation(ctx) {
 			if (this.lexer.skip(Token.PLUS)) {
 				var eas = this.gatherEAs(ctx,2);
