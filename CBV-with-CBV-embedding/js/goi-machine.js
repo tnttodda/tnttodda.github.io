@@ -77,10 +77,16 @@ define('goi-machine',
 					var auxs = Array.from(term.auxs);
 					var paramNode;
 
-					this.linkBindings(auxs, paramNode, param, group, id.name);
+					paramNode = this.linkBindings(auxs, paramNode, param, group, id.name);
+					console.log(term.prin.name);
+					console.log(auxs.length);
+					console.log(paramNode);
+					if (paramNode != null)
+						auxs = auxs.concat(paramNode.auxs);
 
+					console.log(auxs.length);
 					// wrapper.auxs = wrapper.createPaxsOnTopOf(auxs);
-					return new Term(term.prin, term.auxs);
+					return new Term(term.prin, auxs);
 
 				// OPERATIONS
 				} else if (ast instanceof Operation) {
@@ -95,7 +101,6 @@ define('goi-machine',
 
 					return new Term(op,eas);
 				}
-
 			}
 
 			linkBindings(auxs, paramNode, param, group, name) {
@@ -110,6 +115,7 @@ define('goi-machine',
 					}
 					this.linkBindings(aux.auxs, paramNode, param, group, name);
 				}
+				return paramNode;
 			}
 
 			deleteVarNode(group) {

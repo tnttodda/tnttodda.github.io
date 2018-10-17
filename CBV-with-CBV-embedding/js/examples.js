@@ -7,4 +7,7 @@
 // + '\n'
 // + 'fact 4';
 
-var fact_prog = 'bind x = 2 in PLUS(1,x)'
+var fact_prog =
+  'bind z = 1 in\n'
++ 'bind x = PLUS(z,PLUS(2,z)) in\n'
++ 'PLUS(2,PLUS(z,x))';
