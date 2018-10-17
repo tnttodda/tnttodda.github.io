@@ -25,6 +25,7 @@ define(function(require) {
 		//      | op? ( EAS ; DAS )
 
 		term(ctx) {
+			console.log(ctx);
 			if (this.lexer.skip(Token.BIND)) {
 				const id = this.term(ctx);
 

@@ -56,6 +56,7 @@ define('goi-machine',
 				var start = new Start().addToGroup(this.graph.child);
 				var term = this.toGraph(ast, this.graph.child);
 				new Link(start.key, term.prin.key, "n", "s").addToGroup(this.graph.child);
+				console.log(term);
 				//this.deleteVarNode(this.graph.child);
 			}
 
@@ -78,13 +79,11 @@ define('goi-machine',
 					var paramNode;
 
 					paramNode = this.linkBindings(auxs, paramNode, param, group, id.name);
-					console.log(term.prin.name);
-					console.log(auxs.length);
-					console.log(paramNode);
 					if (paramNode != null)
 						auxs = auxs.concat(paramNode.auxs);
 
-					console.log(auxs.length);
+					console.log(term.prin.name)
+					console.log(auxs);
 					// wrapper.auxs = wrapper.createPaxsOnTopOf(auxs);
 					return new Term(term.prin, auxs);
 
@@ -105,13 +104,12 @@ define('goi-machine',
 
 			linkBindings(auxs, paramNode, param, group, name) {
 				for (let aux of auxs) {
-					console.log(aux);
 					if (aux.prin.name == name) {
 						if (paramNode == null)
 							paramNode = this.toGraph(param, group).addToGroup(group);
 						var auxNode = aux;
 						new Link(auxNode.prin.key, paramNode.prin.key, "n", "s").addToGroup(group);
-						//auxs.splice(auxs.indexOf(auxNode), 1);
+						auxs.splice(auxs.indexOf(auxNode), 1);
 					}
 					this.linkBindings(aux.auxs, paramNode, param, group, name);
 				}
