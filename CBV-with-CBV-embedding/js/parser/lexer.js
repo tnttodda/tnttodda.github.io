@@ -71,8 +71,6 @@ define(function(require) {
 					// put back the last char which is not part of the identifier
 					this._index--;
 
-					console.log(str);
-
 					if (str == "bind")
 						this._token = new Token(Token.BIND);
 					else if (str == "in")
@@ -95,7 +93,6 @@ define(function(require) {
 
 					// put back the last char which is not part of the identifier
 					this._index--;
-					console.log(parseInt(str));
 					this._token = new Token(Token.INT, parseInt(str));
 				}
 				else {

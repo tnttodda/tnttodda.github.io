@@ -1,13 +1,13 @@
 define(function(require) {
 
 	var Node = require('node');
-	
-	class App extends Node {
+
+	class Op extends Node {
 
 		constructor(name) {
-			super(null, name);
+			super(null, name, name);
 		}
-		
+
 		transition(token, link) {
 			//if (link.to == this.key) {
 			//	token.dataStack.push(CompData.PROMPT);
@@ -29,5 +29,5 @@ define(function(require) {
 		}
 	}
 
-	return App;
+	return Op;
 });

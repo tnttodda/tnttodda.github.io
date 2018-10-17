@@ -65,41 +65,19 @@ define('goi-machine',
 
 				// VARIABLES
 				if (ast instanceof Variable) {
-					//var v = new Var(ast.name).addToGroup(group);
 					var c = new Contract(ast.name).addToGroup(group);
-
-					//new Link(v.key,c.key, "n", "s").addToGroup(group);
-
 					return new Term(c, []);
 
 				// BINDINGS
 				} else if (ast instanceof Binding) {
 					var id = ast.id;
+					var param = ast.param;
 					var term = this.toGraph(ast.body, group);
 
 					var auxs = Array.from(term.auxs);
-					var paramUsed = false;
-					var auxNode;
 					var paramNode;
 
-					for (let aux of term.auxs) {
-						console.log(aux.prin.name + " || " + id.name)
-						console.log(aux);
-						if (aux.prin.name == id.name) {
-							paramUsed = true;
-							auxNode = aux;
-							break;
-						}
-					}
-
-					if (paramUsed) {
-						var param = this.toGraph(ast.param, group).addToGroup(group);
-						paramNode = param.prin;
-						new Link(auxNode.prin.key, paramNode.key, "n", "s").addToGroup(group);
-						//auxs.splice(auxs.indexOf(auxNode), 1);
-					} else {
-						paramNode = new Weak(param).addToGroup(group);
-					}
+					this.linkBindings(auxs, paramNode, param, group, id.name);
 
 					// wrapper.auxs = wrapper.createPaxsOnTopOf(auxs);
 					return new Term(term.prin, term.auxs);
@@ -116,55 +94,22 @@ define('goi-machine',
 					}
 
 					return new Term(op,eas);
-
 				}
 
+			}
 
-				// else if (ast instanceof Application) {
-				// 	var app = new App().addToGroup(group);
-				// 	//lhs
-				// 	var left = this.toGraph(ast.lhs, group);
-				// 	var der = new Der(left.prin.name).addToGroup(group);
-				// 	new Link(der.key, left.prin.key, "n", "s").addToGroup(group);
-				// 	// rhs
-				// 	var right = this.toGraph(ast.rhs, group);
-
-				// 	new Link(app.key, der.key, "w", "s").addToGroup(group);
-				// 	new Link(app.key, right.prin.key, "e", "s").addToGroup(group);
-
-				// 	return new Term(app, Term.joinAuxs(left.auxs, right.auxs, group));
-				// }
-
-				// else if (ast instanceof Constant) {
-				// 	var wrapper = BoxWrapper.create().addToGroup(group);
-				// 	var constant = new Const(ast.value).addToGroup(wrapper.box);
-				// 	new Link(wrapper.prin.key, constant.key, "n", "s").addToGroup(wrapper);
-				// 	return new Term(wrapper.prin, wrapper.auxs);
-				// }
-
-				// else if (ast instanceof BinaryOp) {
-				// 	var binop = new BinOp(ast.name).addToGroup(group);
-
-				// 	binop.subType = ast.type;
-				// 	var left = this.toGraph(ast.v1, group);
-				// 	var right = this.toGraph(ast.v2, group);
-
-				// 	new Link(binop.key, left.prin.key, "w", "s").addToGroup(group);
-				// 	new Link(binop.key, right.prin.key, "e", "s").addToGroup(group);
-
-				// 	return new Term(binop, Term.joinAuxs(left.auxs, right.auxs, group));
-				// }
-
-				// else if (ast instanceof UnaryOp) {
-				// 	var unop = new UnOp(ast.name).addToGroup(group);
-				// 	unop.subType = ast.type;
-				// 	var box = this.toGraph(ast.v1, group);
-
-				// 	new Link(unop.key, box.prin.key, "n", "s").addToGroup(group);
-
-				// 	return new Term(unop, box.auxs);
-				// }
-
+			linkBindings(auxs, paramNode, param, group, name) {
+				for (let aux of auxs) {
+					console.log(aux);
+					if (aux.prin.name == name) {
+						if (paramNode == null)
+							paramNode = this.toGraph(param, group).addToGroup(group);
+						var auxNode = aux;
+						new Link(auxNode.prin.key, paramNode.prin.key, "n", "s").addToGroup(group);
+						//auxs.splice(auxs.indexOf(auxNode), 1);
+					}
+					this.linkBindings(aux.auxs, paramNode, param, group, name);
+				}
 			}
 
 			deleteVarNode(group) {
