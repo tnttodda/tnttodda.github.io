@@ -66,7 +66,7 @@ define('goi-machine',
 				// VARIABLES
 				if (ast instanceof Variable) {
 					//var v = new Var(ast.name).addToGroup(group);
-					var c = new Contract("C").addToGroup(group);
+					var c = new Contract(ast.name).addToGroup(group);
 
 					//new Link(v.key,c.key, "n", "s").addToGroup(group);
 
@@ -83,9 +83,9 @@ define('goi-machine',
 					var paramNode;
 
 					for (let aux of term.auxs) {
-						console.log(aux.name + " || " + id.name)
+						console.log(aux.prin.name + " || " + id.name)
 						console.log(aux);
-						if (aux.name == id.name) {
+						if (aux.prin.name == id.name) {
 							paramUsed = true;
 							auxNode = aux;
 							break;

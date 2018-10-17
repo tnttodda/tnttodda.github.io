@@ -81,7 +81,6 @@ define(function(require) {
 			this.lexer.match(Token.LPAREN);
 			var eas = [];
 			for (var i = 0; i < type; i++) {
-				console.log(" >" + parseInt(i));
 				const term = this.term(ctx);
 				eas.push(term);
 				if (this.lexer.next(Token.COMMA)) {
