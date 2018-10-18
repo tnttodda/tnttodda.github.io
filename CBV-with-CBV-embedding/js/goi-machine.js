@@ -74,6 +74,7 @@ define('goi-machine',
 					var param = ast.param;
 					var term = this.toGraph(ast.body, group);
 
+					var DNet = []
 					var auxs = Array.from(term.auxs);
 					var paramNode;
 
@@ -81,30 +82,34 @@ define('goi-machine',
 					if (paramNode != null)
 						auxs = auxs.concat(paramNode.auxs);
 
-					//createDNet()
+					DNet = this.createDNet(ast.ctx, auxs, null, group);
 
 					// wrapper.auxs = wrapper.createPaxsOnTopOf(auxs);
-					return new Term(term.prin, auxs);
+					return new Term(term.prin, DNet.auxs);
 
 				// OPERATIONS
 				} else if (ast instanceof Operation) {
 					var op = new Op(ast.name).addToGroup(group);
 					var eas = [];
+					var outputs = [];
 					var DNet = [];
 
 					for (var i = 0; i < ast.type; i++) {
 						var next = this.toGraph(ast.eas[i], group);
 						new Link(op.key, next.prin.key, "n", "s").addToGroup(group);
 						eas.push(next);
+						outputs = outputs.concat(next.auxs);
 					}
 
-					DNet = this.createDNet(ast.ctx, eas, op, group);
+					DNet = this.createDNet(ast.ctx, outputs, op, group);
 
 					return new Term(op,DNet.auxs);
 				}
 			}
 
 			createDNet(ctx, outputs, op, group) {
+				console.log(op);
+				console.log(ctx);
 				var auxs = []
 
 				for (var n = 0; n < ctx.length; n++) {
@@ -116,13 +121,13 @@ define('goi-machine',
 
 					var from;
 					var to;
+					console.log(outputs);
 					for (var i = 0; i < outputs.length; i++) {
-						for (var j = 0; j < outputs[i].auxs.length; j++) {
-							from = outputs[i].auxs[j];
+							from = outputs[i];
 							to = c;
+							console.log(from.name + " || " + to.name);
 							if (from.name == to.name)
 								new Link(from.key, to.key, "n", "s").addToGroup(group);
-						}
 					}
 				}
 				return new Term(c,auxs);
@@ -136,11 +141,9 @@ define('goi-machine',
 
 						var auxNode = aux;
 						new Link(auxNode.key, paramNode.prin.key, "n", "s").addToGroup(group);
-						//auxs.splice(auxs.indexOf(auxNode), 1);
+						auxs.splice(auxs.indexOf(auxNode), 1);
 					}
-
 					//this.linkBindings(aux.auxs, paramNode, param, group, name);
-
 				}
 				return paramNode;
 			}
