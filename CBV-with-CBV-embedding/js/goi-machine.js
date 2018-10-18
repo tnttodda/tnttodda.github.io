@@ -63,11 +63,12 @@ define('goi-machine',
 			// translation
 			toGraph(ast, group) {
 				var graph = this.graph;
+				console.log(ast);
 
 				// VARIABLES
 				if (ast instanceof Variable) {
 					var c = new Contract(ast.name).addToGroup(group);
-					return new Term(c, []);
+					return new Term(c, [c]);
 
 				// BINDINGS
 				} else if (ast instanceof Binding) {
@@ -78,12 +79,15 @@ define('goi-machine',
 					var auxs = Array.from(term.auxs);
 					var paramNode;
 
+					console.log(term.auxs);
+					console.log(auxs);
+
 					paramNode = this.linkBindings(auxs, paramNode, param, group, id.name);
 					if (paramNode != null)
 						auxs = auxs.concat(paramNode.auxs);
 
-					console.log(term.prin.name)
-					console.log(auxs);
+					//createDNet()
+
 					// wrapper.auxs = wrapper.createPaxsOnTopOf(auxs);
 					return new Term(term.prin, auxs);
 
@@ -91,6 +95,7 @@ define('goi-machine',
 				} else if (ast instanceof Operation) {
 					var op = new Op(ast.name).addToGroup(group);
 					var eas = [];
+					var DNet = [];
 
 					for (var i = 0; i < ast.type; i++) {
 						var next = this.toGraph(ast.eas[i], group);
@@ -98,20 +103,44 @@ define('goi-machine',
 						eas.push(next);
 					}
 
-					return new Term(op,eas);
+					DNet = this.createDNet(ast.ctx, eas, group);
+
+					return new Term(op,DNet.auxs);
 				}
 			}
 
+			createDNet(ctx, outputs, group) {
+				var auxs = []
+
+				for (var n = 0; n < ctx.length; n++) {
+					var c = new Contract(ctx[n].name).addToGroup(group);
+					auxs.push(c);
+
+					if (outputs.length == 0)
+					 	new Link(c.key, c.key, "n", "s").addToGroup(group);
+
+					for (var i = 0; i < outputs.length; i++) {
+						new Link(outputs[i].prin.key, c.key, "n", "s").addToGroup(group);
+					}
+				}
+				return new Term(c,auxs);
+			}
+
 			linkBindings(auxs, paramNode, param, group, name) {
+				console.log(auxs);
 				for (let aux of auxs) {
-					if (aux.prin.name == name) {
+					console.log(aux);
+					if (aux.name == name) {
 						if (paramNode == null)
 							paramNode = this.toGraph(param, group).addToGroup(group);
+
 						var auxNode = aux;
-						new Link(auxNode.prin.key, paramNode.prin.key, "n", "s").addToGroup(group);
-						auxs.splice(auxs.indexOf(auxNode), 1);
+						new Link(auxNode.key, paramNode.prin.key, "n", "s").addToGroup(group);
+						//auxs.splice(auxs.indexOf(auxNode), 1);
 					}
-					this.linkBindings(aux.auxs, paramNode, param, group, name);
+
+					//this.linkBindings(aux.auxs, paramNode, param, group, name);
+
 				}
 				return paramNode;
 			}

@@ -2,8 +2,9 @@
 
 define('ast/term', function() {
   class Term {
-    constructor(type) {
+    constructor(type, ctx) {
       this.type = type;
+      this.ctx = ctx;
     }
   }
   return Term;
@@ -15,9 +16,8 @@ define('ast/var', function(require) {
      * name is the string matched for this identifier.
      */
   class Var extends Term {
-    constructor(value, name) {
-      super(0);
-      this.value = value;
+    constructor(ctx, name) {
+      super(0,ctx);
       this.name = name;
     }
   }
@@ -30,7 +30,7 @@ define('ast/atom', function(require) {
      * name is the string matched for this identifier.
      */
   class Atom extends Term {
-    constructor(name) {
+    constructor(ctx, name) {
       super(0);
       this.name = name;
     }
@@ -40,10 +40,10 @@ define('ast/atom', function(require) {
 
 define('ast/operation', function(require) {
   var Term = require('ast/term');
-  
+
   class Operation extends Term {
-    constructor(type, name, eas, das) {
-      super(type);
+    constructor(ctx, type, name, eas, das) {
+      super(type, ctx);
       this.name = name;
       this.eas = eas;
       this.das = das;
@@ -58,10 +58,10 @@ define('ast/binding', function(require) {
      * param here is the name of the variable of the abstraction. Body is the
      * subtree  representing the body of the abstraction.
      */
-    
+
   class Binding extends Term {
-    constructor(id, param, body) {
-      super(0);
+    constructor(ctx, id, param, body) {
+      super(0, ctx);
       this.id = id;
       this.param = param;
       this.body = body;
@@ -76,10 +76,10 @@ define('ast/reference', function(require) {
      * param here is the name of the variable of the reference. Body is the
      * subtree  representing the body of the abstraction.
      */
-    
+
   class Reference extends Term {
-    constructor(id, param, body) {
-      super(0);
+    constructor(ctx, id, param, body) {
+      super(0, ctx);
       this.id = id;
       this.param = param;
       this.body = body;
@@ -92,11 +92,10 @@ define('ast/reference', function(require) {
 define('ast/thunk', function(require) {
   var Term = require('ast/term');
   class Thunk extends Term {
-    constructor(name,num) {
-      super(num);
+    constructor(ctx, name, num) {
+      super(num, ctx);
       this.name = name;
     }
   }
   return Thunk;
 });
-

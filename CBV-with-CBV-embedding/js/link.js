@@ -94,6 +94,7 @@ define(function() {
 					str += ',headport=' + this.toPort;
 			}
 			else {
+				this.color = "white" // cheating!
 				str += this.to + '->' + this.from + '[dir=back';
 				if (this.fromPort != null)
 					str += ',headport=' + this.fromPort;

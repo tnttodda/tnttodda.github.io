@@ -25,7 +25,6 @@ define(function(require) {
 		//      | op? ( EAS ; DAS )
 
 		term(ctx) {
-			console.log(ctx);
 			if (this.lexer.skip(Token.BIND)) {
 				const id = this.term(ctx);
 
@@ -33,7 +32,7 @@ define(function(require) {
 					const P = this.term(ctx);
 					this.lexer.match(Token.IN);
 					const B = this.term([id].concat(ctx));
-					return new Binding(id,P,B);
+					return new Binding(ctx,id,P,B);
 				}
 			} else if (this.lexer.skip(Token.NEW)) {
 				const id = this.lexer.token(Token.LCID);
@@ -42,7 +41,7 @@ define(function(require) {
 					const P = this.term(ctx);
 					this.lexer.match(Token.IN);
 					const B = this.term([id].concat(ctx));
-					return new Reference(id,P,B);
+					return new Reference(ctx,id,P,B);
 				}
 			} else {
 				return this.atom(ctx);
@@ -58,7 +57,7 @@ define(function(require) {
 				return term;
 			} else if (this.lexer.next(Token.LCID)) {
 				const id = this.lexer.token(Token.LCID);
-				return new Var(ctx.indexOf(id), id);
+				return new Var(ctx, id);
 			} else {
 				return this.operation(ctx);
 			}
@@ -68,10 +67,10 @@ define(function(require) {
 		operation(ctx) {
 			if (this.lexer.skip(Token.PLUS)) {
 				var eas = this.gatherEAs(ctx,2);
-				return new Operation(2,"+",eas,[]);
+				return new Operation(ctx,2,"+",eas,[]);
 			} else if (this.lexer.next(Token.INT)) {
 				const n = this.lexer.token(Token.INT);
-				return new Operation(0,n,[],[]);
+				return new Operation(ctx,0,n,[],[]);
 			} else {
 				console.log("no");
 				return undefined;
