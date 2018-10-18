@@ -1,14 +1,14 @@
 define(function() {
 
 	class Link {
-		constructor(from, to, fromPort, toPort, reverse) {
+		constructor(from, to, fromPort, toPort, colour) {
 			this.from = from;
 			this.to = to;
 			this.fromPort = fromPort;
 			this.toPort = toPort;
-			this.reverse = reverse;
 
-			this.colour = null;
+			this.reverse = false;
+			this.colour = colour;
 			this.penWidth = null;
 			this.addToGraph(graph); // cheating
 			this.addToNode(); // cheating

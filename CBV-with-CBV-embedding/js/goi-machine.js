@@ -56,14 +56,12 @@ define('goi-machine',
 				var start = new Start().addToGroup(this.graph.child);
 				var term = this.toGraph(ast, this.graph.child);
 				new Link(start.key, term.prin.key, "n", "s").addToGroup(this.graph.child);
-				console.log(term);
 				//this.deleteVarNode(this.graph.child);
 			}
 
 			// translation
 			toGraph(ast, group) {
 				var graph = this.graph;
-				console.log(ast);
 
 				// VARIABLES
 				if (ast instanceof Variable) {
@@ -78,9 +76,6 @@ define('goi-machine',
 
 					var auxs = Array.from(term.auxs);
 					var paramNode;
-
-					console.log(term.auxs);
-					console.log(auxs);
 
 					paramNode = this.linkBindings(auxs, paramNode, param, group, id.name);
 					if (paramNode != null)
@@ -103,13 +98,13 @@ define('goi-machine',
 						eas.push(next);
 					}
 
-					DNet = this.createDNet(ast.ctx, eas, group);
+					DNet = this.createDNet(ast.ctx, eas, op, group);
 
 					return new Term(op,DNet.auxs);
 				}
 			}
 
-			createDNet(ctx, outputs, group) {
+			createDNet(ctx, outputs, op, group) {
 				var auxs = []
 
 				for (var n = 0; n < ctx.length; n++) {
@@ -117,19 +112,24 @@ define('goi-machine',
 					auxs.push(c);
 
 					if (outputs.length == 0)
-					 	new Link(c.key, c.key, "n", "s").addToGroup(group);
+					 	new Link(op.key, c.key, "n", "s", "gray").addToGroup(group);
 
+					var from;
+					var to;
 					for (var i = 0; i < outputs.length; i++) {
-						new Link(outputs[i].prin.key, c.key, "n", "s").addToGroup(group);
+						for (var j = 0; j < outputs[i].auxs.length; j++) {
+							from = outputs[i].auxs[j];
+							to = c;
+							if (from.name == to.name)
+								new Link(from.key, to.key, "n", "s").addToGroup(group);
+						}
 					}
 				}
 				return new Term(c,auxs);
 			}
 
 			linkBindings(auxs, paramNode, param, group, name) {
-				console.log(auxs);
 				for (let aux of auxs) {
-					console.log(aux);
 					if (aux.name == name) {
 						if (paramNode == null)
 							paramNode = this.toGraph(param, group).addToGroup(group);

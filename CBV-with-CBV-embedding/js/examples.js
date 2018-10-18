@@ -8,4 +8,4 @@
 // + 'fact 4';
 
 var fact_prog =
-  'bind x = 2 in PLUS(1,x)';
+  'bind y = 3 in bind x = 4 in PLUS(1,2)';
