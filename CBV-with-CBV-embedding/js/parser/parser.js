@@ -35,7 +35,7 @@ define(function(require) {
 					return new Binding(ctx,id,P,B);
 				}
 			} else if (this.lexer.skip(Token.NEW)) {
-				const id = this.lexer.token(Token.LCID);
+				const id = this.term(ctx);
 
 				if (this.lexer.skip(Token.DEF)) {
 					const P = this.term(ctx);

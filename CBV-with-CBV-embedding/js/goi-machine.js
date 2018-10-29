@@ -22,6 +22,7 @@ define('goi-machine',
 		var Term = require('term');
 		var BoxWrapper = require('box-wrapper');
 
+		var Atom = require('nodes/atom');
 		var Expo = require('nodes/expo');
 		var Const = require('nodes/const');
 		var Contract = require('nodes/contract');
@@ -68,17 +69,18 @@ define('goi-machine',
 					var c = new Contract(ast.name).addToGroup(group);
 					return new Term(c, [c]);
 
-				// BINDINGS
-				} else if (ast instanceof Binding) {
+				// BINDINGS & REFERENCES
+				} else if ((ast instanceof Binding) || (ast instanceof Reference))  {
 					var id = ast.id;
 					var param = ast.param;
 					var term = this.toGraph(ast.body, group);
 
 					var DNet = []
 					var auxs = Array.from(term.auxs);
-					var paramNode;
 
-					paramNode = this.linkBindings(auxs, paramNode, param, group, id.name);
+					var paramNode;
+					var ref = (ast instanceof Reference);
+					paramNode = this.linkBindings(auxs, paramNode, param, group, id.name, ref);
 					if (paramNode != null)
 						auxs = auxs.concat(paramNode.auxs);
 
@@ -108,9 +110,9 @@ define('goi-machine',
 			}
 
 			createDNet(ctx, outputs, op, group) {
-				console.log(op);
-				console.log(ctx);
+				console.log(outputs);
 				var auxs = []
+				console.log(ctx);
 
 				for (var n = 0; n < ctx.length; n++) {
 					var c = new Contract(ctx[n].name).addToGroup(group);
@@ -121,7 +123,6 @@ define('goi-machine',
 
 					var from;
 					var to;
-					console.log(outputs);
 					for (var i = 0; i < outputs.length; i++) {
 							from = outputs[i];
 							to = c;
@@ -133,14 +134,20 @@ define('goi-machine',
 				return new Term(c,auxs);
 			}
 
-			linkBindings(auxs, paramNode, param, group, name) {
+			linkBindings(auxs, paramNode, param, group, name, ref) {
 				for (let aux of auxs) {
 					if (aux.name == name) {
 						if (paramNode == null)
 							paramNode = this.toGraph(param, group).addToGroup(group);
 
 						var auxNode = aux;
-						new Link(auxNode.key, paramNode.prin.key, "n", "s").addToGroup(group);
+						if (ref) {
+							var atomNode = new Atom(5).addToGroup(group);
+							new Link(auxNode.key, atomNode.key, "n", "s").addToGroup(group);
+							new Link(atomNode.key, paramNode.prin.key, "n", "s").addToGroup(group);
+						} else {
+							new Link(auxNode.key, paramNode.prin.key, "n", "s").addToGroup(group);
+						}
 						auxs.splice(auxs.indexOf(auxNode), 1);
 					}
 					//this.linkBindings(aux.auxs, paramNode, param, group, name);
