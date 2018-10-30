@@ -64,7 +64,7 @@ define('goi-machine',
 			toGraph(ast, group) {
 				var graph = this.graph;
 
-				// VARIABLES
+				// VARIABLES & ATOMS
 				if (ast instanceof Variable) {
 					var c = new Contract(ast.name).addToGroup(group);
 					return new Term(c, [c]);
@@ -82,7 +82,10 @@ define('goi-machine',
 					var ref = (ast instanceof Reference);
 					paramNode = this.linkBindings(auxs, paramNode, param, group, id.name, ref);
 					if (paramNode != null)
-						auxs = auxs.concat(paramNode.auxs);
+						for (let aux of paramNode.auxs) {
+							//if (!this.nameIn(aux.name,auxs))
+								auxs.push(aux);
+						}
 
 					DNet = this.createDNet(ast.ctx, auxs, null, group);
 
@@ -92,20 +95,16 @@ define('goi-machine',
 				// OPERATIONS
 				} else if (ast instanceof Operation) {
 					var op = new Op(ast.name).addToGroup(group);
-					console.log(ast.name);
 					var eas = [];
 					var outputs = [];
 					var DNet = [];
 
 					for (var i = 0; i < ast.type; i++) {
-						console.log(outputs);
 						var next = this.toGraph(ast.eas[i], group);
 						new Link(op.key, next.prin.key, "n", "s").addToGroup(group);
 						eas.push(next);
 						outputs = outputs.concat(next.auxs);
 					}
-
-					console.log(outputs);
 
 					DNet = this.createDNet(ast.ctx, outputs, op, group);
 
@@ -113,12 +112,21 @@ define('goi-machine',
 				}
 			}
 
+			nameIn(name,arrayWithNames) {
+				for (let a of arrayWithNames) {
+					if (a.name == name) return true;
+				}
+				return false;
+			}
+
 			createDNet(ctx, outputs, op, group) {
+				console.log(op);
+				console.log(ctx);
 				console.log(outputs);
 				var auxs = []
 
 				for (var n = 0; n < ctx.length; n++) {
-					var c = new Contract(ctx[n].name).addToGroup(group);
+					var c = new Der(ctx[n].name).addToGroup(group);
 					auxs.push(c);
 
 					if (outputs.length == 0)
