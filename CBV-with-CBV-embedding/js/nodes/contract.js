@@ -7,7 +7,7 @@ define(function(require) {
 	class Contract extends Expo {
 
 		constructor(name) {
-			super(null, "⏺", name);
+			super("point", "", name);
 		}
 
 		transition(token, link) {
@@ -43,11 +43,11 @@ define(function(require) {
 						token.rewriteFlag = RewriteFlag.F_C;
 					}
 				}
-				
+
 				token.rewrite = true;
 				return nextLink;
 			}
-			
+
 			else if (token.rewriteFlag == RewriteFlag.EMPTY) {
 				token.rewrite = false;
 				return nextLink;
@@ -58,6 +58,10 @@ define(function(require) {
 			var con = new Contract(this.name);
 			con.text = this.text;
 			return con;
+		}
+
+		draw(level) {
+			return level + this.key + '[shape=' + this.shape + '];';
 		}
 	}
 

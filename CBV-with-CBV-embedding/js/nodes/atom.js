@@ -7,7 +7,9 @@ define(function(require) {
 	class Atom extends Expo {
 
 		constructor(name) {
-			super(null, "o", name);
+			super("circle", "", name);
+			this.height = 0.1;
+			this.width = 0.1;
 		}
 
 		transition(token, link) {
@@ -21,6 +23,7 @@ define(function(require) {
 		copy() {
 			return null;
 		}
+
 	}
 
 	return Atom;

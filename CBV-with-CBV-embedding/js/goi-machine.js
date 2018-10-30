@@ -119,7 +119,7 @@ define('goi-machine',
 					auxs.push(c);
 
 					if (outputs.length == 0)
-					 	new Link(op.key, c.key, "n", "s", "gray").addToGroup(group);
+					 	new Link(op.key, c.key, "n", "s", "white").addToGroup(group);
 
 					var from;
 					var to;
@@ -153,6 +153,13 @@ define('goi-machine',
 					//this.linkBindings(aux.auxs, paramNode, param, group, name);
 				}
 				return paramNode;
+			}
+
+			quotieningRules() {
+				// TODO
+				// Loop through all links in the graph
+				// Perform quotiening rules
+				return null;
 			}
 
 			deleteVarNode(group) {
