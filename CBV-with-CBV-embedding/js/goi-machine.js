@@ -92,16 +92,20 @@ define('goi-machine',
 				// OPERATIONS
 				} else if (ast instanceof Operation) {
 					var op = new Op(ast.name).addToGroup(group);
+					console.log(ast.name);
 					var eas = [];
 					var outputs = [];
 					var DNet = [];
 
 					for (var i = 0; i < ast.type; i++) {
+						console.log(outputs);
 						var next = this.toGraph(ast.eas[i], group);
 						new Link(op.key, next.prin.key, "n", "s").addToGroup(group);
 						eas.push(next);
 						outputs = outputs.concat(next.auxs);
 					}
+
+					console.log(outputs);
 
 					DNet = this.createDNet(ast.ctx, outputs, op, group);
 
@@ -112,21 +116,19 @@ define('goi-machine',
 			createDNet(ctx, outputs, op, group) {
 				console.log(outputs);
 				var auxs = []
-				console.log(ctx);
 
 				for (var n = 0; n < ctx.length; n++) {
 					var c = new Contract(ctx[n].name).addToGroup(group);
 					auxs.push(c);
 
 					if (outputs.length == 0)
-					 	new Link(op.key, c.key, "n", "s", "white").addToGroup(group);
+					 	new Link(op.key, c.key, "n", "s", "lightgrey").addToGroup(group);
 
 					var from;
 					var to;
 					for (var i = 0; i < outputs.length; i++) {
 							from = outputs[i];
 							to = c;
-							console.log(from.name + " || " + to.name);
 							if (from.name == to.name)
 								new Link(from.key, to.key, "n", "s").addToGroup(group);
 					}
@@ -186,10 +188,9 @@ define('goi-machine',
 						if (this.token.link != null) {
 							var target = this.token.forward ? this.token.link.to : this.token.link.from;
 							node = this.graph.findNodeByKey(target);
-						}
-						else
+						} else {
 							node = this.graph.findNodeByKey("nd1");
-
+						}
 
 						this.token.rewrite = false;
 						var nextLink = node.transition(this.token, this.token.link);
@@ -197,24 +198,21 @@ define('goi-machine',
 							this.token.setLink(nextLink);
 							this.printHistory(flag, dataStack, boxStack);
 							this.token.transited = true;
-						}
-						else {
+						} else {
 							this.gc.collect();
 							this.token.setLink(null);
 							play = false;
 							playing = false;
 							finished = true;
 						}
-					}
-					else {
+					} else {
 						var target = this.token.forward ? this.token.link.from : this.token.link.to;
 						node = this.graph.findNodeByKey(target);
 						var nextLink = node.rewrite(this.token, this.token.link);
 						if (!this.token.rewrite) {
 							this.token.transited = false;
 							this.pass(flag, dataStack, boxStack);
-						}
-						else {
+						} else {
 							this.token.setLink(nextLink);
 							this.printHistory(flag, dataStack, boxStack);
 						}

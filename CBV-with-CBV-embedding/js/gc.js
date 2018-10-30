@@ -11,7 +11,7 @@ define(function(require) {
 			this.graph = graph;
 			this.noMore = false;
 		}
-		
+
 		collect() {
 			do {
 				this.noMore = true;
@@ -24,7 +24,7 @@ define(function(require) {
 				if ((node instanceof Weak) || (node instanceof Contract && node.findLinksInto(null).length == 0)) {
 					var link = node.findLinksOutOf(null)[0];
 					var nextNode = this.graph.findNodeByKey(link.to);
-					if (!(nextNode instanceof Abs && link.toPort == "w")) { 
+					if (!(nextNode instanceof Abs && link.toPort == "w")) {
 						this.noMore = false;
 						this.collectFromBottom(node);
 					}
