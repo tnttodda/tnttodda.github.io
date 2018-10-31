@@ -87,9 +87,6 @@ define('goi-machine',
 
 					DNet = this.createDNet(ast.ctx, auxs, null, group);
 
-					console.log("up");
-
-					// wrapper.auxs = wrapper.createPaxsOnTopOf(auxs);
 					return new Term(term.prin, DNet.auxs);
 
 				// OPERATIONS
@@ -153,9 +150,7 @@ define('goi-machine',
 						} else {
 							new Link(auxNode.key, paramNode.prin.key, "n", "s").addToGroup(group);
 						}
-						//auxs = auxs.splice(auxs.indexOf(auxNode), 1);
 					}
-					//this.linkBindings(aux.auxs, paramNode, param, group, name);
 				}
 				return paramNode;
 			}
@@ -176,13 +171,13 @@ define('goi-machine',
 				}
 			}
 
-			// machine step
+			// machine step -- TODO
 			pass(flag, dataStack, boxStack) {
 				if (!finished) {
 					this.count++;
 					if (this.count == 200) {
 						this.count = 0;
-						this.gc.collect();
+						//this.gc.collect(); // later...
 					}
 
 					var node;
@@ -195,14 +190,17 @@ define('goi-machine',
 							node = this.graph.findNodeByKey("nd1");
 						}
 
+						console.log(node);
+
 						this.token.rewrite = false;
 						var nextLink = node.transition(this.token, this.token.link);
+						console.log(nextLink);
 						if (nextLink != null) {
 							this.token.setLink(nextLink);
-							this.printHistory(flag, dataStack, boxStack);
-							this.token.transited = true;
+							//this.printHistory(flag, dataStack, boxStack);
+							//this.token.transited = true;
 						} else {
-							this.gc.collect();
+							//this.gc.collect(); //later...
 							this.token.setLink(null);
 							play = false;
 							playing = false;
@@ -217,19 +215,19 @@ define('goi-machine',
 							this.pass(flag, dataStack, boxStack);
 						} else {
 							this.token.setLink(nextLink);
-							this.printHistory(flag, dataStack, boxStack);
+							//this.printHistory(flag, dataStack, boxStack);
 						}
 					}
 				}
 			}
 
-			printHistory(flag, dataStack, boxStack) {
-				flag.val(this.token.rewriteFlag + '\n' + flag.val());
-				var dataStr = this.token.dataStack.length == 0 ? '□' : Array.from(this.token.dataStack).reverse().toString() + ',□';
-				dataStack.val(dataStr + '\n' + dataStack.val());
-				var boxStr = this.token.boxStack.length == 0 ? '□' : Array.from(this.token.boxStack).reverse().toString() + ',□';
-				boxStack.val(boxStr + '\n' + boxStack.val());
-			}
+			// printHistory(flag, dataStack, boxStack) {
+			// 	flag.val(this.token.rewriteFlag + '\n' + flag.val());
+			// 	var dataStr = this.token.dataStack.length == 0 ? '□' : Array.from(this.token.dataStack).reverse().toString() + ',□';
+			// 	dataStack.val(dataStr + '\n' + dataStack.val());
+			// 	var boxStr = this.token.boxStack.length == 0 ? '□' : Array.from(this.token.boxStack).reverse().toString() + ',□';
+			// 	boxStack.val(boxStr + '\n' + boxStack.val());
+			// }
 
 		}
 

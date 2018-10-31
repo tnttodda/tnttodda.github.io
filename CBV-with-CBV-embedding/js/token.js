@@ -27,9 +27,9 @@ define(function() {
 			this.forward = true;
 			this.rewrite = false;
 			this.transited = false;
-			
+
 			this.link = null;
-			
+
 			this.rewriteFlag = Flag.SEARCH;
 		}
 	}
