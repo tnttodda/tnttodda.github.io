@@ -72,22 +72,22 @@ define('goi-machine',
 				// BINDINGS & REFERENCES
 				} else if ((ast instanceof Binding) || (ast instanceof Reference))  {
 					var id = ast.id;
+					console.log(id.name);
 					var param = ast.param;
 					var term = this.toGraph(ast.body, group);
 
 					var DNet = []
-					var auxs = Array.from(term.auxs);
+					var auxs = term.auxs;
 
 					var paramNode;
 					var ref = (ast instanceof Reference);
 					paramNode = this.linkBindings(auxs, paramNode, param, group, id.name, ref);
 					if (paramNode != null)
-						for (let aux of paramNode.auxs) {
-							//if (!this.nameIn(aux.name,auxs))
-								auxs.push(aux);
-						}
+						auxs = auxs.concat(paramNode.auxs);
 
 					DNet = this.createDNet(ast.ctx, auxs, null, group);
+
+					console.log("up");
 
 					// wrapper.auxs = wrapper.createPaxsOnTopOf(auxs);
 					return new Term(term.prin, DNet.auxs);
@@ -95,14 +95,12 @@ define('goi-machine',
 				// OPERATIONS
 				} else if (ast instanceof Operation) {
 					var op = new Op(ast.name).addToGroup(group);
-					var eas = [];
 					var outputs = [];
 					var DNet = [];
 
 					for (var i = 0; i < ast.type; i++) {
 						var next = this.toGraph(ast.eas[i], group);
 						new Link(op.key, next.prin.key, "n", "s").addToGroup(group);
-						eas.push(next);
 						outputs = outputs.concat(next.auxs);
 					}
 
@@ -120,13 +118,10 @@ define('goi-machine',
 			}
 
 			createDNet(ctx, outputs, op, group) {
-				console.log(op);
-				console.log(ctx);
-				console.log(outputs);
 				var auxs = []
 
 				for (var n = 0; n < ctx.length; n++) {
-					var c = new Der(ctx[n].name).addToGroup(group);
+					var c = new Contract(ctx[n].name).addToGroup(group);
 					auxs.push(c);
 
 					if (outputs.length == 0)
@@ -158,7 +153,7 @@ define('goi-machine',
 						} else {
 							new Link(auxNode.key, paramNode.prin.key, "n", "s").addToGroup(group);
 						}
-						auxs.splice(auxs.indexOf(auxNode), 1);
+						//auxs = auxs.splice(auxs.indexOf(auxNode), 1);
 					}
 					//this.linkBindings(aux.auxs, paramNode, param, group, name);
 				}

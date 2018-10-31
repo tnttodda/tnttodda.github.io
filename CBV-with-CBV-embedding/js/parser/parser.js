@@ -27,6 +27,7 @@ define(function(require) {
 		term(ctx) {
 			if (this.lexer.skip(Token.BIND)) {
 				const id = this.term(ctx);
+				id.ctx = [id].concat(id.ctx); // necessary?
 
 				if (this.lexer.skip(Token.DEF)) {
 					const P = this.term(ctx);
@@ -36,6 +37,7 @@ define(function(require) {
 				}
 			} else if (this.lexer.skip(Token.NEW)) {
 				const id = this.term(ctx);
+				id.ctx = [id].concat(id.ctx); // necessary?
 
 				if (this.lexer.skip(Token.DEF)) {
 					const P = this.term(ctx);
