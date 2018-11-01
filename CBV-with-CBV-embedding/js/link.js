@@ -11,7 +11,9 @@ define(function() {
 			this.colour = colour;
 			this.penWidth = null;
 			this.addToGraph(graph); // cheating
-			this.addToNode(); // cheating
+			if (colour != "lightgrey") { // cheating
+				this.addToNode(); // cheating
+			}
 		}
 
 		addToNode() {

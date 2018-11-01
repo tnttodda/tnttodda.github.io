@@ -42,9 +42,10 @@ define('ast/operation', function(require) {
   var Term = require('ast/term');
 
   class Operation extends Term {
-    constructor(ctx, type, name, eas, das) {
+    constructor(ctx, type, name, active, eas, das) {
       super(type, ctx);
       this.name = name;
+      this.active = active;
       this.eas = eas;
       this.das = das;
     }

@@ -1,4 +1,4 @@
-define(function() {
+define(function(require) {
 
 	var Flag = {
 		SEARCH:  '?',
@@ -8,7 +8,9 @@ define(function() {
 
 	class MachineToken {
 
-		static RewriteFlag() { return Flag; }
+		static RewriteFlag() {
+			return Flag;
+		}
 
 		constructor() {
 			this.reset();
@@ -19,6 +21,7 @@ define(function() {
 				this.link.clearFocus();
 			this.link = link;
 			if (this.link != null) {
+				console.log(link);
 				this.link.focus("red");
 			}
 		}

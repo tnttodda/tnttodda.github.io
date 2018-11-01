@@ -1,7 +1,6 @@
 define(function(require) {
 
-	var Flag = require('token').Flag;
-
+	var Flag = require('token').RewriteFlag();
 	var Expo = require('nodes/expo');
 
 	class Atom extends Expo {
@@ -22,6 +21,15 @@ define(function(require) {
 
 		copy() {
 			return null;
+		}
+
+		transition(token, link) {
+			if (link.to == this.key) {
+				if (token.rewriteFlag == Flag.SEARCH) {
+					token.rewriteFlag = Flag.RETURN;
+					return link;
+				}
+			}
 		}
 
 	}

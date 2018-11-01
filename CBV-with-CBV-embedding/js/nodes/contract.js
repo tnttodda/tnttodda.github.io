@@ -1,7 +1,6 @@
 define(function(require) {
 
 	var Flag = require('token').Flag;
-
 	var Expo = require('nodes/expo');
 
 	class Contract extends Expo {
@@ -21,7 +20,8 @@ define(function(require) {
 			// }
 		}
 
-		rewrite(token, nextLink) {
+		rewrite(token) {
+			var nextLink = token.link;
 			if (token.rewriteFlag == RewriteFlag.F_C && nextLink.from == this.key) {
 				token.rewriteFlag = RewriteFlag.EMPTY;
 
@@ -30,8 +30,7 @@ define(function(require) {
 					var inLink = this.findLinksInto(null)[0];
 					nextLink.changeFrom(inLink.from, inLink.fromPort);
 					this.delete();
-				}
-				else {
+				} else {
 					var i = token.boxStack.last();
 					var prev = this.graph.findNodeByKey(i.from);
 					if (prev instanceof Contract) {
@@ -44,7 +43,7 @@ define(function(require) {
 					}
 				}
 
-				token.rewrite = true;
+				token.rewriteFlag = Flag.SEARCH;
 				return nextLink;
 			}
 
