@@ -235,8 +235,8 @@ define('goi-machine',
 						return outlinks[0];
 					}
 				} else if (to instanceof Contract) {
-					token.rewriteFlag = Flag.SEARCH; // REWRITE;
-					return outlinks[0];
+					token.rewriteFlag = Flag.REWRITE; // REWRITE;
+					return link;
 				}
 			} else if (token.rewriteFlag == Flag.RETURN) {
 				var from = this.graph.findNodeByKey(link.from);

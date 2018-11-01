@@ -1,6 +1,6 @@
 define(function(require) {
 
-	var Flag = require('token').Flag;
+	var Flag = require('token').RewriteFlag();
 	var Expo = require('nodes/expo');
 
 	class Contract extends Expo {
@@ -21,36 +21,26 @@ define(function(require) {
 		}
 
 		rewrite(token) {
-			var nextLink = token.link;
-			if (token.rewriteFlag == RewriteFlag.F_C && nextLink.from == this.key) {
-				token.rewriteFlag = RewriteFlag.EMPTY;
+			var link = token.link;
+			var inLinks = this.findLinksInto("s");
+			var outLinks = this.findLinksOutOf("n");
+			var nextLink = outLinks[0];
+			var nextNode = this.graph.findNodeByKey(nextLink.to);
 
-				if (this.findLinksInto(null).length == 1) {
-					token.boxStack.pop();
-					var inLink = this.findLinksInto(null)[0];
-					nextLink.changeFrom(inLink.from, inLink.fromPort);
-					this.delete();
-				} else {
-					var i = token.boxStack.last();
-					var prev = this.graph.findNodeByKey(i.from);
-					if (prev instanceof Contract) {
-						token.boxStack.pop();
-						for (let link of prev.findLinksInto(null)) {
-							link.changeTo(this.key, "s");
-						}
-						prev.delete();
-						token.rewriteFlag = RewriteFlag.F_C;
-					}
-				}
+			// First contraction (two in a row)
+			if (nextNode instanceof Contract) {
+				inLinks.map(l => l.changeTo(nextNode.key,"s"));
+				nextLink.delete();
+			} else {
+			// Second contraction (atom)
+			// TODO
 
-				token.rewriteFlag = Flag.SEARCH;
-				return nextLink;
-			}
+			// Third contraction (copying)
+			// TODO
+		}
 
-			else if (token.rewriteFlag == RewriteFlag.EMPTY) {
-				token.rewrite = false;
-				return nextLink;
-			}
+			token.rewriteFlag = Flag.SEARCH;
+			return link;
 		}
 
 		copy() {
