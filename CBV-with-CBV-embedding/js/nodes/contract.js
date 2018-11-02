@@ -33,8 +33,9 @@ define(function(require) {
 				inLinks.map(l => l.changeTo(nextNode.key,"s"));
 				nextLink.delete();
 			} else {
-				console.log("COPY")
-				nextNode.group.copy(this.group);
+				var copy = nextNode.group.copy(this.group);
+				link.changeTo(copy.key,"s");
+				copy.addToGroup(this.group);
 		}
 
 			token.rewriteFlag = Flag.SEARCH;

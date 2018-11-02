@@ -55,8 +55,9 @@ define(function(require) {
 		}
 
 		copy() {
-			//return new App();
+			return new Op(this.name,this.active);
 		}
+
 	}
 
 	return Op;

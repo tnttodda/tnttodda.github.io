@@ -7,6 +7,7 @@ define('group', function(require) {
 			super(null, null, null); // shape, text, name
 			this.nodes = [];
 			this.links = []; // for copying
+			this.term = null;
 		}
 
 		addNode(node) {
@@ -40,6 +41,14 @@ define('group', function(require) {
 				str += node.draw(level);
 			}
 			return str;
+		}
+
+		copy(graph) {
+			if (this.term != null) {
+				return this.term.copy(graph);
+			} else {
+				return new Node();
+			}
 		}
 
 	}

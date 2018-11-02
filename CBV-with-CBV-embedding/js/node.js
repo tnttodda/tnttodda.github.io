@@ -58,7 +58,6 @@ define(function(require) {
 		}
 
 		copy(graph) {
-			console.log("COPYYY")
 			var newNode = new Node(this.shape, this.text, this.name).addToGraph(graph);
 			newNode.width = this.width;
 			newNode.height = this.height;
