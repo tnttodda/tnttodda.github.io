@@ -41,6 +41,7 @@ define('group', function(require) {
 			}
 			return str;
 		}
+
 	}
 
 	return Group;
@@ -59,16 +60,16 @@ define('box', function(require) {
 
 		copy(graph) {
 			// this shouldnt be call, since every box should be inside a wrapper
-		}	
+		}
 
 		draw(level) {
 			var str = "";
 			for (let node of this.nodes) {
 				str += node.draw(level + '  ');
 			}
-			return level + 'subgraph cluster_' + this.key + ' {' 
+			return level + 'subgraph cluster_' + this.key + ' {'
 				 + level + '  graph[style=dotted];'
-				 + str 
+				 + str
 				 + level + '};';
 		}
 	}

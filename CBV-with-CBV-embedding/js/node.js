@@ -58,10 +58,11 @@ define(function(require) {
 		}
 
 		copy(graph) {
+			console.log("COPYYY")
 			var newNode = new Node(this.shape, this.text, this.name).addToGraph(graph);
 			newNode.width = this.width;
 			newNode.height = this.height;
-		}	
+		}
 
 		// also delete any connected links
 		delete() {
@@ -70,7 +71,7 @@ define(function(require) {
 		}
 
 		draw(level) {
-			var str = level + this.key + '[label="' + this.text; 
+			var str = level + this.key + '[label="' + this.text;
 			if (showKey)
 				str += ':' + this.key;
 			str += '"';

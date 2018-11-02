@@ -2,6 +2,7 @@ define(function(require) {
 
 	var Flag = require('token').RewriteFlag();
 	var Expo = require('nodes/expo');
+	var Atom = require('nodes/atom');
 
 	class Contract extends Expo {
 
@@ -27,16 +28,13 @@ define(function(require) {
 			var nextLink = outLinks[0];
 			var nextNode = this.graph.findNodeByKey(nextLink.to);
 
-			// First contraction (two in a row)
-			if (nextNode instanceof Contract) {
+			// First/second contraction
+			if (nextNode instanceof Contract || nextNode instanceof Atom) {
 				inLinks.map(l => l.changeTo(nextNode.key,"s"));
 				nextLink.delete();
 			} else {
-			// Second contraction (atom)
-			// TODO
-
-			// Third contraction (copying)
-			// TODO
+				console.log("COPY")
+				nextNode.group.copy(this.group);
 		}
 
 			token.rewriteFlag = Flag.SEARCH;

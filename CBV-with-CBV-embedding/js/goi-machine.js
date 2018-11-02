@@ -22,7 +22,6 @@ define('goi-machine',
 		var Graph = require('graph');
 		var Group = require('group');
 		var Term = require('term');
-		var BoxWrapper = require('box-wrapper');
 
 		var Atom = require('nodes/atom');
 		var Expo = require('nodes/expo');
@@ -91,17 +90,18 @@ define('goi-machine',
 
 				// OPERATIONS
 				} else if (ast instanceof Operation) {
-					var op = new Op(ast.name,ast.active).addToGroup(group);
+					var opGroup = new Group().addToGroup(group);
+					var op = new Op(ast.name,ast.active).addToGroup(opGroup);
 					var outputs = [];
 					var DNet = [];
 
 					for (var i = 0; i < ast.type; i++) {
-						var next = this.toGraph(ast.eas[i], group);
-						new Link(op.key, next.prin.key, "n", "s").addToGroup(group);
+						var next = this.toGraph(ast.eas[i], opGroup);
+						new Link(op.key, next.prin.key, "n", "s").addToGroup(opGroup);
 						outputs = outputs.concat(next.auxs);
 					}
 
-					DNet = this.createDNet(ast.ctx, outputs, op, group);
+					DNet = this.createDNet(ast.ctx, outputs, op, opGroup);
 
 					return new Term(op,DNet.auxs);
 				}
