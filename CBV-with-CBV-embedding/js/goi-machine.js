@@ -85,9 +85,9 @@ define('goi-machine',
 					if (paramNode != null)
 						auxs = auxs.concat(paramNode.auxs);
 
-					DNet = this.createDNet(ast.ctx, auxs, null, term);
+					auxs = this.createDNet(ast.ctx, auxs, null, term);
 
-					term.set(body.prin, DNet, group);
+					term.set(body.prin, auxs, group);
 
 				// OPERATIONS
 				} else if (ast instanceof Operation) {
@@ -101,9 +101,9 @@ define('goi-machine',
 						outputs = outputs.concat(next.auxs);
 					}
 
-					DNet = this.createDNet(ast.ctx, outputs, op, group);
+					var auxs = this.createDNet(ast.ctx, outputs, op, group);
 
-					term.set(op, DNet, group);
+					term.set(op, auxs, group);
 				}
 				return term;
 			}
