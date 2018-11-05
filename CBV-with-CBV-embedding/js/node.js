@@ -61,6 +61,7 @@ define(function(require) {
 			var newNode = new Node(this.shape, this.text, this.name).addToGraph(graph);
 			newNode.width = this.width;
 			newNode.height = this.height;
+			return newNode;
 		}
 
 		// also delete any connected links

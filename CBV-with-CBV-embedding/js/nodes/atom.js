@@ -1,9 +1,8 @@
 define(function(require) {
 
 	var Flag = require('token').RewriteFlag();
-	var Expo = require('nodes/expo');
 
-	class Atom extends Expo {
+	class Atom extends Node {
 
 		constructor(name) {
 			super("circle", "", name);

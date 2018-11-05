@@ -1,9 +1,8 @@
 define(function(require) {
 
 	var Node = require('node');
-	var Expo = require('nodes/expo');
 
-	class Weak extends Expo {
+	class Weak extends Node {
 
 		constructor() {
 			super(null, 'C0');
@@ -12,7 +11,7 @@ define(function(require) {
 		copy() {
 			return new Weak();
 		}
-		
+
 	}
 
 	return Weak;

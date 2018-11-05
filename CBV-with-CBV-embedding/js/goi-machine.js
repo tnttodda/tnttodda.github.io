@@ -24,13 +24,8 @@ define('goi-machine',
 		var Term = require('term');
 
 		var Atom = require('nodes/atom');
-		var Expo = require('nodes/expo');
-		var Const = require('nodes/const');
 		var Contract = require('nodes/contract');
 		var Start = require('nodes/start');
-		var Der = require('nodes/der');
-		var Var = require('nodes/var')
-		var UnOp = require('nodes/unop');
 		var Weak = require('nodes/weak');
 		var Op = require('nodes/op');
 

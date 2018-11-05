@@ -2,7 +2,6 @@ define(function(require) {
 
 	var Group = require('group');
 	var Contract = require('nodes/contract');
-	var Abs = require('nodes/abs');
 	var Weak = require('nodes/weak');
 
 	class GC {

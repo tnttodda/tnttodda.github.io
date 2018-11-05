@@ -1,10 +1,10 @@
 define(function(require) {
 
 	var Flag = require('token').RewriteFlag();
-	var Expo = require('nodes/expo');
+	var Node = require('node');
 	var Atom = require('nodes/atom');
 
-	class Contract extends Expo {
+	class Contract extends Node {
 
 		constructor(name) {
 			super("point", "", name);
@@ -33,7 +33,8 @@ define(function(require) {
 				inLinks.map(l => l.changeTo(nextNode.key,"s"));
 				nextLink.delete();
 			} else {
-				var copy = nextNode.group.copy(this.group);
+				console.log(nextNode);
+				var copy = nextNode.group.copy();
 				link.changeTo(copy.key,"s");
 				copy.addToGroup(this.group);
 		}
