@@ -63,48 +63,49 @@ define('goi-machine',
 			// translation
 			toGraph(ast, group) {
 				var graph = this.graph;
+				var term = new Term(null,null,group).addToGroup(group);
 
 				// VARIABLES & ATOMS
 				if (ast instanceof Variable) {
-					var c = new Contract(ast.name).addToGroup(group);
-					return new Term(c, [c]);
+					var c = new Contract(ast.name).addToGroup(term);
+					term.set(c, [c], group);
 
 				// BINDINGS & REFERENCES
 				} else if ((ast instanceof Binding) || (ast instanceof Reference))  {
 					var id = ast.id;
 					var param = ast.param;
-					var term = this.toGraph(ast.body, group);
+					var body = this.toGraph(ast.body, term);
 
 					var DNet = []
-					var auxs = term.auxs;
+					var auxs = body.auxs;
 
 					var paramNode;
 					var ref = (ast instanceof Reference);
-					paramNode = this.linkBindings(auxs, paramNode, param, group, id.name, ref);
+					paramNode = this.linkBindings(auxs, paramNode, param, term, id.name, ref);
 					if (paramNode != null)
 						auxs = auxs.concat(paramNode.auxs);
 
-					DNet = this.createDNet(ast.ctx, auxs, null, group);
+					auxs = this.createDNet(ast.ctx, auxs, null, term);
 
-					return new Term(term.prin, DNet.auxs);
+					term.set(body.prin, auxs, group);
 
 				// OPERATIONS
 				} else if (ast instanceof Operation) {
-					var opGroup = new Group().addToGroup(group);
-					var op = new Op(ast.name,ast.active).addToGroup(opGroup);
+					var op = new Op(ast.name,ast.active).addToGroup(term);
 					var outputs = [];
 					var DNet = [];
 
 					for (var i = 0; i < ast.type; i++) {
-						var next = this.toGraph(ast.eas[i], opGroup);
-						new Link(op.key, next.prin.key, "n", "s").addToGroup(opGroup);
+						var next = this.toGraph(ast.eas[i], term);
+						new Link(op.key, next.prin.key, "n", "s").addToGroup(term);
 						outputs = outputs.concat(next.auxs);
 					}
 
-					DNet = this.createDNet(ast.ctx, outputs, op, opGroup);
+					var auxs = this.createDNet(ast.ctx, outputs, op, group);
 
-					return new Term(op,DNet.auxs);
+					term.set(op, auxs, group);
 				}
+				return term;
 			}
 
 			nameIn(name,arrayWithNames) {
@@ -133,7 +134,7 @@ define('goi-machine',
 								new Link(from.key, to.key, "n", "s").addToGroup(group);
 					}
 				}
-				return new Term(c,auxs);
+				return auxs;
 			}
 
 			linkBindings(auxs, paramNode, param, group, name, ref) {
@@ -178,7 +179,6 @@ define('goi-machine',
 					} else {
 						node = this.graph.findNodeByKey("nd1");
 						this.token.link = node.findLinksOutOf()[0]; // hacking!
-						console.log(this.token.link); // hacking!
 						this.token.setLink(this.token.link); // hacking!
 						return; // hacking!
 					}
@@ -191,7 +191,6 @@ define('goi-machine',
 						nextLink = this.ptransition(this.token);
 					}
 					console.log(this.token.rewriteFlag);
-					console.log(nextLink)
 					if (nextLink != null) {
 						this.token.setLink(nextLink);
 						//this.printHistory(flag, dataStack, boxStack);
@@ -223,7 +222,6 @@ define('goi-machine',
 					token.rewriteFlag = Flag.RETURN;
 					return link;
 				} else if (to instanceof Op) {
-					console.log(outlinks);
 					if (outlinks.length == 0) {
 						if (to.active) {
 							token.rewriteFlag = Flag.REWRITE;
@@ -241,8 +239,9 @@ define('goi-machine',
 			} else if (token.rewriteFlag == Flag.RETURN) {
 				var from = this.graph.findNodeByKey(link.from);
 				var outlinks = from.findLinksOutOf("n");
-				var j = this.findJ(link,outlinks)+1;
-				if (j == outlinks.length) {
+				console.log(outlinks);
+				console.log(this.doneVisiting(link,outlinks));
+				if (this.doneVisiting(link,outlinks)) { // HACKING
 					if (from.active) {
 						token.rewriteFlag = Flag.REWRITE;
 						return from.findLinksInto("s")[0];
@@ -252,18 +251,27 @@ define('goi-machine',
 					}
 				} else {
 					token.rewriteFlag = Flag.SEARCH;
+					var j = this.findJ(link,outlinks);
 					return outlinks[j];
 				}
 			}
 			return link;
 		}
 
+		doneVisiting(link, links) {
+			console.log(links);
+			for (let l of links) {
+				if ((!l.visited) && (l != link))
+					return false;
+				}
+			return true;
+			}
+
 		findJ(link,list) {
 			for (var j = 0; j < list.length; j++) {
-				if (link == list[j])
+				if ((!list[j].visited) && (list[j] != link))
 					return j;
 			}
-			console.log("FAIL");
 			return null;
 		}
 

@@ -6,6 +6,7 @@ define(function() {
 			this.to = to;
 			this.fromPort = fromPort;
 			this.toPort = toPort;
+			this.visited = false; // HACKING
 
 			this.reverse = false;
 			this.colour = colour;
@@ -70,6 +71,7 @@ define(function() {
 		clearFocus() {
 			this.colour = null;
 			this.penWidth = null;
+			this.visited = true; // HACKING
 		}
 
 		delete() {

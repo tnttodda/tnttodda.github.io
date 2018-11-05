@@ -1,12 +1,14 @@
 // general group in a graph (subgraph)
 define('group', function(require) {
 	var Node = require('node');
+	var Contract = require('nodes/contract');
 
 	class Group extends Node {
 		constructor() {
 			super(null, null, null); // shape, text, name
 			this.nodes = [];
 			this.links = []; // for copying
+			this.term = null;
 		}
 
 		addNode(node) {
@@ -42,37 +44,49 @@ define('group', function(require) {
 			return str;
 		}
 
+		copyBox(map) {
+			var newGroup = new Group().addToGroup(this.group);
+			var nodes = this.nodes;
+
+			newGroup.auxs = [];
+			console.log(this);
+			console.log(nodes);
+			for (let node of nodes) {
+				var newNode;
+				map.has(node.key);
+				console.log(node.jjj);
+				if (!map.has(node.key)) {
+					try {
+						newNode = node.copyBox(map).addToGroup(newGroup);
+					}
+					catch (e) { // hacky
+						newNode = node.copy().addToGroup(newGroup);
+						map.set(node.key, newNode.key);
+					}
+				}
+			}
+			for (let aux of this.auxs) {
+				var newAux = aux.copy().addToGroup(newGroup);
+				newGroup.auxs.push(newAux);
+				map.set(aux.key, newAux.key);
+			}
+
+			for (let link of this.links) {
+				if (link.colour != "lightgrey") { // hacking!!
+					var newLink = new Link(map.get(link.from), map.get(link.to), link.fromPort, link.toPort).addToGroup(newGroup);
+					newLink.reverse = link.reverse;
+				}
+			}
+
+			return newGroup.nodes[0];
+		}
+
+		copy() {
+			var map = new Map();
+			return this.copyBox(map);
+		}
+
 	}
 
 	return Group;
-});
-
-// general box-ed subgraph
-define('box', function(require) {
-	var Group = require('group');
-
-	class Box extends Group {
-		constructor() {
-			super();
-			this.nodes = [];
-			this.links = [];
-		}
-
-		copy(graph) {
-			// this shouldnt be call, since every box should be inside a wrapper
-		}
-
-		draw(level) {
-			var str = "";
-			for (let node of this.nodes) {
-				str += node.draw(level + '  ');
-			}
-			return level + 'subgraph cluster_' + this.key + ' {'
-				 + level + '  graph[style=dotted];'
-				 + str
-				 + level + '};';
-		}
-	}
-
-	return Box;
 });
