@@ -3,6 +3,9 @@ define(function(require) {
 	var Flag = require('token').RewriteFlag();
 	var Node = require('node');
 	var Atom = require('nodes/atom');
+	var Op = require('nodes/op');
+	var Term = require('term');
+	var Link = require('link');
 
 	class Contract extends Node {
 
@@ -32,10 +35,16 @@ define(function(require) {
 			if (nextNode instanceof Contract || nextNode instanceof Atom) {
 				inLinks.map(l => l.changeTo(nextNode.key,"s"));
 				nextLink.delete();
-			} else {
-				var copy = nextNode.group.copy();
+			} else if (nextNode instanceof Op) {
+				var term = new Term().addToGroup(this.group);
+				var copy = nextNode.copy().addToGroup(term);
+				var outputs = nextNode.findNodesOutOf("n");
+				console.log(outputs);
+
+				var auxs = this.createDNet(outputs,[nextNode,copy],copy,term);
 				link.changeTo(copy.key,"s");
-				copy.group.addToGroup(this.group);
+
+				term.set(copy,auxs);
 		}
 
 			token.rewriteFlag = Flag.SEARCH;

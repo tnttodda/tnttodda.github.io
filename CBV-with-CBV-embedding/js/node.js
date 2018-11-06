@@ -57,6 +57,12 @@ define(function(require) {
 			return links;
 		}
 
+		findNodesOutOf(fromPort) {
+			var links = this.findLinksOutOf(fromPort)
+			var nodeKeys = links.map(l => l.to)
+			return nodeKeys.map(k => this.graph.findNodeByKey(k));
+		}
+
 		copy(graph) {
 			var newNode = new Node(this.shape, this.text, this.name).addToGraph(graph);
 			newNode.width = this.width;

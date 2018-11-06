@@ -22,6 +22,7 @@ define('goi-machine',
 		var Graph = require('graph');
 		var Group = require('group');
 		var Term = require('term');
+		var DNet = require('dnet');
 
 		var Atom = require('nodes/atom');
 		var Contract = require('nodes/contract');
@@ -71,7 +72,6 @@ define('goi-machine',
 					var param = ast.param;
 					var body = this.toGraph(ast.body, term);
 
-					var DNet = []
 					var auxs = body.auxs;
 
 					var paramNode;
@@ -80,26 +80,26 @@ define('goi-machine',
 					if (paramNode != null)
 						auxs = auxs.concat(paramNode.auxs);
 
-					auxs = this.createDNet(ast.ctx, auxs, null, term);
-
-					console.log(auxs);
+					auxs = new DNet(2, auxs).addToGroup(term).outputs;
 
 					term.set(body.prin, auxs);
 
 				// OPERATIONS
 				} else if (ast instanceof Operation) {
 					var op = new Op(ast.name,ast.active).addToGroup(term);
-					var outputs = [];
-					var DNet = [];
+					var args = []
+					var auxs = [];
 
 					for (var i = 0; i < ast.type; i++) {
 						var next = this.toGraph(ast.eas[i], term);
 						new Link(op.key, next.prin.key, "n", "s").addToGroup(term);
-						outputs = outputs.concat(next.auxs);
+						args = 
+						auxs = auxs.concat(next.auxs);
 					}
 
-					var auxs = this.createDNet(ast.ctx, outputs, op, group);
 					console.log(auxs);
+
+					var auxs = new DNet(auxs.length, auxs).addToGroup(term).outputs;
 
 					term.set(op, auxs);
 				}

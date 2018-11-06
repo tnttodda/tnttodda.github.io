@@ -9,7 +9,6 @@ define('group', function(require) {
 			super(null, null, null); // shape, text, name
 			this.nodes = [];
 			this.links = []; // for copying
-			this.g = "GROUP";
 		}
 
 		addNode(node) {
