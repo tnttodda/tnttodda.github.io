@@ -20,9 +20,10 @@ define('term', function(require) {
 			return this;
 		}
 
-	copyBox(map) {
-		var group = this.group;
+	copyMap(map) {
+		var group = new Group().addToGroup(this.group);
 		var nodes = this.nodes;
+		var auxs = [];
 
 		var newPrin = this.prin.copy().addToGroup(group);
 		map.set(this.prin.key, newPrin.key);
@@ -31,17 +32,19 @@ define('term', function(require) {
 			var newNode;
 			if (!map.has(node.key)) {
 				if (node instanceof Term) {
-					newNode = node.copyBox(map).addToGroup(group);
+					newNode = node.copyMap(map);
 				} else {
-					newNode = node.copy().addToGroup(group);
-					map.set(node.key, newNode.key);
+					if (!node instanceof Group) {
+						newNode = node.copy();
+						map.set(node.key, newNode.key);
+					}
 				}
 			}
 		}
 
 		for (let aux of this.auxs) {
 			var newAux = aux.copy().addToGroup(group);
-			newBoxWrapper.auxs.push(newAux);
+			auxs.push(newAux);
 			map.set(aux.key, newAux.key);
 		}
 
@@ -58,7 +61,7 @@ define('term', function(require) {
 
 	copy() {
 		var map = new Map();
-		return this.copyBox(map);
+		return this.copyMap(map);
 	}
 
 }
