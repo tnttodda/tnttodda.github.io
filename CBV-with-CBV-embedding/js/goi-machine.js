@@ -58,12 +58,12 @@ define('goi-machine',
 			// translation
 			toGraph(ast, group) {
 				var graph = this.graph;
-				var term = new Term(null,null,group).addToGroup(group);
+				var term = new Term().addToGroup(group);
 
 				// VARIABLES & ATOMS
 				if (ast instanceof Variable) {
 					var c = new Contract(ast.name).addToGroup(term);
-					term.set(c, [c], group);
+					term.set(c, [c]);
 
 				// BINDINGS & REFERENCES
 				} else if ((ast instanceof Binding) || (ast instanceof Reference))  {
@@ -82,7 +82,7 @@ define('goi-machine',
 
 					auxs = this.createDNet(ast.ctx, auxs, null, term);
 
-					term.set(body.prin, auxs, group);
+					term.set(body.prin, auxs);
 
 				// OPERATIONS
 				} else if (ast instanceof Operation) {
@@ -98,7 +98,7 @@ define('goi-machine',
 
 					var auxs = this.createDNet(ast.ctx, outputs, op, group);
 
-					term.set(op, auxs, group);
+					term.set(op, auxs);
 				}
 				return term;
 			}
@@ -254,7 +254,6 @@ define('goi-machine',
 		}
 
 		doneVisiting(link, links) {
-			console.log(links);
 			for (let l of links) {
 				if ((!l.visited) && (l != link))
 					return false;

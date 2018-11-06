@@ -21,7 +21,6 @@ define(function(require) {
 				this.link.clearFocus();
 			this.link = link;
 			if (this.link != null) {
-				console.log(link);
 				this.link.focus("red");
 			}
 		}
