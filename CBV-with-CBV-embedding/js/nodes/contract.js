@@ -43,9 +43,7 @@ define(function(require) {
 		}
 
 		copy() {
-			var con = new Contract(this.name);
-			con.text = this.text;
-			return con;
+			return new Contract(this.name);
 		}
 
 		draw(level) {

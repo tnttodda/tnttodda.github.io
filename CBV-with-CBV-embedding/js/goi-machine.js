@@ -82,6 +82,8 @@ define('goi-machine',
 
 					auxs = this.createDNet(ast.ctx, auxs, null, term);
 
+					console.log(auxs);
+
 					term.set(body.prin, auxs);
 
 				// OPERATIONS
@@ -97,6 +99,7 @@ define('goi-machine',
 					}
 
 					var auxs = this.createDNet(ast.ctx, outputs, op, group);
+					console.log(auxs);
 
 					term.set(op, auxs);
 				}
@@ -129,6 +132,7 @@ define('goi-machine',
 								new Link(from.key, to.key, "n", "s").addToGroup(group);
 					}
 				}
+
 				return auxs;
 			}
 

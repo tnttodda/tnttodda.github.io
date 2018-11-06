@@ -45,19 +45,19 @@ define('term', function(require) {
 
 		for (let aux of this.auxs) {
 			var newAux = aux.copy().addToGroup(group);
+			console.log(aux);
+			console.log(newAux);
 			group.auxs.push(newAux);
 			map.set(aux.key, newAux.key);
 		}
 
 		for (let link of this.links) {
-			if (link.colour != "lightgrey") { // hacking!!
+			if (link.colour != "lightgrey") { // hacking!
 				var newLink = new Link(map.get(link.from), map.get(link.to),
 													link.fromPort, link.toPort).addToGroup(group);
 				newLink.reverse = link.reverse;
 			}
 		}
-
-		console.log(group.auxs);
 
 		return group.prin;
 	}
