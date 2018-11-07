@@ -24,15 +24,13 @@ define('dnet', function(require) {
         c = new Contract(ctx[n].name).addToGroup(this);
         cList.push(c);
 
-        if (inputs.length == 0) // maybe this needs to be "more elegant"
-          new Link(op.key, c.key, "n", "s", "lightgrey").addToGroup(this);
+      if (inputs.length == 0) // maybe this needs to be "more elegant"
+        new Link(op.key, c.key, "n", "s", "lightgrey").addToGroup(this);
+      }
 
-        for (var i = 0; i < inputs.length; i++) {
-          from = inputs[i]; to = c;
-          console.log(from.name + " || " + to.name);
-          if (from.name == to.name) // this doesnt feel right...
-            new Link(from.key, to.key, "n", "s").addToGroup(this);
-        }
+      for (var i = 0; i < inputs.length; i++) {
+        from = inputs[i]; to = cList[(i%(ctx.length))];
+        new Link(from.key, to.key, "n", "s").addToGroup(this);
       }
 
       return cList;

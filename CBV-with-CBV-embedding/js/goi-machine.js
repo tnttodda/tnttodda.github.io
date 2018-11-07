@@ -63,68 +63,50 @@ define('goi-machine',
 
 				// VARIABLES & ATOMS
 				if (ast instanceof Variable) {
-					var c = new Contract(ast.name).addToGroup(term);
-					term.set(c, [c]);
+					console.log(ast.ctx.length);
+					var auxs = [];
+					for (var i = 0; i < ast.ctx.length; i++) {
+						var c = new Contract().addToGroup(term);
+						if ((ast.ctx[i]).name == ast.name) { c.name = ast.name; var bigc = c; }
+						auxs.push(c);
+					}
+					console.log(auxs);
+					term.set(bigc, auxs);
 
 				// BINDINGS & REFERENCES
 				} else if ((ast instanceof Binding) || (ast instanceof Reference))  {
 					var body = this.toGraph(ast.body, term).addToGroup(term);
 					var auxs = body.auxs;
+					var auxNode = auxs[0];
+					auxs.splice(0,1)
 
-					var paramNode;
-					var ref = (ast instanceof Reference);
-					paramNode = this.linkBindings(auxs, paramNode, ast.param, term, ast.id.name, ref);
+					var paramNode = this.toGraph(ast.param, term).addToGroup(term);
+					//put back in later -- var ref = (ast instanceof Reference);
+					new Link(auxNode.key, paramNode.prin.key, "n", "s").addToGroup(term);
 					auxs = auxs.concat(paramNode.auxs);
 
-					auxs = new DNet(ast.ctx, auxs).addToGroup(term).outputs;
+					if (ast.ctx.length > 0)
+						auxs = new DNet(ast.ctx, auxs).addToGroup(term).outputs;
 
 					term.set(body.prin, auxs);
 
 				// OPERATIONS
 				} else if (ast instanceof Operation) {
 					var op = new Op(ast.name,ast.active).addToGroup(term);
-					console.log(op.name);
-					console.log("----------------->")
 					var auxs = []
 
 					var next;
 					for (var i = 0; i < ast.type; i++) {
 						next = this.toGraph(ast.eas[i], term).addToGroup(term);
 						new Link(op.key, next.prin.key, "n", "s").addToGroup(term);
-						console.log(next);
 						auxs = auxs.concat(next.auxs);
 					}
 
-					console.log(auxs);
-
 					auxs = new DNet(ast.ctx, auxs, op).addToGroup(term).outputs;
-					console.log(auxs);
-					console.log("<-----------------")
 
 					term.set(op, auxs);
 				}
-
 				return term;
-			}
-
-			// needs fixing up?
-			linkBindings(auxs, paramNode, param, group, name, ref) {
-				for (let aux of auxs) {
-					if (aux.name == name) {
-						if (paramNode == null)
-							paramNode = this.toGraph(param, group).addToGroup(group);
-
-						var auxNode = aux;
-						if (ref) {
-							var atomNode = new Atom().addToGroup(group);
-							new Link(auxNode.key, atomNode.key, "n", "s").addToGroup(group);
-							new Link(atomNode.key, paramNode.prin.key, "n", "s").addToGroup(group);
-						} else {
-							new Link(auxNode.key, paramNode.prin.key, "n", "s").addToGroup(group);
-						}
-					}
-				}
-				return paramNode;
 			}
 
 			quotieningRules() {
