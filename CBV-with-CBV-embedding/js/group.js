@@ -44,9 +44,7 @@ define('group', function(require) {
 			return str;
 		}
 
-		copy() { // should never be called as all groups are in terms
-
-		}
+		copy() { } // should never be called as all groups are in terms
 
 	}
 

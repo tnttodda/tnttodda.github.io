@@ -68,74 +68,46 @@ define('goi-machine',
 
 				// BINDINGS & REFERENCES
 				} else if ((ast instanceof Binding) || (ast instanceof Reference))  {
-					var id = ast.id;
-					var param = ast.param;
-					var body = this.toGraph(ast.body, term);
-
+					var body = this.toGraph(ast.body, term).addToGroup(term);
 					var auxs = body.auxs;
 
 					var paramNode;
 					var ref = (ast instanceof Reference);
-					paramNode = this.linkBindings(auxs, paramNode, param, term, id.name, ref);
-					if (paramNode != null)
-						auxs = auxs.concat(paramNode.auxs);
+					paramNode = this.linkBindings(auxs, paramNode, ast.param, term, ast.id.name, ref);
+					auxs = auxs.concat(paramNode.auxs);
 
-					auxs = new DNet(2, auxs).addToGroup(term).outputs;
+					auxs = new DNet(ast.ctx, auxs).addToGroup(term).outputs;
 
 					term.set(body.prin, auxs);
 
 				// OPERATIONS
 				} else if (ast instanceof Operation) {
 					var op = new Op(ast.name,ast.active).addToGroup(term);
-					var args = []
-					var auxs = [];
+					console.log(op.name);
+					console.log("----------------->")
+					var auxs = []
 
+					var next;
 					for (var i = 0; i < ast.type; i++) {
-						var next = this.toGraph(ast.eas[i], term);
+						next = this.toGraph(ast.eas[i], term).addToGroup(term);
 						new Link(op.key, next.prin.key, "n", "s").addToGroup(term);
-						args = 
+						console.log(next);
 						auxs = auxs.concat(next.auxs);
 					}
 
 					console.log(auxs);
 
-					var auxs = new DNet(auxs.length, auxs).addToGroup(term).outputs;
+					auxs = new DNet(ast.ctx, auxs, op).addToGroup(term).outputs;
+					console.log(auxs);
+					console.log("<-----------------")
 
 					term.set(op, auxs);
 				}
+
 				return term;
 			}
 
-			nameIn(name,arrayWithNames) {
-				for (let a of arrayWithNames) {
-					if (a.name == name) return true;
-				}
-				return false;
-			}
-
-			createDNet(ctx, outputs, op, group) {
-				var auxs = []
-
-				for (var n = 0; n < ctx.length; n++) {
-					var c = new Contract(ctx[n].name).addToGroup(group);
-					auxs.push(c);
-
-					if (outputs.length == 0)
-					 	new Link(op.key, c.key, "n", "s", "lightgrey").addToGroup(group);
-
-					var from;
-					var to;
-					for (var i = 0; i < outputs.length; i++) {
-							from = outputs[i];
-							to = c;
-							if (from.name == to.name)
-								new Link(from.key, to.key, "n", "s").addToGroup(group);
-					}
-				}
-
-				return auxs;
-			}
-
+			// needs fixing up?
 			linkBindings(auxs, paramNode, param, group, name, ref) {
 				for (let aux of auxs) {
 					if (aux.name == name) {
@@ -144,7 +116,7 @@ define('goi-machine',
 
 						var auxNode = aux;
 						if (ref) {
-							var atomNode = new Atom(5).addToGroup(group);
+							var atomNode = new Atom().addToGroup(group);
 							new Link(auxNode.key, atomNode.key, "n", "s").addToGroup(group);
 							new Link(atomNode.key, paramNode.prin.key, "n", "s").addToGroup(group);
 						} else {
