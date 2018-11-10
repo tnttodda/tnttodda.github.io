@@ -63,14 +63,12 @@ define('goi-machine',
 
 				// VARIABLES & ATOMS
 				if (ast instanceof Variable) {
-					console.log(ast.ctx.length);
 					var auxs = [];
 					for (var i = 0; i < ast.ctx.length; i++) {
 						var c = new Contract().addToGroup(term);
 						if ((ast.ctx[i]).name == ast.name) { c.name = ast.name; var bigc = c; }
 						auxs.push(c);
 					}
-					console.log(auxs);
 					term.set(bigc, auxs);
 
 				// BINDINGS & REFERENCES
@@ -143,7 +141,6 @@ define('goi-machine',
 					} else {
 						nextLink = this.ptransition(this.token);
 					}
-					console.log(this.token.rewriteFlag);
 					if (nextLink != null) {
 						this.token.setLink(nextLink);
 						//this.printHistory(flag, dataStack, boxStack);
@@ -192,8 +189,6 @@ define('goi-machine',
 			} else if (token.rewriteFlag == Flag.RETURN) {
 				var from = this.graph.findNodeByKey(link.from);
 				var outlinks = from.findLinksOutOf("n");
-				console.log(outlinks);
-				console.log(this.doneVisiting(link,outlinks));
 				if (this.doneVisiting(link,outlinks)) { // HACKING
 					if (from.active) {
 						token.rewriteFlag = Flag.REWRITE;

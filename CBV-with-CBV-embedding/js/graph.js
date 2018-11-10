@@ -4,7 +4,7 @@ define(function(require) {
 	var Group = require('group');
 
 	class Graph {
-		
+
 		constructor() {
 			this.clear();
 		}
@@ -14,7 +14,7 @@ define(function(require) {
 			this.linkKey = 0;
 			this.allNodes = new Map(); // for efficiency searching
 			this.allLinks = []; // for printing ONLY
-			this.child = new Group(); 
+			this.child = new Group();
 		}
 
 		// give a key to a node and add it to allNodes
@@ -58,8 +58,8 @@ define(function(require) {
 			   	+'\n  labeldistance=0;'
 			   	+'\n  nodesep=.175;'
 	  			+'\n  ranksep=.175;'
-				+'\n' 
-				+     str 
+				+'\n'
+				+     str
 			   	+'\n}';
 		}
 	}

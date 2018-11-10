@@ -6,6 +6,7 @@ define(function(require) {
 	var Op = require('nodes/op');
 	var Term = require('term');
 	var Link = require('link');
+	//var DNet = require('dnet');
 
 	class Contract extends Node {
 
@@ -39,16 +40,47 @@ define(function(require) {
 				var term = new Term().addToGroup(this.group);
 				var copy = nextNode.copy().addToGroup(term);
 				var outputs = nextNode.findNodesOutOf("n");
-				console.log(outputs);
 
-				var auxs = this.createDNet(outputs,[nextNode,copy],copy,term);
+				// clean up here
+				var opLinks = nextNode.findLinksOutOf("n");
+				var auxs = this.createDNet(opLinks,[nextNode,nextNode,copy,copy],term);
 				link.changeTo(copy.key,"s");
+				if (opLinks.length > 0) {
+					opLinks[0].changeFrom(auxs[0].key,"n");
+					opLinks[1].changeFrom(auxs[1].key,"n");
+				}
 
 				term.set(copy,auxs);
 		}
 
 			token.rewriteFlag = Flag.SEARCH;
 			return link;
+		}
+
+		//this shouldn't be here
+		createDNet(ctx, inputs, group) {
+
+			var c;
+			var from;
+			var to;
+			var cList = [];
+
+			for (var n = 0; n < ctx.length; n++) {
+				c = new Contract(ctx[n].name).addToGroup(group);
+				cList.push(c);
+
+			if (inputs.length == 0) // maybe this needs to be "more elegant"
+				new Link(op.key, c.key, "n", "s", "lightgrey").addToGroup(group);
+			}
+
+			if (cList.length > 0) {
+				for (var i = 0; i < inputs.length; i++) {
+					from = inputs[i]; to = cList[(i%(ctx.length))];
+					new Link(from.key, to.key, "n", "s").addToGroup(group);
+				}
+			}
+
+			return cList;
 		}
 
 		copy() {
