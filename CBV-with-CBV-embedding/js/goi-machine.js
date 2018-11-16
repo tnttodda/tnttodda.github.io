@@ -195,7 +195,7 @@ define('goi-machine',
 						return from.findLinksInto("s")[0];
 					} else {
 						token.rewriteFlag = Flag.RETURN;
-						return from.findLinksInto("s")[0];
+						return from.findLinksInto("_")[0];
 					}
 				} else {
 					token.rewriteFlag = Flag.SEARCH;

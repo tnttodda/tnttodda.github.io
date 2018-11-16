@@ -27,7 +27,7 @@ define(function(require) {
 
 		rewrite(token) {
 			var link = token.link;
-			var inLinks = this.findLinksInto("s");
+			var inLinks = this.findLinksInto();
 			var outLinks = this.findLinksOutOf();
 			var nextLink = outLinks[0];
 			var nextNode = this.graph.findNodeByKey(nextLink.to);
@@ -45,7 +45,7 @@ define(function(require) {
 				// clean up here
 				var opLinks = nextNode.findLinksOutOf();
 				var auxs = this.createDNet(opLinks,[nextNode,nextNode,copy,copy],term);
-				link.changeTo(copy.key,"s");
+				link.changeTo(copy.key,"_");
 				if (opLinks.length > 0) {
 					opLinks[0].changeFrom(auxs[0].key,"_");
 					opLinks[1].changeFrom(auxs[1].key,"_");
@@ -71,13 +71,13 @@ define(function(require) {
 				cList.push(c);
 
 			if (inputs.length == 0) // maybe this needs to be "more elegant"
-				new Link(op.key, c.key, "_", "s", "lightgrey").addToGroup(group);
+				new Link(op.key, c.key, "_", "_", "lightgrey").addToGroup(group);
 			}
 
 			if (cList.length > 0) {
 				for (var i = 0; i < inputs.length; i++) {
 					from = inputs[i]; to = cList[(i%(ctx.length))];
-					new Link(from.key, to.key, "_", "s").addToGroup(group);
+					new Link(from.key, to.key, "_", "_").addToGroup(group);
 				}
 			}
 
