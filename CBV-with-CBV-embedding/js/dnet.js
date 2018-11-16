@@ -25,12 +25,12 @@ define('dnet', function(require) {
         cList.push(c);
 
       if (inputs.length == 0) // maybe this needs to be "more elegant"
-        new Link(op.key, c.key, "n", "s", "lightgrey").addToGroup(this);
+        new Link(op.key, c.key, "_", "_", "lightgrey").addToGroup(this);
       }
 
       for (var i = 0; i < inputs.length; i++) {
         from = inputs[i]; to = cList[(i%(ctx.length))];
-        new Link(from.key, to.key, "n", "s").addToGroup(this);
+        new Link(from.key, to.key, "_", "_").addToGroup(this);
       }
 
       return cList;

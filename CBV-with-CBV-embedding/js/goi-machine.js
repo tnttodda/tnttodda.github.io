@@ -53,7 +53,7 @@ define('goi-machine',
 				// create graph
 				var start = new Start().addToGroup(this.graph.child);
 				var term = this.toGraph(ast, this.graph.child);
-				new Link(start.key, term.prin.key, "n", "s").addToGroup(this.graph.child);
+				new Link(start.key, term.prin.key, "_", "_").addToGroup(this.graph.child);
 			}
 
 			// translation
@@ -80,7 +80,7 @@ define('goi-machine',
 
 					var paramNode = this.toGraph(ast.param, term).addToGroup(term);
 					//put back in later -- var ref = (ast instanceof Reference);
-					new Link(auxNode.key, paramNode.prin.key, "n", "s").addToGroup(term);
+					new Link(auxNode.key, paramNode.prin.key, "_", "_").addToGroup(term);
 					auxs = auxs.concat(paramNode.auxs);
 
 					if (ast.ctx.length > 0)
@@ -96,7 +96,7 @@ define('goi-machine',
 					var next;
 					for (var i = 0; i < ast.type; i++) {
 						next = this.toGraph(ast.eas[i], term).addToGroup(term);
-						new Link(op.key, next.prin.key, "n", "s").addToGroup(term);
+						new Link(op.key, next.prin.key, "_", "_").addToGroup(term);
 						auxs = auxs.concat(next.auxs);
 					}
 
@@ -167,7 +167,7 @@ define('goi-machine',
 			var link = token.link;
 			if (token.rewriteFlag == Flag.SEARCH) {
 				var to = this.graph.findNodeByKey(link.to);
-				var outlinks = to.findLinksOutOf("n");
+				var outlinks = to.findLinksOutOf();
 				if (to instanceof Atom) {
 					token.rewriteFlag = Flag.RETURN;
 					return link;
@@ -188,7 +188,7 @@ define('goi-machine',
 				}
 			} else if (token.rewriteFlag == Flag.RETURN) {
 				var from = this.graph.findNodeByKey(link.from);
-				var outlinks = from.findLinksOutOf("n");
+				var outlinks = from.findLinksOutOf();
 				if (this.doneVisiting(link,outlinks)) { // HACKING
 					if (from.active) {
 						token.rewriteFlag = Flag.REWRITE;

@@ -28,26 +28,27 @@ define(function(require) {
 		rewrite(token) {
 			var link = token.link;
 			var inLinks = this.findLinksInto("s");
-			var outLinks = this.findLinksOutOf("n");
+			var outLinks = this.findLinksOutOf();
 			var nextLink = outLinks[0];
 			var nextNode = this.graph.findNodeByKey(nextLink.to);
 
 			// First/second contraction
 			if (nextNode instanceof Contract || nextNode instanceof Atom) {
-				inLinks.map(l => l.changeTo(nextNode.key,"s"));
+				inLinks.map(l => l.changeTo(nextNode.key,"_"));
 				nextLink.delete();
+				this.delete();
 			} else if (nextNode instanceof Op) {
 				var term = new Term().addToGroup(this.group);
 				var copy = nextNode.copy().addToGroup(term);
-				var outputs = nextNode.findNodesOutOf("n");
+				var outputs = nextNode.findNodesOutOf();
 
 				// clean up here
-				var opLinks = nextNode.findLinksOutOf("n");
+				var opLinks = nextNode.findLinksOutOf();
 				var auxs = this.createDNet(opLinks,[nextNode,nextNode,copy,copy],term);
 				link.changeTo(copy.key,"s");
 				if (opLinks.length > 0) {
-					opLinks[0].changeFrom(auxs[0].key,"n");
-					opLinks[1].changeFrom(auxs[1].key,"n");
+					opLinks[0].changeFrom(auxs[0].key,"_");
+					opLinks[1].changeFrom(auxs[1].key,"_");
 				}
 
 				term.set(copy,auxs);
@@ -70,13 +71,13 @@ define(function(require) {
 				cList.push(c);
 
 			if (inputs.length == 0) // maybe this needs to be "more elegant"
-				new Link(op.key, c.key, "n", "s", "lightgrey").addToGroup(group);
+				new Link(op.key, c.key, "_", "s", "lightgrey").addToGroup(group);
 			}
 
 			if (cList.length > 0) {
 				for (var i = 0; i < inputs.length; i++) {
 					from = inputs[i]; to = cList[(i%(ctx.length))];
-					new Link(from.key, to.key, "n", "s").addToGroup(group);
+					new Link(from.key, to.key, "_", "s").addToGroup(group);
 				}
 			}
 

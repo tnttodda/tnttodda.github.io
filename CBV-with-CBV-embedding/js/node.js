@@ -10,8 +10,8 @@ define(function(require) {
 			this.name = name; // identifier name or constant name if any
 			this.graph = null;
 			this.group = null;
-			this.width = null;
-			this.height = null;
+			this.width = 0.3;
+			this.height = 0.3;
 			this.links = [];
 			this.addToGraph(graph); // cheating!
 		}
@@ -39,26 +39,26 @@ define(function(require) {
 			return this.links;
 		}
 
-		findLinksInto(toPort) {
+		findLinksInto() {
 			var links = [];
 			for (let link of this.links) {
-				if (link.to == this.key && (toPort == null ? true : link.toPort == toPort))
+				if (link.to == this.key)
 					links.push(link);
 			}
 			return links;
 		}
 
-		findLinksOutOf(fromPort) {
+		findLinksOutOf() {
 			var links = [];
 			for (let link of this.links) {
-				if (link.from == this.key && (fromPort == null ? true : link.fromPort == fromPort))
+				if (link.from == this.key)
 					links.push(link);
 			}
 			return links;
 		}
 
-		findNodesOutOf(fromPort) {
-			var links = this.findLinksOutOf(fromPort)
+		findNodesOutOf() {
+			var links = this.findLinksOutOf()
 			var nodeKeys = links.map(l => l.to)
 			return nodeKeys.map(k => this.graph.findNodeByKey(k));
 		}
