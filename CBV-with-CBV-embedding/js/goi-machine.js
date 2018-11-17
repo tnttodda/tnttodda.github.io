@@ -22,15 +22,11 @@ define('goi-machine',
 		var Graph = require('graph');
 		var Group = require('group');
 		var Term = require('term');
-		var DNet = require('dnet');
 
-		var Atom = require('nodes/atom');
+		var AtomN = require('nodes/atom');
 		var Contract = require('nodes/contract');
 		var Start = require('nodes/start');
-		var Weak = require('nodes/weak');
 		var Op = require('nodes/op');
-
-		var GC = require('gc');
 
 		class GoIMachine {
 
@@ -38,7 +34,6 @@ define('goi-machine',
 				this.graph = new Graph();
 				graph = this.graph; // cheating!
 				this.token = new MachineToken();
-				this.gc = new GC(this.graph);
 				this.count = 0;
 			}
 
@@ -79,12 +74,15 @@ define('goi-machine',
 					auxs.splice(0,1)
 
 					var paramNode = this.toGraph(ast.param, term).addToGroup(term);
-					//put back in later -- var ref = (ast instanceof Reference);
+					if (ast instanceof Reference) {
+						var atomNode = new AtomN("a").addToGroup(paramNode);
+						new Link(atomNode.key, paramNode.prin.key, "_", "_").addToGroup(paramNode);
+						paramNode.prin = atomNode;
+					}
 					new Link(auxNode.key, paramNode.prin.key, "_", "_").addToGroup(term);
 					auxs = auxs.concat(paramNode.auxs);
 
-					if (ast.ctx.length > 0)
-						auxs = new DNet(ast.ctx, auxs).addToGroup(term).outputs;
+					auxs = Contract.createDNet(ast.ctx.length, auxs, term);
 
 					term.set(body.prin, auxs);
 
@@ -100,7 +98,7 @@ define('goi-machine',
 						auxs = auxs.concat(next.auxs);
 					}
 
-					auxs = new DNet(ast.ctx, auxs, op).addToGroup(term).outputs;
+					auxs = Contract.createDNet(ast.ctx.length, auxs, term, op);
 
 					term.set(op, auxs);
 				}
@@ -120,7 +118,6 @@ define('goi-machine',
 					this.count++;
 					if (this.count == 200) {
 						this.count = 0;
-						//this.gc.collect(); // later...
 					}
 
 					var node;
@@ -144,9 +141,7 @@ define('goi-machine',
 					if (nextLink != null) {
 						this.token.setLink(nextLink);
 						//this.printHistory(flag, dataStack, boxStack);
-						//this.token.transited = true;
 					} else {
-						//this.gc.collect(); //later...
 						this.token.setLink(null);
 						play = false;
 						playing = false;

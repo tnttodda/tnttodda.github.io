@@ -11,32 +11,6 @@ define(function(require) {
 			this.active = active;
 		}
 
-		transition(token, link) {
-			if (link.to == this.key) {
-				if (token.rewriteFlag == Flag.SEARCH) {
-					var outLinks = this.findLinksOutOf();
-					if (outLinks.length == 0) {
-						if (this.active) {
-							token.rewriteFlag = Flag.REWRITE;
-						} else {
-							token.rewriteFlag = Flag.RETURN;
-						}
-						return link;
-					} else {
-						return outLinks[0];
-					}
-				} else if (token.rewriteFlag == Flag.RETURN) {
-
-				}
-			}
-			// else if (link.from == this.key && link.fromPort == "e") {
-			// 	token.dataStack.pop();
-			// 	token.dataStack.push(CompData.R);
-			// 	token.forward = true;
-			// 	return this.findLinksOutOf("w")[0];
-			// }
-		}
-
 		rewrite(token) { // doesn't feel great...
 			var inLink = this.findLinksInto("s")[0];
 			var outLinks = this.findLinksOutOf();

@@ -1,6 +1,7 @@
 define(function(require) {
 
 	var Flag = require('token').RewriteFlag();
+	var Node = require('node');
 
 	class Atom extends Node {
 

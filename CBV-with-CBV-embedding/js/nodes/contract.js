@@ -1,4 +1,4 @@
-define(function(require) {
+define('nodes/contract',function(require) {
 
 	var Flag = require('token').RewriteFlag();
 	var Node = require('node');
@@ -6,7 +6,7 @@ define(function(require) {
 	var Op = require('nodes/op');
 	var Term = require('term');
 	var Link = require('link');
-	//var DNet = require('dnet');
+	var Group = require('group');
 
 	class Contract extends Node {
 
@@ -16,13 +16,8 @@ define(function(require) {
 
 		transition(token, link) {
 			if (link.to == this.key) {
-				//token.boxStack.push(link);
-				//token.rewriteFlag = RewriteFlag.F_C;
 				return this.findLinksOutOf(null)[0];
 			}
-			// else if (link.from == this.key && token.boxStack.length > 0) {
-			// 	return token.boxStack.pop();
-			// }
 		}
 
 		rewrite(token) {
@@ -44,7 +39,7 @@ define(function(require) {
 
 				// clean up here
 				var opLinks = nextNode.findLinksOutOf();
-				var auxs = this.createDNet(opLinks,[nextNode,nextNode,copy,copy],term);
+				var auxs = Contract.createDNet(opLinks.length,[nextNode,nextNode,copy,copy],term);
 				link.changeTo(copy.key,"_");
 				if (opLinks.length > 0) {
 					opLinks[0].changeFrom(auxs[0].key,"_");
@@ -58,16 +53,17 @@ define(function(require) {
 			return link;
 		}
 
-		//this shouldn't be here
-		createDNet(ctx, inputs, group) {
+		static createDNet(cs, inputs, originalGroup, op) {
 
 			var c;
 			var from;
 			var to;
 			var cList = [];
 
-			for (var n = 0; n < ctx.length; n++) {
-				c = new Contract(ctx[n].name).addToGroup(group);
+			var group = new Group();
+
+			for (var n = 0; n < cs; n++) {
+				c = new Contract().addToGroup(group);
 				cList.push(c);
 
 			if (inputs.length == 0) // maybe this needs to be "more elegant"
@@ -76,10 +72,12 @@ define(function(require) {
 
 			if (cList.length > 0) {
 				for (var i = 0; i < inputs.length; i++) {
-					from = inputs[i]; to = cList[(i%(ctx.length))];
+					from = inputs[i]; to = cList[(i%(cs))];
 					new Link(from.key, to.key, "_", "_").addToGroup(group);
 				}
 			}
+
+			group.addToGroup(originalGroup);
 
 			return cList;
 		}
