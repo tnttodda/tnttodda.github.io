@@ -88,15 +88,3 @@ define('ast/reference', function(require) {
   }
   return Reference;
 });
-
-// not sure if thunks are in the ast...
-define('ast/thunk', function(require) {
-  var Term = require('ast/term');
-  class Thunk extends Term {
-    constructor(ctx, name, num) {
-      super(num, ctx);
-      this.name = name;
-    }
-  }
-  return Thunk;
-});

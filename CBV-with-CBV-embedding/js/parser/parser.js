@@ -6,7 +6,6 @@ define(function(require) {
 	var Operation = require('ast/operation');
 	var Binding = require('ast/binding');
 	var Reference = require('ast/reference');
-	var Thunk = require('ast/thunk');
 
 	class Parser {
 		constructor(lexer) {

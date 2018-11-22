@@ -21,6 +21,8 @@ require(["jquery", "renderer", "goi-machine"],
 
 		function clearGraph(callback) {
 			renderer.render('digraph G {\n\t\n}');
+      graphsBehind = [];
+      graphsAhead = [];
 			$("#ta-graph").val("");
 			pause();
 			setTimeout(callback, 100);
@@ -74,6 +76,8 @@ require(["jquery", "renderer", "goi-machine"],
    		 });
 
 		$("#btn-refresh").click(function(event) {
+      graphsBehind = [];
+      graphsAhead = [];
 			makeGraph();
 		});
 

@@ -11,7 +11,6 @@ define('goi-machine',
 		var Operation = require('ast/operation');
 		var Binding = require('ast/binding');
 		var Reference = require('ast/reference');
-		var Thunk = require('ast/thunk');
 
 		var Lexer = require('parser/lexer');
 		var Parser = require('parser/parser');
@@ -27,6 +26,9 @@ define('goi-machine',
 		var Contract = require('nodes/contract');
 		var Start = require('nodes/start');
 		var Op = require('nodes/op');
+
+		var IntOp = require('nodes/ops/int');
+		var PlusOp = require('nodes/ops/plus');
 
 		class GoIMachine {
 
@@ -92,7 +94,8 @@ define('goi-machine',
 
 				// OPERATIONS
 				} else if (ast instanceof Operation) {
-					var op = new Op(ast.name,ast.active).addToGroup(term);
+					var op = this.toOp(ast.name,ast.active).addToGroup(term);
+
 					var auxs = [];
 
 					var next;
@@ -107,6 +110,16 @@ define('goi-machine',
 
 				}
 				return term;
+			}
+
+			toOp(name,active) {
+				if (Number.isInteger(parseInt(name))) {
+					return new IntOp(name);
+				} else if (name == "+") {
+					return new PlusOp();
+				} else {
+					return new Op(name,active);
+				}
 			}
 
 			quotieningRules() {
@@ -151,7 +164,7 @@ define('goi-machine',
 			if (token.rewriteFlag == Flag.SEARCH) {
 				var to = this.graph.findNodeByKey(link.to);
 				var outlinks = to.findLinksOutOf();
-				if (to instanceof Atom) {
+				if (to instanceof AtomN) {
 					token.rewriteFlag = Flag.RETURN;
 					return link;
 				} else if (to instanceof Op) {
@@ -166,7 +179,7 @@ define('goi-machine',
 						return outlinks[0];
 					}
 				} else if (to instanceof Contract) {
-					token.rewriteFlag = Flag.REWRITE; // REWRITE;
+					token.rewriteFlag = Flag.REWRITE;
 					return link;
 				}
 			} else if (token.rewriteFlag == Flag.RETURN) {
