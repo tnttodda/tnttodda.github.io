@@ -44,6 +44,11 @@ define(function(require) {
 			this.allLinks.splice(this.allLinks.indexOf(link), 1);
 		}
 
+		findLinkByKeys(from,to) {
+			var fromNode = this.findNodeByKey(from);
+			return fromNode.findLinksOutOf().filter(x => x.to == to)[0];
+		}
+
 		draw(width, height) {
 			var str = this.child.draw('\n  ');
 			str += '\n';

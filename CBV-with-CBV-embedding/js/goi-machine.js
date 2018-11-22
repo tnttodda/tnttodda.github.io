@@ -31,24 +31,27 @@ define('goi-machine',
 		class GoIMachine {
 
 			constructor() {
-				this.graph = new Graph();
-				graph = this.graph; // cheating!
-				this.token = new MachineToken();
-				this.count = 0;
+				this.setMachine(new Graph(),new MachineToken(),0);
+			}
+
+			setMachine(graphSet,tokenSet,countSet) {
+				this.graph = graphSet;
+				graph = this.graph;
+				this.token = tokenSet;
+				this.count = countSet;
 			}
 
 			compile(source) {
 				const lexer = new Lexer(source + '\0');
 				const parser = new Parser(lexer);
 				const ast = parser.parse();
-				// init
-				this.graph.clear();
-				this.token.reset();
 				this.count = 0;
-				// create graph
+
+				this.graph.clear();
 				var start = new Start().addToGroup(this.graph.child);
 				var term = this.toGraph(ast, this.graph.child);
-				new Link(start.key, term.prin.key, "_", "_").addToGroup(this.graph.child);
+				var link = new Link(start.key, term.prin.key, "_", "_").addToGroup(this.graph.child);
+				this.token.reset(link);
 			}
 
 			// translation
@@ -61,35 +64,36 @@ define('goi-machine',
 					var auxs = [];
 					for (var i = 0; i < ast.ctx.length; i++) {
 						var c = new Contract().addToGroup(term);
-						if ((ast.ctx[i]).name == ast.name) { c.name = ast.name; var bigc = c; }
 						auxs.push(c);
+						if ((ast.ctx[i]).name == ast.name)
+						 	var prin = c;
 					}
-					term.set(bigc, auxs);
+					term.set(prin, auxs);
 
 				// BINDINGS & REFERENCES
 				} else if ((ast instanceof Binding) || (ast instanceof Reference))  {
 					var body = this.toGraph(ast.body, term).addToGroup(term);
+					var param = this.toGraph(ast.param, term).addToGroup(term);
+
 					var auxs = body.auxs;
 					var auxNode = auxs[0];
 					auxs.splice(0,1)
+					auxs = auxs.concat(param.auxs);
 
-					var paramNode = this.toGraph(ast.param, term).addToGroup(term);
 					if (ast instanceof Reference) {
-						var atomNode = new AtomN("a").addToGroup(paramNode);
-						new Link(atomNode.key, paramNode.prin.key, "_", "_").addToGroup(paramNode);
-						paramNode.prin = atomNode;
+						var atomNode = new AtomN("a").addToGroup(param);
+						new Link(atomNode.key, param.prin.key, "_", "_").addToGroup(param);
+						param.prin = atomNode;
 					}
-					new Link(auxNode.key, paramNode.prin.key, "_", "_").addToGroup(term);
-					auxs = auxs.concat(paramNode.auxs);
+					new Link(auxNode.key, param.prin.key, "_", "_").addToGroup(term);
 
 					auxs = Contract.createDNet(ast.ctx.length, auxs, term);
-
 					term.set(body.prin, auxs);
 
 				// OPERATIONS
 				} else if (ast instanceof Operation) {
 					var op = new Op(ast.name,ast.active).addToGroup(term);
-					var auxs = []
+					var auxs = [];
 
 					var next;
 					for (var i = 0; i < ast.type; i++) {
@@ -99,8 +103,8 @@ define('goi-machine',
 					}
 
 					auxs = Contract.createDNet(ast.ctx.length, auxs, term, op);
-
 					term.set(op, auxs);
+
 				}
 				return term;
 			}
@@ -112,35 +116,21 @@ define('goi-machine',
 				return null;
 			}
 
-			// machine step -- TODO
-			pass(flag, dataStack, boxStack) {
+			// machine step
+			transition(graphTxt, linkTxt, flagTxt) {
 				if (!finished) {
 					this.count++;
-					if (this.count == 200) {
-						this.count = 0;
-					}
+					var node = this.graph.findNodeByKey(this.token.link.to);
 
-					var node;
-					if (this.token.link != null) {
-						var target = this.token.forward ? this.token.link.to : this.token.link.from;
-						node = this.graph.findNodeByKey(target);
-					} else {
-						node = this.graph.findNodeByKey("nd1");
-						this.token.link = node.findLinksOutOf()[0]; // hacking!
-						this.token.setLink(this.token.link); // hacking!
-						return; // hacking!
-					}
-
-					this.token.rewrite = false;
 					var nextLink;
 					if (this.token.rewriteFlag == Flag.REWRITE) {
 						nextLink = node.rewrite(this.token);
 					} else {
-						nextLink = this.ptransition(this.token);
+						nextLink = this.pass(this.token);
 					}
 					if (nextLink != null) {
 						this.token.setLink(nextLink);
-						//this.printHistory(flag, dataStack, boxStack);
+						this.printHistory(graphTxt, linkTxt, flagTxt);
 					} else {
 						this.token.setLink(null);
 						play = false;
@@ -150,15 +140,13 @@ define('goi-machine',
 				}
 			}
 
-			// printHistory(flag, dataStack, boxStack) {
-			// 	flag.val(this.token.rewriteFlag + '\n' + flag.val());
-			// 	var dataStr = this.token.dataStack.length == 0 ? '□' : Array.from(this.token.dataStack).reverse().toString() + ',□';
-			// 	dataStack.val(dataStr + '\n' + dataStack.val());
-			// 	var boxStr = this.token.boxStack.length == 0 ? '□' : Array.from(this.token.boxStack).reverse().toString() + ',□';
-			// 	boxStack.val(boxStr + '\n' + boxStack.val());
-			// }
+			printHistory(graphTxt, linkTxt, flagTxt) {
+				graphTxt.val(this.graph.draw().replace(/\n/g, "") + '\n' + graphTxt.val());
+				linkTxt.val(this.token.link + '\n' + linkTxt.val());
+				flagTxt.val(this.token.rewriteFlag + '\n' + flagTxt.val());
+			}
 
-		ptransition(token) { // maybe change back to original OO design
+		pass(token) { // this needs cleaning up!
 			var link = token.link;
 			if (token.rewriteFlag == Flag.SEARCH) {
 				var to = this.graph.findNodeByKey(link.to);
@@ -187,10 +175,10 @@ define('goi-machine',
 				if (this.doneVisiting(link,outlinks)) { // HACKING
 					if (from.active) {
 						token.rewriteFlag = Flag.REWRITE;
-						return from.findLinksInto("s")[0];
+						return from.findLinksInto()[0];
 					} else {
 						token.rewriteFlag = Flag.RETURN;
-						return from.findLinksInto("_")[0];
+						return from.findLinksInto()[0];
 					}
 				} else {
 					token.rewriteFlag = Flag.SEARCH;

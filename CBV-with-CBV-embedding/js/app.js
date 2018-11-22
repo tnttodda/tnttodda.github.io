@@ -7,6 +7,10 @@ Array.prototype.last = function() {
 var play = false;
 var playing = false;
 var finished = false;
+var currentSource = null;
+
+var graphsBehind = [];
+var graphsAhead = [];
 
 var isDraw = true;
 
@@ -22,27 +26,33 @@ require(["jquery", "renderer", "goi-machine"],
 			setTimeout(callback, 100);
 		}
 
-		function draw() {
-			var width = $("#graph").width();
-			var height = $("#graph").height();
-			// update stage with new dot source
-			var result = machine.graph.draw(width/dpi, height/dpi);
-			$("#ta-graph").val(result);
-			if (isDraw)
-				renderer.render(result);
+		function draw(result) {
+      if (result == null) {
+        var width = $("#graph").width();
+		    var height = $("#graph").height();
+		    // update stage with new dot source
+        var result = machine.graph.draw(width/dpi, height/dpi);
+      }
+    $("#ta-graph").val(result);
+    if (isDraw)	renderer.render(result);
 		}
+
+    function makeGraph() {
+      $("#graphTxt").val("");
+      $("#linkTxt").val("");
+      $("#flagTxt").val("");
+      machine.compile(currentSource);
+      draw();
+      machine.printHistory($("#graphTxt"),$("#linkTxt"),$("#flagTxt"));
+      finished = false;
+    }
 
 		// register onClick event
 		$("#btn-make-graph").click(function(event) {
-			clearGraph(function() {
-				$("#dataStack").val("");
-				$("#flag").val("");
-				$("#boxStack").val("");
-				var source = $("#ta-program").val();
-				machine.compile(source);
-				draw();
-				finished = false;
-			});
+      clearGraph(function() {
+        currentSource = $("#ta-program").val();
+        makeGraph()
+      });
 		});
 
 		$("#btn-save").click(function (event) {
@@ -55,7 +65,7 @@ require(["jquery", "renderer", "goi-machine"],
 		});
 
 		$("#btn-info").click(function (event) {
-		      alert("'λ' = \\lambda");
+		      alert("hello there");
 		});
 
 		$('#cb-show-key').change(function() {
@@ -63,33 +73,40 @@ require(["jquery", "renderer", "goi-machine"],
 	        $("#btn-refresh").click();
    		 });
 
-		$('#cb-draw').change(function() {
-	        isDraw = this.checked;
-	        $("#btn-refresh").click();
-   		 });
-
 		$("#btn-refresh").click(function(event) {
-			clearGraph(function() {
-				draw();
-			});
+			makeGraph();
 		});
 
+    $("#btn-prev").click(function(event) {
+      if (graphsBehind.length > 0) {
+        graphsAhead = [$("#ta-graph").val()].concat(graphsAhead);
+        var result = graphsBehind[graphsBehind.length-1];
+        graphsBehind.splice(-1,1);
+        draw(result);
+      }
+    });
+
 		$("#btn-play").click(function(event) {
-			play = true;
-			if (!playing)
-				autoPlay();
+			if (!playing) {
+        play = true;
+      } else {
+        pause();
+      }
+      autoPlay();
 		});
 
 		function autoPlay() {
-			playing = true;
-			next();
-			if (play)
-				if (isDraw)
-					setTimeout(autoPlay, 0);
-				else
-					setTimeout(autoPlay, 0);
-			else
+			if (play) {
+        playing = true;
+        next();
+				if (isDraw) {
+					setTimeout(autoPlay, 500);
+				} else {
+					autoPlay();
+        }
+			} else {
 				playing = false;
+      }
 		}
 
 		function pause() {
@@ -98,20 +115,32 @@ require(["jquery", "renderer", "goi-machine"],
 		}
 
 		function next() {
-			if (!finished) {
-				machine.pass($("#flag"), $("#dataStack"), $("#boxStack"));
-				draw();
-			}
-		}
+      if (graphsAhead.length == 0) {
+  			if (!finished) {
+          graphsBehind.push($("#ta-graph").val());
+  				machine.transition($("#graphTxt"), $("#linkTxt"), $("#flagTxt"));
+  				draw();
+  			}
+      } else {
 
-		$("#btn-pause").click(function(event) {
-			pause();
-		});
+        graphsBehind.push($("#ta-graph").val());
+        draw(graphsAhead[0]);
+        graphsAhead = graphsAhead.slice(1);
+      }
+		}
 
 		$("#btn-next").click(function(event) {
 			pause();
 			next();
 		});
+
+    $("#btn-skip").click(function(event) {
+      play = true;
+      isDraw = false;
+      autoPlay();
+      isDraw = true;
+      draw();
+    });
 
 		$("#ta-program").on('input', function() {
 		    specialChar(this);

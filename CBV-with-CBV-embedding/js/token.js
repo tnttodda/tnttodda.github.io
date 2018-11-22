@@ -13,6 +13,8 @@ define(function(require) {
 		}
 
 		constructor() {
+			this.link = null;
+			this.rewriteFlag = null;
 			this.reset();
 		}
 
@@ -25,13 +27,8 @@ define(function(require) {
 			}
 		}
 
-		reset() {
-			this.forward = true;
-			this.rewrite = false;
-			this.transited = false;
-
-			this.link = null;
-
+		reset(link) {
+			this.setLink(link);
 			this.rewriteFlag = Flag.SEARCH;
 		}
 	}
