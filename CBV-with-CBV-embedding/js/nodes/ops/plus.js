@@ -15,20 +15,16 @@ define(function(require) {
 			return new PlusOp();
 		}
 
-		rewrite(token) { // needs fixing up
-			console.log("RW!");
-			var inLink = this.findLinksInto("s")[0];
+		rewrite(token) {
+			var inLink = this.findLinksInto()[0];
 			var outLinks = this.findLinksOutOf();
-			var left = this.graph.findNodeByKey(outLinks[0].to);
-			var right = this.graph.findNodeByKey(outLinks[1].to);
-			var n = left.name + right.name;
-			var newNode = new IntOp(n,false).addToGroup(this.group);
+			var n = outLinks.reduce((sum,x) => sum + this.graph.findNodeByKey(x.to).name, 0);
 
+			var newNode = new IntOp(n,false).addToGroup(this.group);
 			var newLink = new Link(inLink.from,newNode.key,"_","_").addToGroup(this.group);
-			outLinks[0].delete();
-			outLinks[1].delete();
-			left.delete();
-			right.delete();
+
+			outLinks.map(x => x.delete());
+			outLinks.map(x => this.graph.findNodeByKey(x.to).delete());
 			this.delete();
 
 			token.rewriteFlag = Flag.SEARCH;
