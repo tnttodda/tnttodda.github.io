@@ -11,7 +11,12 @@ define(function(require) {
 			super("+", true);
 		}
 
+		copy() {
+			return new PlusOp();
+		}
+
 		rewrite(token) { // needs fixing up
+			console.log("RW!");
 			var inLink = this.findLinksInto("s")[0];
 			var outLinks = this.findLinksOutOf();
 			var left = this.graph.findNodeByKey(outLinks[0].to);
