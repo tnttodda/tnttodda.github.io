@@ -69,6 +69,9 @@ define(function(require) {
 			if (this.lexer.skip(Token.PLUS)) {
 				var eas = this.gatherEAs(ctx,2);
 				return new Operation(ctx,2,"+",true,eas,[]);
+			} else if (this.lexer.skip(Token.TIMES)) {
+				var eas = this.gatherEAs(ctx,2);
+				return new Operation(ctx,2,"*",true,eas,[]);
 			} else if (this.lexer.next(Token.INT)) {
 				const n = this.lexer.token(Token.INT);
 				return new Operation(ctx,0,n,false,[],[]);

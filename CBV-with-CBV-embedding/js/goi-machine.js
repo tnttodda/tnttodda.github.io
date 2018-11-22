@@ -29,6 +29,7 @@ define('goi-machine',
 
 		var IntOp = require('nodes/ops/int');
 		var PlusOp = require('nodes/ops/plus');
+		var TimesOp = require('nodes/ops/times');
 
 		class GoIMachine {
 
@@ -117,6 +118,8 @@ define('goi-machine',
 					return new IntOp(name);
 				} else if (name == "+") {
 					return new PlusOp();
+				} else if (name == "*") {
+					return new TimesOp();
 				} else {
 					return new Op(name,active);
 				}

@@ -15,7 +15,7 @@ define(function() {
   [
     'EOF', // we augment the tokens with EOF, to indicate the end of the input.
     'LCID',
-    
+
     'LPAREN',
     'RPAREN',
     'SEMIC',
@@ -24,8 +24,9 @@ define(function() {
     'NEW',
     'DEF',
     'IN',
-    
+
     'PLUS',
+    'TIMES',
     'INT',
   ].forEach(token => Token[token] = token);
 

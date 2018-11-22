@@ -79,6 +79,8 @@ define(function(require) {
 						this._token = new Token(Token.NEW);
 					else if (str == "PLUS")
 						this._token = new Token(Token.PLUS);
+					else if (str == "TIMES")
+						this._token = new Token(Token.TIMES);
 					else
 						this._token = new Token(Token.LCID, str);
 				}
