@@ -44,7 +44,7 @@ define('goi-machine',
 
 			setMachine(graphSet,tokenSet,countSet) {
 				this.graph = graphSet;
-				graph = this.graph;
+				graph = this.graph; // cheating!
 				this.token = tokenSet;
 				this.count = countSet;
 			}

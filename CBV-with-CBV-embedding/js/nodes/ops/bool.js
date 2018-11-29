@@ -9,6 +9,10 @@ define(function(require) {
 			super(b, false);
 		}
 
+		copy() {
+			return new BoolOp();
+		}
+
 		static parseBoolean(b) {
 			if (b == "false" || b == 0) {
 				return false;

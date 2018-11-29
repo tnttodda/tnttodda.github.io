@@ -18,6 +18,7 @@ define(function(require) {
 		rewrite(token) {
 			var inLink = this.findLinksInto()[0];
 			var outLinks = this.findLinksOutOf();
+			
 			var b = !BoolOp.parseBoolean(this.graph.findNodeByKey(outLinks[0].to).name);
 
 			var newNode = new BoolOp(b,false).addToGroup(this.group);

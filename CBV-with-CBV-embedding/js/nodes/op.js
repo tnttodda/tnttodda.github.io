@@ -13,7 +13,7 @@ define(function(require) {
 
 		rewrite(token) { } // default none for passive ops
 
-		copy() {
+		copy() { 
 			return new Op(this.name,this.active);
 		}
 
