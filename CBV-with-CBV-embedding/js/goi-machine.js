@@ -28,8 +28,13 @@ define('goi-machine',
 		var Op = require('nodes/op');
 
 		var IntOp = require('nodes/ops/int');
+		var BoolOp = require('nodes/ops/bool');
 		var PlusOp = require('nodes/ops/plus');
 		var TimesOp = require('nodes/ops/times');
+		var AndOp = require('nodes/ops/and');
+		var OrOp = require('nodes/ops/or');
+		var NotOp = require('nodes/ops/not');
+		var EqualsOp = require('nodes/ops/equals');
 
 		class GoIMachine {
 
@@ -116,10 +121,20 @@ define('goi-machine',
 			toOp(name,active) {
 				if (Number.isInteger(parseInt(name))) {
 					return new IntOp(name);
+				} else if (name == "true" || name == "false") {
+					return new BoolOp(name);
 				} else if (name == "+") {
 					return new PlusOp();
 				} else if (name == "*") {
 					return new TimesOp();
+				} else if (name == "∧") {
+					return new AndOp();
+				} else if (name == "∨") {
+					return new OrOp();
+				} else if (name == "¬") {
+					return new NotOp();
+				} else if (name == "==") {
+					return new EqualsOp();
 				} else {
 					return new Op(name,active);
 				}

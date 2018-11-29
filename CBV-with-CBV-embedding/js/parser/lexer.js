@@ -81,6 +81,18 @@ define(function(require) {
 						this._token = new Token(Token.PLUS);
 					else if (str == "TIMES")
 						this._token = new Token(Token.TIMES);
+					else if (str == "AND")
+						this._token = new Token(Token.AND);
+					else if (str == "OR")
+						this._token = new Token(Token.OR);
+					else if (str == "NOT")
+						this._token = new Token(Token.NOT);
+						else if (str == "EQUALS")
+							this._token = new Token(Token.EQUALS);
+					else if (str == "TRUE")
+						this._token = new Token(Token.TRUE);
+					else if (str == "FALSE")
+						this._token = new Token(Token.FALSE);
 					else
 						this._token = new Token(Token.LCID, str);
 				}

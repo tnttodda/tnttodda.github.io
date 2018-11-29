@@ -28,6 +28,12 @@ define(function() {
     'PLUS',
     'TIMES',
     'INT',
+    'AND',
+    'OR',
+    'NOT',
+    'TRUE',
+    'FALSE',
+    'EQUALS'
   ].forEach(token => Token[token] = token);
 
   return Token;
