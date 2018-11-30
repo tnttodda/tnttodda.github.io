@@ -5,6 +5,7 @@ define(function(require) {
 	var Operation = require('ast/operation');
 	var Binding = require('ast/binding');
 	var Reference = require('ast/reference');
+	var Thunk = require('ast/thunk');
 
 	class Parser {
 		constructor(lexer) {
@@ -22,24 +23,29 @@ define(function(require) {
 		//      | NEW  LCID IN term           (NEW x = PARAM in BODY)
 		//      | op? ( EAS ; DAS )
 
-		term(ctx) {
-			if (this.lexer.skip(Token.BIND)) {
-				const id = this.term(ctx);
-				id.ctx = [id].concat(id.ctx);
-				this.lexer.match(Token.DEF);
-				const P = this.term(ctx);
-				this.lexer.match(Token.IN);
-				const B = this.term([id].concat(ctx));
-				return new Binding(ctx,id,P,B);
-			} else if (this.lexer.skip(Token.NEW)) {
-				const id = this.term(ctx);
-				id.ctx = [id].concat(id.ctx);
-				const P = this.term(ctx);
-				this.lexer.match(Token.IN);
-				const B = this.term([id].concat(ctx));
-				return new Reference(ctx,id,P,B);
+		term(ctx,thunk) {
+			if (thunk) {
+				const inner = this.term(ctx);
+				return new Thunk(ctx,inner);
 			} else {
-				return this.atom(ctx);
+				if (this.lexer.skip(Token.BIND)) {
+					const id = this.term(ctx);
+					id.ctx = [id].concat(id.ctx);
+					this.lexer.match(Token.DEF);
+					const P = this.term(ctx);
+					this.lexer.match(Token.IN);
+					const B = this.term([id].concat(ctx));
+					return new Binding(ctx,id,P,B);
+				} else if (this.lexer.skip(Token.NEW)) {
+					const id = this.term(ctx);
+					id.ctx = [id].concat(id.ctx);
+					const P = this.term(ctx);
+					this.lexer.match(Token.IN);
+					const B = this.term([id].concat(ctx));
+					return new Reference(ctx,id,P,B);
+				} else {
+					return this.atom(ctx);
+				}
 			}
 		}
 
@@ -84,29 +90,40 @@ define(function(require) {
 				case Token.EQUALS:
 					name = "=="; sig = [2,0]; active = true;
 					break;
+				case Token.IF:
+					name = "if"; sig = [1,2]; active = true;
+					break;
 				default:
 					name = this.lexer.value(); sig = [0,0]; active = false;
 					break;
 			}
 			this.lexer.match(token);
-			if (sig[0] > 0)
-				eas = this.gatherEAs(ctx,sig[0]);
-			var das = [];
+			if (sig[0] > 0) {
+				this.lexer.match(Token.LPAREN);
+				eas = this.gatherArgs(ctx,sig[0],false);
+				if (sig[1] == 0)
+					this.lexer.match(Token.RPAREN);
+			}
+			if (sig[1] > 0) {
+				if (sig[0] == 0)
+					this.lexer.match(Token.LPAREN);
+				this.lexer.match(Token.SEMIC);
+				das = this.gatherArgs(ctx,sig[1],true);
+				this.lexer.match(Token.RPAREN);
+			}
 			return new Operation(ctx,sig,name,active,eas,das);
 		}
 
-		gatherEAs(ctx,type) {
-			this.lexer.match(Token.LPAREN);
-			var eas = [];
+		gatherArgs(ctx,type,thunk) {
+			var args = [];
 			for (var i = 0; i < type; i++) {
-				const term = this.term(ctx);
-				eas.push(term);
+				const term = this.term(ctx,thunk);
+				args.push(term);
 				if (this.lexer.next(Token.COMMA)) {
 					this.lexer.match(Token.COMMA);
 				}
 			}
-			this.lexer.match(Token.RPAREN);
-			return eas;
+			return args;
 		}
 
 	}

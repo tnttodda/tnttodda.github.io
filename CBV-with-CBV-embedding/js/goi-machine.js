@@ -10,6 +10,7 @@ define('goi-machine',
 		var Operation = require('ast/operation');
 		var Binding = require('ast/binding');
 		var Reference = require('ast/reference');
+		var Thunk = require('ast/thunk');
 
 		var Lexer = require('parser/lexer');
 		var Parser = require('parser/parser');
@@ -20,7 +21,6 @@ define('goi-machine',
 		var Graph = require('graph');
 		var Group = require('group');
 		var Term = require('term');
-		var Thunk = require('thunk');
 
 		var Atom = require('nodes/atom');
 		var Contract = require('nodes/contract');
@@ -35,6 +35,7 @@ define('goi-machine',
 		var OrOp = require('nodes/ops/or');
 		var NotOp = require('nodes/ops/not');
 		var EqualsOp = require('nodes/ops/equals');
+		var IfOp = require('nodes/ops/if');
 
 		class GoIMachine {
 
@@ -63,13 +64,14 @@ define('goi-machine',
 			}
 
 			// translation
-			toGraph(ast, group, thunk) {
+			toGraph(ast, group) {
 				var graph = this.graph;
-				var term;
-				if (thunk) {
-					term = new Thunk().addToGroup(group);
-				} else {
-					term = new Term().addToGroup(group);
+
+				var term = new Term().addToGroup(group);
+				if (ast instanceof Thunk) {
+					console.log(term);
+					term.box();
+					ast = ast.inner;
 				}
 
 				// VARIABLES & ATOMS
@@ -111,19 +113,20 @@ define('goi-machine',
 
 					var next;
 					for (var i = 0; i < ast.sig[0]; i++) {
-						next = this.toGraph(ast.eas[i], term, false).addToGroup(term);
+						next = this.toGraph(ast.eas[i], term).addToGroup(term);
 						new Link(op.key, next.prin.key, "_", "_").addToGroup(term);
 						auxs = auxs.concat(next.auxs);
 					}
 					for (var i = 0; i < ast.sig[1]; i++) {
-						next = this.toGraph(ast.das[i], term, true).addToGroup(term);
-						new Link(op.key, next.prin.key, "_", "_").addToGroup(term);
+						next = this.toGraph(ast.das[i], term).addToGroup(term);
+						var link = new Link(op.key, next.prin.key, "_", "_");
+						link.visited = true; // hacking
+						link.addToGroup(term);
 						auxs = auxs.concat(next.auxs);
 					}
 
 					auxs = Contract.createDNet(ast.ctx.length, auxs, term, op);
 					term.set(op, auxs);
-
 				}
 				return term;
 			}
@@ -145,6 +148,8 @@ define('goi-machine',
 					return new NotOp();
 				} else if (name == "==") {
 					return new EqualsOp();
+				} else if (name == "if") {
+					return new IfOp();
 				} else {
 					return new Op(name,active);
 				}

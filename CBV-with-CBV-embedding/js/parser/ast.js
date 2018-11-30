@@ -39,6 +39,18 @@ define('ast/operation', function(require) {
   return Operation;
 });
 
+define('ast/thunk', function(require) {
+  var Term = require('ast/term');
+
+  class Thunk extends Term {
+    constructor(ctx, inner) {
+      super(ctx);
+      this.inner = inner;
+    }
+  }
+  return Thunk;
+});
+
 define('ast/binding', function(require) {
   var Term = require('ast/term');
     /**
