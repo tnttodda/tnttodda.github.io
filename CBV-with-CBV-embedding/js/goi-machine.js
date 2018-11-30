@@ -4,8 +4,6 @@ define('goi-machine',
 	function(require) {
 		var Flag = require('token').RewriteFlag();
 
-		var Termast = require('ast/term');
-
 		var Variable = require('ast/var');
 		var Operation = require('ast/operation');
 		var Binding = require('ast/binding');
@@ -69,7 +67,6 @@ define('goi-machine',
 
 				var term = new Term().addToGroup(group);
 				if (ast instanceof Thunk) {
-					console.log(term);
 					term.box();
 					ast = ast.inner;
 				}

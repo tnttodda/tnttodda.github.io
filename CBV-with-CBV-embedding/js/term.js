@@ -6,7 +6,7 @@ define('term', function(require) {
 
 	class Term extends Group {
 
-		constructor(prin, auxs, box) {
+		constructor(prin, auxs) {
 			super();
 			this.prin = null;
 			this.set(prin, auxs)

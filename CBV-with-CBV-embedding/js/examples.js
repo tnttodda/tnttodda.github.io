@@ -8,4 +8,4 @@
 // + 'fact 4';
 
 var fact_prog =
-  'IF(1;3,4)';
+  'PLUS(1,3)';

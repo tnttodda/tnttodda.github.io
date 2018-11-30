@@ -39,6 +39,7 @@ define(function(require) {
 				} else if (this.lexer.skip(Token.NEW)) {
 					const id = this.term(ctx);
 					id.ctx = [id].concat(id.ctx);
+					this.lexer.match(Token.DEF);
 					const P = this.term(ctx);
 					this.lexer.match(Token.IN);
 					const B = this.term([id].concat(ctx));

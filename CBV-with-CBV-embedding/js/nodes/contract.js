@@ -27,7 +27,6 @@ define('nodes/contract',function(require) {
 			var nextLink = outLinks[0];
 			var nextNode = this.graph.findNodeByKey(nextLink.to);
 
-			// First/second contraction
 			if (nextNode instanceof Contract || nextNode instanceof Atom) {
 				inLinks.map(l => l.changeTo(nextNode.key,"_"));
 				nextLink.delete();
@@ -35,15 +34,13 @@ define('nodes/contract',function(require) {
 			} else if (nextNode instanceof Op) {
 				var term = new Term().addToGroup(this.group);
 				var copy = nextNode.copy().addToGroup(term);
-				var outputs = nextNode.findNodesOutOf();
 
 				// clean up here
 				var opLinks = nextNode.findLinksOutOf();
 				var auxs = Contract.createDNet(opLinks.length,[nextNode,nextNode,copy,copy],term);
 				link.changeTo(copy.key,"_");
-				if (opLinks.length > 0) {
-					opLinks[0].changeFrom(auxs[0].key,"_");
-					opLinks[1].changeFrom(auxs[1].key,"_");
+				for (var i = 0; i < opLinks.length; i++) {
+					opLinks[i].changeFrom(auxs[i].key,"_");
 				}
 
 				term.set(copy,auxs);
@@ -54,7 +51,6 @@ define('nodes/contract',function(require) {
 		}
 
 		static createDNet(cs, inputs, originalGroup, op) {
-
 			var c;
 			var from;
 			var to;

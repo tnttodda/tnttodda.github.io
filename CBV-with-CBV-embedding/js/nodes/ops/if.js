@@ -19,14 +19,15 @@ define(function(require) {
 			var inLink = this.findLinksInto()[0];
 			var outLinks = this.findLinksOutOf();
 
-			var newNode;
-			if (BoolOp.parseBoolean(this.graph.findNodeByKey(outLinks[0].to).name)) {
-				outLinks[2].delete();
-				newNode = this.graph.findNodeByKey(outLinks[1].to).group.unbox();
+			var name = this.graph.findNodeByKey(outLinks[0].to).name;
+			var keep; var del;
+			if (BoolOp.parseBoolean(name)) {
+				keep = 1; del = 2;
 			} else {
-				outLinks[1].delete();
-				newNode = this.graph.findNodeByKey(outLinks[2].to).group.unbox();
+				keep = 2; del = 1;
 			}
+			outLinks[del].delete();
+			var newNode = this.graph.findNodeByKey(outLinks[keep].to).group.unbox();
 			var newLink = new Link(inLink.from,newNode.key,"_","_").addToGroup(this.group);
 
 			outLinks[0].delete();
