@@ -7,7 +7,6 @@ define('goi-machine',
 		var Termast = require('ast/term');
 
 		var Variable = require('ast/var');
-		var Atom = require('ast/atom');
 		var Operation = require('ast/operation');
 		var Binding = require('ast/binding');
 		var Reference = require('ast/reference');
@@ -21,8 +20,9 @@ define('goi-machine',
 		var Graph = require('graph');
 		var Group = require('group');
 		var Term = require('term');
+		var Thunk = require('thunk');
 
-		var AtomN = require('nodes/atom');
+		var Atom = require('nodes/atom');
 		var Contract = require('nodes/contract');
 		var Start = require('nodes/start');
 		var Op = require('nodes/op');
@@ -57,15 +57,20 @@ define('goi-machine',
 
 				this.graph.clear();
 				var start = new Start().addToGroup(this.graph.child);
-				var term = this.toGraph(ast, this.graph.child);
+				var term = this.toGraph(ast, this.graph.child, false);
 				var link = new Link(start.key, term.prin.key, "_", "_").addToGroup(this.graph.child);
 				this.token.reset(link);
 			}
 
 			// translation
-			toGraph(ast, group) {
+			toGraph(ast, group, thunk) {
 				var graph = this.graph;
-				var term = new Term().addToGroup(group);
+				var term;
+				if (thunk) {
+					term = new Thunk().addToGroup(group);
+				} else {
+					term = new Term().addToGroup(group);
+				}
 
 				// VARIABLES & ATOMS
 				if (ast instanceof Variable) {
@@ -80,8 +85,8 @@ define('goi-machine',
 
 				// BINDINGS & REFERENCES
 				} else if ((ast instanceof Binding) || (ast instanceof Reference))  {
-					var body = this.toGraph(ast.body, term).addToGroup(term);
-					var param = this.toGraph(ast.param, term).addToGroup(term);
+					var body = this.toGraph(ast.body, term, false).addToGroup(term);
+					var param = this.toGraph(ast.param, term, false).addToGroup(term);
 
 					var auxs = body.auxs;
 					var auxNode = auxs[0];
@@ -89,7 +94,7 @@ define('goi-machine',
 					auxs = auxs.concat(param.auxs);
 
 					if (ast instanceof Reference) {
-						var atomNode = new AtomN("a").addToGroup(param);
+						var atomNode = new Atom("a").addToGroup(param);
 						new Link(atomNode.key, param.prin.key, "_", "_").addToGroup(param);
 						param.prin = atomNode;
 					}
@@ -105,8 +110,13 @@ define('goi-machine',
 					var auxs = [];
 
 					var next;
-					for (var i = 0; i < ast.type; i++) {
-						next = this.toGraph(ast.eas[i], term).addToGroup(term);
+					for (var i = 0; i < ast.sig[0]; i++) {
+						next = this.toGraph(ast.eas[i], term, false).addToGroup(term);
+						new Link(op.key, next.prin.key, "_", "_").addToGroup(term);
+						auxs = auxs.concat(next.auxs);
+					}
+					for (var i = 0; i < ast.sig[1]; i++) {
+						next = this.toGraph(ast.das[i], term, true).addToGroup(term);
 						new Link(op.key, next.prin.key, "_", "_").addToGroup(term);
 						auxs = auxs.concat(next.auxs);
 					}
@@ -182,7 +192,7 @@ define('goi-machine',
 			if (token.rewriteFlag == Flag.SEARCH) {
 				var to = this.graph.findNodeByKey(link.to);
 				var outlinks = to.findLinksOutOf();
-				if (to instanceof AtomN) {
+				if (to instanceof Atom) {
 					token.rewriteFlag = Flag.RETURN;
 					return link;
 				} else if (to instanceof Op) {

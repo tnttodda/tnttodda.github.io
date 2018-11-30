@@ -90,9 +90,9 @@ define(function(require) {
 						else if (str == "EQUALS")
 							this._token = new Token(Token.EQUALS);
 					else if (str == "TRUE")
-						this._token = new Token(Token.TRUE);
+						this._token = new Token(Token.TRUE, true);
 					else if (str == "FALSE")
-						this._token = new Token(Token.FALSE);
+						this._token = new Token(Token.FALSE, false);
 					else
 						this._token = new Token(Token.LCID, str);
 				}
@@ -129,8 +129,16 @@ define(function(require) {
 			return token.value;
 		}
 
+		value() {
+			return this._token.value;
+		}
+
 		lookahead() {
 			return this._token;
+		}
+
+		lookaheadType() {
+			return this._token.type;
 		}
 
 		/**

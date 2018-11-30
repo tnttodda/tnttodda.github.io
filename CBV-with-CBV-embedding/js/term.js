@@ -4,7 +4,6 @@ define('term', function(require) {
 
 	var Group = require('group');
 	var Link = require('link');
-	// var Contract = require('nodes/contract');
 
 	class Term extends Group {
 

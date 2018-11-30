@@ -2,8 +2,7 @@
 
 define('ast/term', function() {
   class Term {
-    constructor(type, ctx) {
-      this.type = type;
+    constructor(ctx) {
       this.ctx = ctx;
     }
   }
@@ -17,33 +16,20 @@ define('ast/var', function(require) {
      */
   class Var extends Term {
     constructor(ctx, name) {
-      super(0,ctx);
+      super(ctx);
       this.name = name;
     }
   }
   return Var;
 });
 
-define('ast/atom', function(require) {
-  var Term = require('ast/term');
-    /**
-     * name is the string matched for this identifier.
-     */
-  class Atom extends Term {
-    constructor(ctx, name) {
-      super(0);
-      this.name = name;
-    }
-  }
-  return Atom;
-});
-
 define('ast/operation', function(require) {
   var Term = require('ast/term');
 
   class Operation extends Term {
-    constructor(ctx, type, name, active, eas, das) {
-      super(type, ctx);
+    constructor(ctx, sig, name, active, eas, das) {
+      super(ctx);
+      this.sig = sig;
       this.name = name;
       this.active = active;
       this.eas = eas;
@@ -62,7 +48,7 @@ define('ast/binding', function(require) {
 
   class Binding extends Term {
     constructor(ctx, id, param, body) {
-      super(0, ctx);
+      super(ctx);
       this.id = id;
       this.param = param;
       this.body = body;
@@ -80,7 +66,7 @@ define('ast/reference', function(require) {
 
   class Reference extends Term {
     constructor(ctx, id, param, body) {
-      super(0, ctx);
+      super(ctx);
       this.id = id;
       this.param = param;
       this.body = body;

@@ -2,7 +2,6 @@ define(function(require) {
 
 	var Token = require('parser/token');
 	var Var = require('ast/var');
-	var Atom = require('ast/atom');
 	var Operation = require('ast/operation');
 	var Binding = require('ast/binding');
 	var Reference = require('ast/reference');
@@ -26,24 +25,19 @@ define(function(require) {
 		term(ctx) {
 			if (this.lexer.skip(Token.BIND)) {
 				const id = this.term(ctx);
-				id.ctx = [id].concat(id.ctx); // necessary?
-
-				if (this.lexer.skip(Token.DEF)) {
-					const P = this.term(ctx);
-					this.lexer.match(Token.IN);
-					const B = this.term([id].concat(ctx));
-					return new Binding(ctx,id,P,B);
-				}
+				id.ctx = [id].concat(id.ctx);
+				this.lexer.match(Token.DEF);
+				const P = this.term(ctx);
+				this.lexer.match(Token.IN);
+				const B = this.term([id].concat(ctx));
+				return new Binding(ctx,id,P,B);
 			} else if (this.lexer.skip(Token.NEW)) {
 				const id = this.term(ctx);
-				id.ctx = [id].concat(id.ctx); // necessary?
-
-				if (this.lexer.skip(Token.DEF)) {
-					const P = this.term(ctx);
-					this.lexer.match(Token.IN);
-					const B = this.term([id].concat(ctx));
-					return new Reference(ctx,id,P,B);
-				}
+				id.ctx = [id].concat(id.ctx);
+				const P = this.term(ctx);
+				this.lexer.match(Token.IN);
+				const B = this.term([id].concat(ctx));
+				return new Reference(ctx,id,P,B);
 			} else {
 				return this.atom(ctx);
 			}
@@ -64,37 +58,41 @@ define(function(require) {
 			}
 		}
 
-		// op ::=
+		// BUILT-IN OPERATIONS
 		operation(ctx) {
-			if (this.lexer.skip(Token.PLUS)) {
-				var eas = this.gatherEAs(ctx,2);
-				return new Operation(ctx,2,"+",true,eas,[]);
-			} else if (this.lexer.skip(Token.TIMES)) {
-				var eas = this.gatherEAs(ctx,2);
-				return new Operation(ctx,2,"*",true,eas,[]);
-			} else if (this.lexer.skip(Token.AND)) {
-				var eas = this.gatherEAs(ctx,2);
-				return new Operation(ctx,2,"∧",true,eas,[])
-			} else if (this.lexer.skip(Token.OR)) {
-				var eas = this.gatherEAs(ctx,2);
-				return new Operation(ctx,2,"∨",true,eas,[])
-			} else if (this.lexer.skip(Token.NOT)) {
-				var eas = this.gatherEAs(ctx,1);
-				return new Operation(ctx,1,"¬",true,eas,[])
-			} else if (this.lexer.skip(Token.EQUALS)) {
-				var eas = this.gatherEAs(ctx,2);
-				return new Operation(ctx,2,"==",true,eas,[])
-			} else if (this.lexer.skip(Token.TRUE)) {
-				return new Operation(ctx,0,"true",false,[],[]);
-			} else if (this.lexer.skip(Token.FALSE)) {
-				return new Operation(ctx,0,"false",false,[],[]);
-			} else if (this.lexer.next(Token.INT)) {
-				const n = this.lexer.token(Token.INT);
-				return new Operation(ctx,0,n,false,[],[]);
-			} else {
-				console.log("no");
-				return undefined;
+			var name; var sig; var active;
+			var eas = [];
+			var das = [];
+
+			var token = this.lexer.lookaheadType();
+			switch(token) {
+				case Token.PLUS:
+					name = "+"; sig = [2,0]; active = true;
+					break;
+				case Token.TIMES:
+					name = "*"; sig = [2,0]; active = true;
+					break;
+				case Token.AND:
+					name = "∧"; sig = [2,0]; active = true;
+					break;
+				case Token.OR:
+					name = "∨"; sig = [2,0]; active = true;
+					break;
+				case Token.NOT:
+					name = "¬"; sig = [1,0]; active = true;
+					break;
+				case Token.EQUALS:
+					name = "=="; sig = [2,0]; active = true;
+					break;
+				default:
+					name = this.lexer.value(); sig = [0,0]; active = false;
+					break;
 			}
+			this.lexer.match(token);
+			if (sig[0] > 0)
+				eas = this.gatherEAs(ctx,sig[0]);
+			var das = [];
+			return new Operation(ctx,sig,name,active,eas,das);
 		}
 
 		gatherEAs(ctx,type) {
