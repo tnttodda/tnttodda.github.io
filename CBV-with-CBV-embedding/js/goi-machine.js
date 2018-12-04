@@ -56,16 +56,17 @@ define('goi-machine',
 
 				this.graph.clear();
 				var start = new Start().addToGroup(this.graph.child);
-				var term = this.toGraph(ast, this.graph.child, false);
+				var term = this.toGraph(ast).addToGroup(this.graph.child);
+				console.log(term);
 				var link = new Link(start.key, term.prin.key, "_", "_").addToGroup(this.graph.child);
 				this.token.reset(link);
 			}
 
 			// translation
-			toGraph(ast, group) {
+			toGraph(ast) {
 				var graph = this.graph;
 
-				var term = new Term().addToGroup(group);
+				var term = new Term();
 				if (ast instanceof Thunk) {
 					term.box();
 					ast = ast.inner;
@@ -233,6 +234,7 @@ define('goi-machine',
 		}
 
 		doneVisiting(link, links) {
+			links = links.filter(x => !this.graph.findNodeByKey(x.to).group.boxed);
 			for (let l of links) {
 				if ((!l.visited) && (l != link))
 					return false;

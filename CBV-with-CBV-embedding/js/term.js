@@ -3,6 +3,7 @@
 define('term', function(require) {
 
 	var Group = require('group');
+	var Link = require('link');
 
 	class Term extends Group {
 
@@ -40,7 +41,46 @@ define('term', function(require) {
 					 + str
 					 + level + '};';
 			 }
-		return super.draw(level);
+			 return super.draw(level);
+		}
+
+		copyBox(map) {
+			var newTerm = new Term();
+			newTerm.boxed = this.boxed;
+			var newPrin = this.prin.copy().addToGroup(newTerm);
+			newTerm.prin = newPrin;
+			map.set(this.prin.key, newPrin.key);
+
+			newTerm.auxs = [];
+			for (let node of this.nodes) {
+				if (!map.has(node.key)) {
+					var newNode;
+					console.log(node);
+					if (node instanceof Term) {
+						newNode = node.copyBox(map).addToGroup(newTerm);
+					} else {
+						newNode = node.copy().addToGroup(newTerm);
+						map.set(node.key, newNode.key);
+					}
+				}
+		}
+			for (let aux of this.auxs) {
+				var newAux = aux.copy().addToGroup(newTerm);
+				newTerm.auxs.push(newAux);
+				map.set(aux.key, newAux.key);
+			}
+
+			for (let link of this.links) {
+				var newLink = new Link(map.get(link.from), map.get(link.to), link.fromPort, link.toPort).addToGroup(newTerm);
+				newLink.reverse = link.reverse;
+			}
+
+			return newTerm;
+		}
+
+		copy() {
+			var map = new Map();
+			return this.copyBox(map);
 		}
 
 }

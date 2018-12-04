@@ -18,9 +18,11 @@ define(function(require) {
 		rewrite(token) {
 			var inLink = this.findLinksInto()[0];
 			var outLinks = this.findLinksOutOf();
+			console.log(outLinks);
 
 			var name = this.graph.findNodeByKey(outLinks[0].to).name;
 			var keep; var del;
+			console.log(name);
 			if (BoolOp.parseBoolean(name)) {
 				keep = 1; del = 2;
 			} else {
