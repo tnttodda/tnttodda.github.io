@@ -8,4 +8,4 @@
 // + 'fact 4';
 
 var fact_prog =
-  'bind x = IF(EQUALS(5,5);PLUS(2,3),0) in PLUS(x,x)';
+ 'bind x = IF(EQUALS(5,5);PLUS(2,3),0) in PLUS(x,x)';

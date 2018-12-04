@@ -28,7 +28,11 @@ define('nodes/contract',function(require) {
 			var nextNode = this.graph.findNodeByKey(nextLink.to);
 
 			if (nextNode instanceof Contract || nextNode instanceof Atom) {
-				inLinks.map(l => l.changeTo(nextNode.key,"_"));
+				console.log(inLinks);
+				for (let l of inLinks) {
+					l.changeTo(nextNode.key,"_")
+					console.log(inLinks);
+				}
 				nextLink.delete();
 				this.delete();
 			} else if (nextNode instanceof Op) {
@@ -38,7 +42,7 @@ define('nodes/contract',function(require) {
 				// clean up here
 				// half-copy eager arguments
 				var opLinks = nextNode.findLinksOutOf();
-				var opLinksE = opLinks.filter(x => !this.graph.findNodeByKey(x.to).group.boxed); // eager args
+				var opLinksE = opLinks.filter(x => !this.graph.findNodeByKey(x.to).group.boxed);
 				var opLinksD = opLinks.filter(x => !opLinksE.includes(x))
 				var inputsN = []; var inputsC = [];
 				for (var i = 0; i < opLinksE.length; i++) {
@@ -52,10 +56,11 @@ define('nodes/contract',function(require) {
 				}
 				// and then fully copy deferred arguments
 				for (var i = 0; i < opLinksD.length; i++) {
-					console.log(this.graph.findNodeByKey(opLinksD[i].to));
+					console.log(copy.findLinksOutOf());
 					var copy2 = this.graph.findNodeByKey(opLinksD[i].to).group.copy().addToGroup(term);
 					new Link(copy.key,copy2.prin.key,"_","_").addToGroup(term);
 				}
+				console.log(copy.findLinksOutOf());
 				term.set(copy,auxs);
 		}
 

@@ -57,7 +57,6 @@ define('goi-machine',
 				this.graph.clear();
 				var start = new Start().addToGroup(this.graph.child);
 				var term = this.toGraph(ast).addToGroup(this.graph.child);
-				console.log(term);
 				var link = new Link(start.key, term.prin.key, "_", "_").addToGroup(this.graph.child);
 				this.token.reset(link);
 			}

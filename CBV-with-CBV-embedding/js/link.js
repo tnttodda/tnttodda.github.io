@@ -2,26 +2,22 @@ define(function() {
 
 	class Link {
 		constructor(from, to, fromPort, toPort, colour) {
-			this.from = from;
-			this.to = to;
-			this.fromPort = fromPort;
-			this.toPort = toPort;
+			this.from = from; 				this.to = to;
+			this.fromPort = fromPort;	this.toPort = toPort;
 			this.visited = false; // HACKING
-
 			this.reverse = false;
-			this.colour = colour;
-			this.penWidth = null;
+			this.colour = colour;			this.penWidth = null;
 			this.addToGraph(graph); // cheating
 			if (colour != "lightgrey") { // cheating
-				this.addToNode(); // cheating
+				this.addToNode();
 			}
 		}
 
 		addToNode() {
 			var fromNode = this.graph.findNodeByKey(this.from);
-			fromNode.links.push(this);
+			fromNode.outLinks.push(this);
 			var toNode = this.graph.findNodeByKey(this.to);
-			toNode.links.push(this);
+			toNode.inLinks.push(this);
 		}
 
 		addToGraph(graph) {
@@ -45,22 +41,25 @@ define(function() {
 
 		changeFrom(key, port) {
 			var fromNode = this.graph.findNodeByKey(this.from);
-			fromNode.links.splice(fromNode.links.indexOf(this), 1);
+			const i = fromNode.outLinks.indexOf(this);
+			fromNode.outLinks.splice(i, 1);
 
 			this.from = key;
 			this.fromPort = port;
 			fromNode = this.graph.findNodeByKey(this.from);
-			fromNode.links.push(this);
+			fromNode.outLinks.splice(i,0,this);
 		}
 
 		changeTo(key, port) {
 			var toNode = this.graph.findNodeByKey(this.to);
-			toNode.links.splice(toNode.links.indexOf(this), 1);
+			const i = toNode.inLinks.indexOf(this);
+			toNode.inLinks.splice(i, 1);
 
 			this.to = key;
 			this.toPort = port;
 			toNode = this.graph.findNodeByKey(this.to);
-			toNode.links.push(this);
+			toNode.inLinks.splice(i,0,this);
+			console.log(this);
 		}
 
 		focus(colour) {
@@ -76,9 +75,9 @@ define(function() {
 
 		delete() {
 			var fromNode = this.graph.findNodeByKey(this.from);
-			fromNode.links.splice(fromNode.links.indexOf(this), 1);
+			fromNode.outLinks.splice(fromNode.outLinks.indexOf(this), 1);
 			var toNode = this.graph.findNodeByKey(this.to);
-			toNode.links.splice(toNode.links.indexOf(this), 1);
+			toNode.inLinks.splice(toNode.inLinks.indexOf(this), 1);
 			this.group.removeLink(this);
 			this.graph.removeLink(this);
 		}

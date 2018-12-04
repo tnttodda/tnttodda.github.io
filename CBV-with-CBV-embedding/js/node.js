@@ -10,9 +10,8 @@ define(function(require) {
 			this.name = name; // identifier name or constant name if any
 			this.graph = null;
 			this.group = null;
-			this.width = 0.3;
-			this.height = 0.3;
-			this.links = [];
+			this.width = 0.3; this.height = 0.3;
+			this.inLinks = []; this.outLinks = [];
 			this.addToGraph(graph); // cheating!
 		}
 
@@ -36,31 +35,27 @@ define(function(require) {
 		}
 
 		findLinksConnected() {
-			return this.links;
+			return this.inLinks.concat(this.outLinks);
 		}
 
 		findLinksInto() {
-			var links = [];
-			for (let link of this.links) {
-				if (link.to == this.key)
-					links.push(link);
+			var list = [];
+			for (var i = 0; i < this.inLinks.length; i++) {
+				list[i] = this.inLinks[i];
 			}
-			return links;
+			return list;
 		}
 
 		findLinksOutOf() {
-			var links = [];
-			for (let link of this.links) {
-				if (link.from == this.key)
-					links.push(link);
+			var list = [];
+			for (var i = 0; i < this.outLinks.length; i++) {
+				list[i] = this.outLinks[i];
 			}
-			return links;
+			return list;
 		}
 
 		findNodesOutOf() {
-			var links = this.findLinksOutOf()
-			var nodeKeys = links.map(l => l.to)
-			return nodeKeys.map(k => this.graph.findNodeByKey(k));
+			return this.findLinksOutOf().map(k => this.graph.findNodeByKey(k));
 		}
 
 		copy(graph) {

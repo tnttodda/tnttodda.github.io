@@ -18,18 +18,18 @@ define(function(require) {
 		rewrite(token) {
 			var inLink = this.findLinksInto()[0];
 			var outLinks = this.findLinksOutOf();
-			
+
 			var b = outLinks.reduce((sum,x) => sum && BoolOp.parseBoolean(this.graph.findNodeByKey(x.to).name), true);
 
 			var newNode = new BoolOp(b,false).addToGroup(this.group);
-			var newLink = new Link(inLink.from,newNode.key,"_","_").addToGroup(this.group);
+			inLink.changeTo(newNode.key,"_");
 
 			outLinks.map(x => x.delete());
 			outLinks.map(x => this.graph.findNodeByKey(x.to).delete());
 			this.delete();
 
 			token.rewriteFlag = Flag.SEARCH;
-			return newLink;
+			return inLink;
 		}
 
 	}
