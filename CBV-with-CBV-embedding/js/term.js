@@ -56,18 +56,16 @@ define('term', function(require) {
 				if (!map.has(node.key)) {
 					var newNode;
 					if (node instanceof Term) {
-						console.log(node);
 						newNode = node.copyBox(map).addToGroup(newTerm);
 					} else {
-						newNode = node.copy();
+						newNode = node.copy().addToGroup(newTerm);
 						map.set(node.key, newNode.key);
 					}
 				}
 		}
 			for (let aux of this.auxs) {
-				var newAux = aux.copy().addToGroup(newTerm);
+				var newAux = this.graph.findNodeByKey(map.get(aux.key));
 				newTerm.auxs.push(newAux);
-				map.set(aux.key, newAux.key);
 			}
 
 			for (let link of this.links) {
@@ -76,7 +74,6 @@ define('term', function(require) {
 				newLink.colour = link.colour;
 			}
 
-			console.log(map);
 			return newTerm;
 		}
 

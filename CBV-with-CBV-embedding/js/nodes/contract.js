@@ -45,13 +45,11 @@ define('nodes/contract',function(require) {
 				var thunks = []; var thunkCopies = []; var links = opLinksE;
 				for (var i = 0; i < opLinksD.length; i++) {
 					var thunk = this.graph.findNodeByKey(opLinksD[i].to).group;
-					console.log(thunk);
 					var thunkCopy = thunk.copy().addToGroup(term);
 					thunks.push(thunk);
 					thunkCopies.push(thunkCopy);
 					links = links.concat.apply(links,(thunk.auxs.map(x => x.findLinksOutOf())));
-					var l = new Link(copy.key,thunkCopy.prin.key,"_","_").addToGroup(term);
-					l.visited = true;
+
 				}
 
 				var inputs = [];
@@ -64,10 +62,14 @@ define('nodes/contract',function(require) {
 				var auxs = Contract.createDNet(inputs.length/2,inputs,term);
 				for (var i = 0; i < links.length; i++)
 					links[i].changeFrom(auxs[i].key,"_");
+				for (var i = 0; i < thunkCopies.length; i++) {
+					var l = new Link(copy.key,thunkCopies[i].prin.key,"_","_").addToGroup(term);
+					l.visited = true;
+				}
 
 				link.changeTo(copy.key,"_");
 				term.set(copy,auxs);
-		}
+			}
 
 			token.rewriteFlag = Flag.SEARCH;
 			return link;

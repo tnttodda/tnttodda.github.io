@@ -24,7 +24,11 @@
   				select: function(event, ui) {
   					var prog;
   					switch($("#sm-example option:selected").val()) {
-  						case "fact": prog = fact_prog; break;
+							case "ex1": prog = ex1; break;
+							case "ex2": prog = ex2; break;
+							case "ex3": prog = ex3; break;
+							case "ex4": prog = ex4; break;
+  						case "ex5": prog = ex5; break;
   					}
   					$("#ta-program").val(prog);
   					$("#btn-make-graph").click();
@@ -39,7 +43,12 @@
 <body>
 	<div class="left">
 		<select id="sm-example">
-			<option value="fact" selected>Factorial</option>
+			<option value="ex1" selected>Ex1 - Simple Arithmetic</option>
+			<option value="ex2" selected>Ex2 - Arithmetic w/ Copying</option>
+			<option value="ex3" selected>Ex3 - Some Logic</option>
+			<option value="ex4" selected>Ex4 - An If Statement</option>
+			<option value="ex5" selected>Ex5 - There's a lot going on!</option>
+
 		</select>
 		<button id="btn-info">?</button>
 		<textarea id="ta-program" rows="40" spellcheck=false style="width: 100%; height: 37%; resize: none; font-size: 12px;">
