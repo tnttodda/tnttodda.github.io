@@ -56,6 +56,7 @@ define('term', function(require) {
 				if (!map.has(node.key)) {
 					var newNode;
 					if (node instanceof Term) {
+						console.log(node);
 						newNode = node.copyBox(map).addToGroup(newTerm);
 					} else {
 						newNode = node.copy();

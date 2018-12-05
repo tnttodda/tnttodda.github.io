@@ -43,9 +43,9 @@ define('nodes/contract',function(require) {
 
 				// fully copy deferred arguments
 				var thunks = []; var thunkCopies = []; var links = opLinksE;
-				console.log(links);
 				for (var i = 0; i < opLinksD.length; i++) {
 					var thunk = this.graph.findNodeByKey(opLinksD[i].to).group;
+					console.log(thunk);
 					var thunkCopy = thunk.copy().addToGroup(term);
 					thunks.push(thunk);
 					thunkCopies.push(thunkCopy);
@@ -60,15 +60,10 @@ define('nodes/contract',function(require) {
 				for (var i = 0; i < opLinksE.length; i++) inputs = inputs.concat(copy);
 				inputs = inputs.concat.apply(inputs,thunkCopies.map(x => x.auxs));
 
-				console.log(inputs.length);
 				// make D-net, thus half-copy eager arguments
-				var cs = inputs.length + opLinksD.length;
 				var auxs = Contract.createDNet(inputs.length/2,inputs,term);
-				console.log(auxs);
-				console.log(links);
-				for (var i = 0; i < links.length; i++) {
+				for (var i = 0; i < links.length; i++)
 					links[i].changeFrom(auxs[i].key,"_");
-				}
 
 				link.changeTo(copy.key,"_");
 				term.set(copy,auxs);

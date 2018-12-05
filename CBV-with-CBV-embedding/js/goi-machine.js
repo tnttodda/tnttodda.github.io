@@ -74,15 +74,13 @@ define('goi-machine',
 				// VARIABLES & ATOMS
 				if (ast instanceof Variable) {
 					var auxs = [];
-					var prin = null;
-					console.log(prin);
+					var prin;
 					for (var i = 0; i < ast.ctx.length; i++) {
 						var c = new Contract().addToGroup(term);
 						auxs.push(c);
 						if ((ast.ctx[i]).name == ast.name)
 						 	prin = c;
 					}
-					console.log(prin);
 					term.set(prin, auxs);
 
 				// BINDINGS & REFERENCES
