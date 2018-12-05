@@ -59,7 +59,6 @@ define(function() {
 			this.toPort = port;
 			toNode = this.graph.findNodeByKey(this.to);
 			toNode.inLinks.splice(i,0,this);
-			console.log(this);
 		}
 
 		focus(colour) {

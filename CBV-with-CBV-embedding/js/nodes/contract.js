@@ -28,11 +28,8 @@ define('nodes/contract',function(require) {
 			var nextNode = this.graph.findNodeByKey(nextLink.to);
 
 			if (nextNode instanceof Contract || nextNode instanceof Atom) {
-				console.log(inLinks);
-				for (let l of inLinks) {
+				for (let l of inLinks)
 					l.changeTo(nextNode.key,"_")
-					console.log(inLinks);
-				}
 				nextLink.delete();
 				this.delete();
 			} else if (nextNode instanceof Op) {
@@ -40,27 +37,40 @@ define('nodes/contract',function(require) {
 				var copy = nextNode.copy().addToGroup(term);
 
 				// clean up here
-				// half-copy eager arguments
 				var opLinks = nextNode.findLinksOutOf();
 				var opLinksE = opLinks.filter(x => !this.graph.findNodeByKey(x.to).group.boxed);
 				var opLinksD = opLinks.filter(x => !opLinksE.includes(x))
-				var inputsN = []; var inputsC = [];
-				for (var i = 0; i < opLinksE.length; i++) {
-					inputsN.push(nextNode); inputsC.push(copy);
-				}
-				var inputs = inputsN.concat(inputsC);
-				var auxs = Contract.createDNet(opLinksE.length,inputs,term);
-				link.changeTo(copy.key,"_");
-				for (var i = 0; i < opLinksE.length; i++) {
-					opLinksE[i].changeFrom(auxs[i].key,"_");
-				}
-				// and then fully copy deferred arguments
+
+				// fully copy deferred arguments
+				var thunks = []; var thunkCopies = []; var links = opLinksE;
+				console.log(links);
 				for (var i = 0; i < opLinksD.length; i++) {
-					console.log(copy.findLinksOutOf());
-					var copy2 = this.graph.findNodeByKey(opLinksD[i].to).group.copy().addToGroup(term);
-					new Link(copy.key,copy2.prin.key,"_","_").addToGroup(term);
+					var thunk = this.graph.findNodeByKey(opLinksD[i].to).group;
+					var thunkCopy = thunk.copy().addToGroup(term);
+					thunks.push(thunk);
+					thunkCopies.push(thunkCopy);
+					links = links.concat.apply(links,(thunk.auxs.map(x => x.findLinksOutOf())));
+					var l = new Link(copy.key,thunkCopy.prin.key,"_","_").addToGroup(term);
+					l.visited = true;
 				}
-				console.log(copy.findLinksOutOf());
+
+				var inputs = [];
+				for (var i = 0; i < opLinksE.length; i++) inputs = inputs.concat(nextNode);
+				inputs = inputs.concat.apply(inputs,thunks.map(x => x.auxs));
+				for (var i = 0; i < opLinksE.length; i++) inputs = inputs.concat(copy);
+				inputs = inputs.concat.apply(inputs,thunkCopies.map(x => x.auxs));
+
+				console.log(inputs.length);
+				// make D-net, thus half-copy eager arguments
+				var cs = inputs.length + opLinksD.length;
+				var auxs = Contract.createDNet(inputs.length/2,inputs,term);
+				console.log(auxs);
+				console.log(links);
+				for (var i = 0; i < links.length; i++) {
+					links[i].changeFrom(auxs[i].key,"_");
+				}
+
+				link.changeTo(copy.key,"_");
 				term.set(copy,auxs);
 		}
 
@@ -78,13 +88,13 @@ define('nodes/contract',function(require) {
 				c = new Contract().addToGroup(group);
 				cList.push(c);
 
-			if (inputs.length == 0) // maybe this needs to be "more elegant"
-				new Link(op.key, c.key, "_", "_", "lightgrey").addToGroup(group);
+			// if (inputs.length == 0) // maybe this needs to be "more elegant"
+			// 	new Link(op.key, c.key, "_", "_", "lightgrey").addToGroup(group);
 			}
 
 			if (cList.length > 0) {
 				for (var i = 0; i < inputs.length; i++) {
-					from = inputs[i]; to = cList[(i%(cs))];
+					from = inputs[i]; to = cList[i%cs];
 					new Link(from.key, to.key, "_", "_").addToGroup(group);
 				}
 			}

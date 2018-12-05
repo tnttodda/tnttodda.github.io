@@ -74,12 +74,15 @@ define('goi-machine',
 				// VARIABLES & ATOMS
 				if (ast instanceof Variable) {
 					var auxs = [];
+					var prin = null;
+					console.log(prin);
 					for (var i = 0; i < ast.ctx.length; i++) {
 						var c = new Contract().addToGroup(term);
 						auxs.push(c);
 						if ((ast.ctx[i]).name == ast.name)
-						 	var prin = c;
+						 	prin = c;
 					}
+					console.log(prin);
 					term.set(prin, auxs);
 
 				// BINDINGS & REFERENCES
@@ -206,7 +209,8 @@ define('goi-machine',
 						}
 						return link;
 					} else {
-						return outlinks[0];
+						var j = this.findJ(link,outlinks);
+						return outlinks[j];
 					}
 				} else if (to instanceof Contract) {
 					token.rewriteFlag = Flag.REWRITE;

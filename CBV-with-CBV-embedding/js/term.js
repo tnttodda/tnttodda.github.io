@@ -58,7 +58,7 @@ define('term', function(require) {
 					if (node instanceof Term) {
 						newNode = node.copyBox(map).addToGroup(newTerm);
 					} else {
-						newNode = node.copy().addToGroup(newTerm);
+						newNode = node.copy();
 						map.set(node.key, newNode.key);
 					}
 				}
@@ -71,10 +71,11 @@ define('term', function(require) {
 
 			for (let link of this.links) {
 				var newLink = new Link(map.get(link.from), map.get(link.to), link.fromPort, link.toPort).addToGroup(newTerm);
-				console.log(newTerm.links);
 				newLink.reverse = link.reverse;
+				newLink.colour = link.colour;
 			}
 
+			console.log(map);
 			return newTerm;
 		}
 
