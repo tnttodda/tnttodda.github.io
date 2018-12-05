@@ -9,7 +9,6 @@ define('term', function(require) {
 
 		constructor(prin, auxs) {
 			super();
-			this.prin = null;
 			this.set(prin, auxs)
 			this.boxed = false;
 		}
@@ -42,6 +41,12 @@ define('term', function(require) {
 					 + level + '};';
 			 }
 			 return super.draw(level);
+		}
+
+		removeNode(node) {
+			if (this.auxs.indexOf(node) > -1)
+				this.auxs.splice(this.auxs.indexOf(node), 1);
+			return super.removeNode(node);
 		}
 
 		copyBox(map) {
@@ -80,6 +85,26 @@ define('term', function(require) {
 		copy() {
 			var map = new Map();
 			return this.copyBox(map);
+		}
+
+		quotient() {
+			var changed = false;
+			for (let node of this.nodes) {
+				if (node instanceof Term) {
+					node.quotient();
+				} else if (node.contract) { // change
+					var inLinks = node.findLinksInto();
+					var outLinks = node.findLinksOutOf();
+					if ((inLinks.length < 2) ||
+						  (this.graph.findNodeByKey(outLinks[0].to).contract)) {
+						changed = true;
+						inLinks.map(x => x.changeTo(outLinks[0].to,"_"));
+						outLinks[0].delete();
+						node.delete();
+					}
+				}
+			}
+			if (changed) this.quotient();
 		}
 
 }

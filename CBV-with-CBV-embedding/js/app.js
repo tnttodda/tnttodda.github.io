@@ -39,6 +39,11 @@ require(["jquery", "renderer", "goi-machine"],
     if (isDraw)	renderer.render(result);
 		}
 
+    $('#cb-qrules').change(function() {
+	        machine.quotiening = this.checked;
+	        $("#btn-refresh").click();
+    });
+
     function makeGraph() {
       $("#graphTxt").val("");
       $("#linkTxt").val("");

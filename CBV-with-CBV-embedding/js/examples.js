@@ -24,4 +24,4 @@ var ex5 =
  'bind z = AND(TRUE,PLUS(0,1)) in\n'+
  'bind y = IF(z;2,0) in\n' +
  'bind x = PLUS(4,y) in\n'+
- 'EQUALS(x,6)'
+ 'EQUALS(y,PLUS(x,4))'

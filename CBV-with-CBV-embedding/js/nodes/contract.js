@@ -12,6 +12,7 @@ define('nodes/contract',function(require) {
 
 		constructor(name) {
 			super("point", "", name);
+			this.contract = true; // change
 		}
 
 		transition(token, link) {
@@ -49,7 +50,6 @@ define('nodes/contract',function(require) {
 					thunks.push(thunk);
 					thunkCopies.push(thunkCopy);
 					links = links.concat.apply(links,(thunk.auxs.map(x => x.findLinksOutOf())));
-
 				}
 
 				var inputs = [];
@@ -88,7 +88,6 @@ define('nodes/contract',function(require) {
 			// if (inputs.length == 0) // maybe this needs to be "more elegant"
 			// 	new Link(op.key, c.key, "_", "_", "lightgrey").addToGroup(group);
 			}
-
 			if (cList.length > 0) {
 				for (var i = 0; i < inputs.length; i++) {
 					from = inputs[i]; to = cList[i%cs];
