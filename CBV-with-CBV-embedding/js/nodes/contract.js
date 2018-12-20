@@ -93,7 +93,7 @@ define('nodes/contract',function(require) {
 			if (cList.length > 0) {
 				for (var i = 0; i < inputs.length; i++) {
 					from = inputs[i]; to = cList[i%cs];
-					new Link(from.key, to.key, "_", "_").addToGroup(group);
+					new Link(from.key, to.key, "_", "_",i%cs).addToGroup(group);
 				}
 			}
 

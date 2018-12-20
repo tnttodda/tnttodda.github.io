@@ -1,21 +1,26 @@
 define(function() {
 
 	class Link {
-		constructor(from, to, fromPort, toPort, cnet) {
+		constructor(from, to, fromPort, toPort, argNo) {
 			this.from = from; 				this.to = to;
 			this.fromPort = fromPort;	this.toPort = toPort;
 			this.visited = false; // HACKING
 			this.reverse = false;
-			this.colour = colour;			this.penWidth = null;
+			this.colour = "black";			this.penWidth = null;
 			this.addToGraph(graph); // cheating
-			this.addToNode(cnet);
+			this.addToNode(argNo);
 		}
 
-		addToNode(cnet) {
+		addToNode(argNo) {
 			var fromNode = this.graph.findNodeByKey(this.from);
-			fromNode.outLinks.push(this);
 			var toNode = this.graph.findNodeByKey(this.to);
+
 			toNode.inLinks.push(this);
+			if (argNo == null) {
+				fromNode.outLinks.push(this);
+			} else {
+				fromNode.outLinks.splice(argNo,0,this);
+			}
 		}
 
 		addToGraph(graph) {
