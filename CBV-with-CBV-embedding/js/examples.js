@@ -22,6 +22,6 @@ var ex4 = 'TIMES(IF(TRUE;7,0),IF(FALSE;0,191))'
 
 var ex5 =
   'bind z = PLUS(1,2) in\n'+
-  'bind y = IF(EQAUSL(z,3);PLUS(1,z),PLUS(2,z)) in\n' +
+  'bind y = IF(EQUALS(z,3);PLUS(1,z),PLUS(2,z)) in\n' +
   'bind x = PLUS(4,y) in\n'+
   'EQUALS(x,x)'
