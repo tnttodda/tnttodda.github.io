@@ -18,6 +18,7 @@ require(["jquery", "renderer", "goi-machine"],
 	function ($, renderer, Machine) {
 
 		var machine = new Machine();
+    var quotiening = true;
 
 		function clearGraph(callback) {
 			renderer.render('digraph G {\n\t\n}');
@@ -29,6 +30,7 @@ require(["jquery", "renderer", "goi-machine"],
 		}
 
 		function draw(result) {
+      if (quotiening) machine.term.quotient();
       if (result == null) {
         var width = $("#graph").width();
 		    var height = $("#graph").height();
@@ -40,8 +42,8 @@ require(["jquery", "renderer", "goi-machine"],
 		}
 
     $('#cb-qrules').change(function() {
-	        machine.quotiening = this.checked;
-	        $("#btn-refresh").click();
+      quotiening = this.checked;
+      $("#btn-refresh").click();
     });
 
     function makeGraph() {
@@ -124,6 +126,7 @@ require(["jquery", "renderer", "goi-machine"],
 		}
 
 		function next() {
+      // console.log(machine.graph.findNodeByKey("nd32").outLinks);
       if (graphsAhead.length == 0) {
   			if (!finished) {
           graphsBehind.push($("#ta-graph").val());

@@ -1,19 +1,17 @@
 define(function() {
 
 	class Link {
-		constructor(from, to, fromPort, toPort, colour) {
+		constructor(from, to, fromPort, toPort, cnet) {
 			this.from = from; 				this.to = to;
 			this.fromPort = fromPort;	this.toPort = toPort;
 			this.visited = false; // HACKING
 			this.reverse = false;
 			this.colour = colour;			this.penWidth = null;
 			this.addToGraph(graph); // cheating
-			if (colour != "lightgrey") { // cheating
-				this.addToNode();
-			}
+			this.addToNode(cnet);
 		}
 
-		addToNode() {
+		addToNode(cnet) {
 			var fromNode = this.graph.findNodeByKey(this.from);
 			fromNode.outLinks.push(this);
 			var toNode = this.graph.findNodeByKey(this.to);

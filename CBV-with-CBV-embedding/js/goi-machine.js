@@ -46,7 +46,7 @@ define('goi-machine',
 				graph = this.graph; // cheating!
 				this.token = tokenSet;
 				this.count = countSet;
-				this.quotiening = true;
+				this.term = null;
 			}
 
 			compile(source) {
@@ -58,7 +58,7 @@ define('goi-machine',
 				this.graph.clear();
 				var start = new Start().addToGroup(this.graph.child);
 				var term = this.toGraph(ast).addToGroup(this.graph.child);
-				if (this.quotiening) term.quotient();
+				this.term = term;
 				var link = new Link(start.key, term.prin.key, "_", "_").addToGroup(this.graph.child);
 				this.token.reset(link);
 			}

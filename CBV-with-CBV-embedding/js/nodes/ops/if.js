@@ -18,6 +18,7 @@ define(function(require) {
 		rewrite(token) {
 			var inLink = this.findLinksInto()[0];
 			var outLinks = this.findLinksOutOf();
+			console.log(outLinks);
 
 			var name = this.graph.findNodeByKey(outLinks[0].to).name;
 			var keep; var del;

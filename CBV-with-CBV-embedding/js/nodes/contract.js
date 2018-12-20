@@ -69,6 +69,8 @@ define('nodes/contract',function(require) {
 
 				link.changeTo(copy.key,"_");
 				term.set(copy,auxs);
+				// console.log(nextNode.group);
+				// console.log(term);
 			}
 
 			token.rewriteFlag = Flag.SEARCH;

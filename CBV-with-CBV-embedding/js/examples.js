@@ -20,8 +20,10 @@ var ex3 =
 
 var ex4 = 'TIMES(IF(TRUE;7,0),IF(FALSE;0,191))'
 
-var ex5 =
- 'bind z = AND(TRUE,PLUS(0,1)) in\n'+
- 'bind y = IF(z;2,0) in\n' +
- 'bind x = PLUS(4,y) in\n'+
- 'EQUALS(y,PLUS(x,4))'
+var ex5 = "bind z = PLUS(1,2) in bind y = IF(EQUALS(z,3);PLUS(1,z),PLUS(2,z)) in bind x = PLUS(4,y) in EQUALS(x,x)"
+
+// var ex5 =
+//  'bind z = AND(TRUE,PLUS(0,1)) in\n'+
+//  'bind y = IF(z;2,0) in\n' +
+//  'bind x = PLUS(4,y) in\n'+
+//  'EQUALS(y,PLUS(x,4))'

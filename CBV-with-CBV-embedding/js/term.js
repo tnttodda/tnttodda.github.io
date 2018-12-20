@@ -67,19 +67,27 @@ define('term', function(require) {
 						map.set(node.key, newNode.key);
 					}
 				}
-		}
+			}
 			for (let aux of this.auxs) {
-				var newAux = this.graph.findNodeByKey(map.get(aux.key));
+				var newAux = this.graph.findNodeByKey(this.getEndpoint(map,aux.key));
 				newTerm.auxs.push(newAux);
 			}
 
 			for (let link of this.links) {
-				var newLink = new Link(map.get(link.from), map.get(link.to), link.fromPort, link.toPort).addToGroup(newTerm);
+				var from = this.getEndpoint(map,link.from);
+				var to = this.getEndpoint(map,link.to);
+				var newLink = new Link(from, to, link.fromPort, link.toPort).addToGroup(newTerm);
 				newLink.reverse = link.reverse;
 				newLink.colour = link.colour;
 			}
 
 			return newTerm;
+		}
+
+		getEndpoint(map,endpoint) {
+			var mappedEndpoint = map.get(endpoint);
+			if (mappedEndpoint == null) return endpoint;
+			return mappedEndpoint;
 		}
 
 		copy() {
@@ -91,7 +99,11 @@ define('term', function(require) {
 			var changed = false;
 			for (let node of this.nodes) {
 				if (node instanceof Term) {
-					node.quotient();
+					if (node.nodes.length == 0) {
+						node.delete();
+					} else {
+						node.quotient();
+					}
 				} else if (node.contract) { // change
 					var inLinks = node.findLinksInto();
 					var outLinks = node.findLinksOutOf();
