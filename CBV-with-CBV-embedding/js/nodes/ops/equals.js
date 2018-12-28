@@ -24,7 +24,7 @@ define(function(require) {
 			var b = (left == right);
 
 			var newNode = new BoolOp(b,false).addToGroup(this.group);
-			inLink.changeTo(newNode.key,"_");
+			inLink.changeTo(newNode.key);
 
 			outLinks.map(x => x.delete());
 			outLinks.map(x => this.graph.findNodeByKey(x.to).delete());

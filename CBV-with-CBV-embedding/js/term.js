@@ -76,7 +76,7 @@ define('term', function(require) {
 			for (let link of this.links) {
 				var from = this.getEndpoint(map,link.from);
 				var to = this.getEndpoint(map,link.to);
-				var newLink = new Link(from, to, link.fromPort, link.toPort).addToGroup(newTerm);
+				var newLink = new Link(from, to).addToGroup(newTerm);
 				newLink.reverse = link.reverse;
 				newLink.colour = link.colour;
 			}
@@ -110,7 +110,7 @@ define('term', function(require) {
 					if ((inLinks.length < 2) ||
 						  (this.graph.findNodeByKey(outLinks[0].to).contract)) {
 						changed = true;
-						inLinks.map(x => x.changeTo(outLinks[0].to,"_"));
+						inLinks.map(x => x.changeTo(outLinks[0].to));
 						outLinks[0].delete();
 						node.delete();
 					}

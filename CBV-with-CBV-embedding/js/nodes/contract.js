@@ -30,7 +30,7 @@ define('nodes/contract',function(require) {
 
 			if (nextNode instanceof Contract || nextNode instanceof Atom) {
 				for (let l of inLinks)
-					l.changeTo(nextNode.key,"_")
+					l.changeTo(nextNode.key);
 				nextLink.delete();
 				this.delete();
 			} else if (nextNode instanceof Op) {
@@ -61,16 +61,14 @@ define('nodes/contract',function(require) {
 				// make D-net, thus half-copy eager arguments
 				var auxs = Contract.createDNet(inputs.length/2,inputs,term);
 				for (var i = 0; i < links.length; i++)
-					links[i].changeFrom(auxs[i].key,"_");
+					links[i].changeFrom(auxs[i].key);
 				for (var i = 0; i < thunkCopies.length; i++) {
-					var l = new Link(copy.key,thunkCopies[i].prin.key,"_","_").addToGroup(term);
+					var l = new Link(copy.key,thunkCopies[i].prin.key).addToGroup(term);
 					l.visited = true;
 				}
 
-				link.changeTo(copy.key,"_");
+				link.changeTo(copy.key);
 				term.set(copy,auxs);
-				// console.log(nextNode.group);
-				// console.log(term);
 			}
 
 			token.rewriteFlag = Flag.SEARCH;
@@ -93,7 +91,7 @@ define('nodes/contract',function(require) {
 			if (cList.length > 0) {
 				for (var i = 0; i < inputs.length; i++) {
 					from = inputs[i]; to = cList[i%cs];
-					new Link(from.key, to.key, "_", "_",i%cs).addToGroup(group);
+					new Link(from.key,to.key,i%cs).addToGroup(group);
 				}
 			}
 

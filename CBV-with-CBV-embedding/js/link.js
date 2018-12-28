@@ -1,12 +1,10 @@
 define(function() {
 
 	class Link {
-		constructor(from, to, fromPort, toPort, argNo) {
-			this.from = from; 				this.to = to;
-			this.fromPort = fromPort;	this.toPort = toPort;
-			this.visited = false; // HACKING
-			this.reverse = false;
-			this.colour = "black";			this.penWidth = null;
+		constructor(from, to, argNo) {
+			this.from = from;
+			this.to = to;
+			this.clearFocus();
 			this.addToGraph(graph); // cheating
 			this.addToNode(argNo);
 		}
@@ -42,37 +40,34 @@ define(function() {
 			return this;
 		}
 
-		changeFrom(key, port) {
+		changeFrom(key) {
 			var fromNode = this.graph.findNodeByKey(this.from);
 			const i = fromNode.outLinks.indexOf(this);
 			fromNode.outLinks.splice(i, 1);
 
 			this.from = key;
-			this.fromPort = port;
 			fromNode = this.graph.findNodeByKey(this.from);
 			fromNode.outLinks.splice(i,0,this);
 		}
 
-		changeTo(key, port) {
+		changeTo(key) {
 			var toNode = this.graph.findNodeByKey(this.to);
 			const i = toNode.inLinks.indexOf(this);
 			toNode.inLinks.splice(i, 1);
 
 			this.to = key;
-			this.toPort = port;
 			toNode = this.graph.findNodeByKey(this.to);
 			toNode.inLinks.splice(i,0,this);
 		}
 
-		focus(colour) {
-			this.colour = colour;
+		focus() {
+			this.colour = "red";
 			this.penWidth = "20";
 		}
 
 		clearFocus() {
-			this.colour = null;
+			this.colour = "black";
 			this.penWidth = null;
-			this.visited = true; // HACKING
 		}
 
 		delete() {
@@ -89,29 +84,9 @@ define(function() {
 		}
 
 		draw(level) {
-			var str = level;
-
-			if (!this.reverse) {
-				str += this.from + '->' + this.to + '[';
-				if (this.fromPort != null)
-					str += 'tailport=' + this.fromPort;
-				if (this.toPort != null)
-					str += ',headport=' + this.toPort;
-			}
-			else {
-				str += this.to + '->' + this.from + '[dir=back';
-				if (this.fromPort != null)
-					str += ',headport=' + this.fromPort;
-				if (this.toPort != null)
-					str += ',tailport=' + this.toPort;
-			}
-
-			if (this.colour != null)
-				str += ',color=' + this.colour;
-			if (this.penWidth != null)
-				str += ',penwidth=' + this.penWidth;
-
-			str += '];';
+			var str = level += this.from + '->' + this.to + '[';
+					str += 'tailport=_,headport=_,'
+					str += 'color=' + this.colour + ",penwidth=" + this.penWidth + '];'
 			return str;
 		}
 	}

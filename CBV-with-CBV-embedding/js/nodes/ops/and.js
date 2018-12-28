@@ -22,7 +22,7 @@ define(function(require) {
 			var b = outLinks.reduce((sum,x) => sum && BoolOp.parseBoolean(this.graph.findNodeByKey(x.to).name), true);
 
 			var newNode = new BoolOp(b,false).addToGroup(this.group);
-			inLink.changeTo(newNode.key,"_");
+			inLink.changeTo(newNode.key);
 
 			outLinks.map(x => x.delete());
 			outLinks.map(x => this.graph.findNodeByKey(x.to).delete());

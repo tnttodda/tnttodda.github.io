@@ -22,8 +22,8 @@ define(function(require) {
 			var b = !BoolOp.parseBoolean(this.graph.findNodeByKey(outLinks[0].to).name);
 
 			var newNode = new BoolOp(b,false).addToGroup(this.group);
-			inLink.changeTo(newNode.key,"_");
-
+			inLink.changeTo(newNode.key);
+			
 			outLinks.map(x => x.delete());
 			outLinks.map(x => this.graph.findNodeByKey(x.to).delete());
 			this.delete();

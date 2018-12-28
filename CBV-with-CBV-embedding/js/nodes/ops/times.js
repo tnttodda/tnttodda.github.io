@@ -22,7 +22,7 @@ define(function(require) {
 			var n = outLinks.reduce((sum,x) => sum * this.graph.findNodeByKey(x.to).name, 1);
 
 			var newNode = new IntOp(n,false).addToGroup(this.group);
-			inLink.changeTo(newNode.key,"_");
+			inLink.changeTo(newNode.key);
 
 			outLinks.map(x => x.delete());
 			outLinks.map(x => this.graph.findNodeByKey(x.to).delete());

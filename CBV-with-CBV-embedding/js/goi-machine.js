@@ -59,7 +59,7 @@ define('goi-machine',
 				var start = new Start().addToGroup(this.graph.child);
 				var term = this.toGraph(ast).addToGroup(this.graph.child);
 				this.term = term;
-				var link = new Link(start.key, term.prin.key, "_", "_").addToGroup(this.graph.child);
+				var link = new Link(start.key, term.prin.key).addToGroup(this.graph.child);
 				this.token.reset(link);
 			}
 
@@ -97,10 +97,10 @@ define('goi-machine',
 
 					if (ast instanceof Reference) {
 						var atomNode = new Atom("a").addToGroup(param);
-						new Link(atomNode.key, param.prin.key, "_", "_").addToGroup(param);
+						new Link(atomNode.key, param.prin.key).addToGroup(param);
 						param.prin = atomNode;
 					}
-					new Link(auxNode.key, param.prin.key, "_", "_").addToGroup(term);
+					new Link(auxNode.key, param.prin.key).addToGroup(term);
 
 					auxs = Contract.createDNet(ast.ctx.length, auxs, term);
 					term.set(body.prin, auxs);
@@ -114,13 +114,12 @@ define('goi-machine',
 					var next;
 					for (var i = 0; i < ast.sig[0]; i++) {
 						next = this.toGraph(ast.eas[i], term).addToGroup(term);
-						new Link(op.key, next.prin.key, "_", "_").addToGroup(term);
+						new Link(op.key, next.prin.key).addToGroup(term);
 						auxs = auxs.concat(next.auxs);
 					}
 					for (var i = 0; i < ast.sig[1]; i++) {
 						next = this.toGraph(ast.das[i], term).addToGroup(term);
-						var link = new Link(op.key, next.prin.key, "_", "_");
-						link.visited = true; // hacking
+						var link = new Link(op.key, next.prin.key);
 						link.addToGroup(term);
 						auxs = auxs.concat(next.auxs);
 					}
@@ -155,13 +154,6 @@ define('goi-machine',
 				}
 			}
 
-			quotieningRules() {
-				// TODO
-				// Loop through all links in the graph
-				// Perform quotiening rules
-				return null;
-			}
-
 			// machine step
 			transition(graphTxt, linkTxt, flagTxt) {
 				if (!finished) {
@@ -171,10 +163,10 @@ define('goi-machine',
 					var nextLink;
 					if (this.token.rewriteFlag == Flag.REWRITE) {
 						nextLink = node.rewrite(this.token);
-						//this.graph.child.nodes[1].quotient();
 					} else {
 						nextLink = this.pass(this.token);
 					}
+
 					if (nextLink != null) {
 						this.token.setLink(nextLink);
 						this.printHistory(graphTxt, linkTxt, flagTxt);
@@ -193,69 +185,45 @@ define('goi-machine',
 				flagTxt.val(this.token.rewriteFlag + '\n' + flagTxt.val());
 			}
 
-		pass(token) { // this needs cleaning up!
-			var link = token.link;
-			if (token.rewriteFlag == Flag.SEARCH) {
-				var to = this.graph.findNodeByKey(link.to);
-				var outlinks = to.findLinksOutOf();
-				if (to instanceof Atom) {
-					token.rewriteFlag = Flag.RETURN;
-					return link;
-				} else if (to instanceof Op) {
-					if (outlinks.length == 0) {
-						if (to.active) {
-							token.rewriteFlag = Flag.REWRITE;
-						} else {
-							token.rewriteFlag = Flag.RETURN;
-						}
-						return link;
-					} else {
-						var j = this.findJ(link,outlinks);
-						return outlinks[j];
-					}
-				} else if (to instanceof Contract) {
-					token.rewriteFlag = Flag.REWRITE;
-					return link;
-				}
-			} else if (token.rewriteFlag == Flag.RETURN) {
-				var from = this.graph.findNodeByKey(link.from);
-				var outlinks = from.findLinksOutOf();
-				if (this.doneVisiting(link,outlinks)) { // HACKING
-					if (from.active) {
-						token.rewriteFlag = Flag.REWRITE;
-						return from.findLinksInto()[0];
-					} else {
+			pass(token) { // this needs cleaning up!
+				var link = token.link;
+				if (token.rewriteFlag == Flag.SEARCH) {
+					var to = this.graph.findNodeByKey(link.to);
+					var outlinks = to.findLinksOutOf();
+					if (to instanceof Atom) {
 						token.rewriteFlag = Flag.RETURN;
-						return from.findLinksInto()[0];
+					} else if (to instanceof Op) {
+						if (outlinks.length == 0) {
+							if (to.active)  token.rewriteFlag = Flag.REWRITE;
+							if (!to.active) token.rewriteFlag = Flag.RETURN;
+						} else {
+							return outlinks[outlinks.findIndex(x => (x == link)) + 1];
+						}
+					} else if (to instanceof Contract) {
+						token.rewriteFlag = Flag.REWRITE;
+						return link;
 					}
-				} else {
-					token.rewriteFlag = Flag.SEARCH;
-					var j = this.findJ(link,outlinks);
-					return outlinks[j];
+				} else if (token.rewriteFlag == Flag.RETURN) {
+					var from = this.graph.findNodeByKey(link.from);
+					var outlinks = from.findLinksOutOf();
+					if (this.doneVisiting(link,outlinks)) {
+						if (from.active)  token.rewriteFlag = Flag.REWRITE;
+						if (!from.active) token.rewriteFlag = Flag.RETURN;
+						return from.findLinksInto()[0];
+					} else {
+						token.rewriteFlag = Flag.SEARCH;
+						return outlinks[outlinks.findIndex(x => (x == link)) + 1];
+					}
 				}
+				return link;
 			}
-			return link;
+
+			doneVisiting(link, links) {
+				links = links.filter(x => !this.graph.findNodeByKey(x.to).group.boxed);
+				return (links.length == (1 + links.findIndex(x => (x == link))));
+			}
+
 		}
-
-		doneVisiting(link, links) {
-			links = links.filter(x => !this.graph.findNodeByKey(x.to).group.boxed);
-			for (let l of links) {
-				if ((!l.visited) && (l != link))
-					return false;
-				}
-			return true;
-			}
-
-		findJ(link,list) {
-			for (var j = 0; j < list.length; j++) {
-				if ((!list[j].visited) && (list[j] != link))
-					return j;
-			}
-			return null;
-		}
-
-	}
-
 		return GoIMachine;
 	}
 );
