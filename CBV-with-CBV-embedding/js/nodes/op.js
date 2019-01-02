@@ -13,7 +13,21 @@ define(function(require) {
 
 		rewrite(token) { } // default none for passive ops
 
-		copy() { 
+		activeRewrite(token,newNode) {
+			var inLink = this.findLinksInto()[0];
+			var outLinks = this.findLinksOutOf();
+
+			inLink.changeTo(newNode.key);
+
+			outLinks.map(x => x.delete());
+			outLinks.map(x => this.graph.findNodeByKey(x.to).delete());
+			this.delete();
+
+			token.rewriteFlag = Flag.SEARCH;
+			return inLink;
+		}
+
+		copy() {
 			return new Op(this.name,this.active);
 		}
 

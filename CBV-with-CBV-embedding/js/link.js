@@ -4,26 +4,25 @@ define(function() {
 		constructor(from, to, argNo) {
 			this.from = from;
 			this.to = to;
+			this.argNo = argNo;
 			this.clearFocus();
 			this.addToGraph(graph); // cheating
-			this.addToNode(argNo);
+			this.addToNode();
 		}
 
-		addToNode(argNo) {
+		addToNode() {
 			var fromNode = this.graph.findNodeByKey(this.from);
 			var toNode = this.graph.findNodeByKey(this.to);
-
 			toNode.inLinks.push(this);
-			if (argNo == null) {
+			if (this.argNo == null) {
 				fromNode.outLinks.push(this);
 			} else {
-				fromNode.outLinks.splice(argNo,0,this);
+				fromNode.outLinks.splice(this.argNo,0,this);
 			}
 		}
 
 		addToGraph(graph) {
-			if (graph != null)
-				graph.addLink(this);
+			if (graph != null) graph.addLink(this);
 			this.graph = graph;
 			return this; // to provide chain operation
 		}
@@ -60,16 +59,6 @@ define(function() {
 			toNode.inLinks.splice(i,0,this);
 		}
 
-		focus() {
-			this.colour = "red";
-			this.penWidth = "20";
-		}
-
-		clearFocus() {
-			this.colour = "black";
-			this.penWidth = null;
-		}
-
 		delete() {
 			var fromNode = this.graph.findNodeByKey(this.from);
 			fromNode.outLinks.splice(fromNode.outLinks.indexOf(this), 1);
@@ -79,12 +68,14 @@ define(function() {
 			this.graph.removeLink(this);
 		}
 
-		toString() {
-			return this.from + "->" + this.to;
-		}
+		focus() 		 { this.colour = "red"; 	this.penWidth = "20"; }
+		clearFocus() { this.colour = "black"; this.penWidth = null; }
+
+		toString() { return this.from + "->" + this.to; }
 
 		draw(level) {
 			var str = level += this.from + '->' + this.to + '[';
+					if (this.argNo != null) str += 'label="' + this.argNo + '",'
 					str += 'tailport=_,headport=_,'
 					str += 'color=' + this.colour + ",penwidth=" + this.penWidth + '];'
 			return str;

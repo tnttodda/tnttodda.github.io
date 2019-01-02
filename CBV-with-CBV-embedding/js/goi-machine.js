@@ -114,12 +114,12 @@ define('goi-machine',
 					var next;
 					for (var i = 0; i < ast.sig[0]; i++) {
 						next = this.toGraph(ast.eas[i], term).addToGroup(term);
-						new Link(op.key, next.prin.key).addToGroup(term);
+						new Link(op.key, next.prin.key,i).addToGroup(term);
 						auxs = auxs.concat(next.auxs);
 					}
 					for (var i = 0; i < ast.sig[1]; i++) {
 						next = this.toGraph(ast.das[i], term).addToGroup(term);
-						var link = new Link(op.key, next.prin.key);
+						var link = new Link(op.key, next.prin.key,i+ast.sig[0]);
 						link.addToGroup(term);
 						auxs = auxs.concat(next.auxs);
 					}

@@ -16,20 +16,9 @@ define(function(require) {
 		}
 
 		rewrite(token) {
-			var inLink = this.findLinksInto()[0];
-			var outLinks = this.findLinksOutOf();
-
-			var n = outLinks.reduce((sum,x) => sum + this.graph.findNodeByKey(x.to).name, 0);
-
+			var n = this.findLinksOutOf().reduce((sum,x) => sum + this.graph.findNodeByKey(x.to).name, 0);
 			var newNode = new IntOp(n,false).addToGroup(this.group);
-			inLink.changeTo(newNode.key);
-
-			outLinks.map(x => x.delete());
-			outLinks.map(x => this.graph.findNodeByKey(x.to).delete());
-			this.delete();
-
-			token.rewriteFlag = Flag.SEARCH;
-			return inLink;
+			return this.activeRewrite(token,newNode);
 		}
 
 	}

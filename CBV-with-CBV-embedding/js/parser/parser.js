@@ -67,46 +67,47 @@ define(function(require) {
 
 		// BUILT-IN OPERATIONS
 		operation(ctx) {
-			var name; var sig; var active;
+			var name; var sig;
 			var eas = [];
 			var das = [];
 
 			var token = this.lexer.lookaheadType();
 			switch(token) {
 				case Token.PLUS:
-					name = "+"; sig = [2,0]; active = true;
+					name = "+"; sig = [2,0];
 					break;
 				case Token.TIMES:
-					name = "*"; sig = [2,0]; active = true;
+					name = "*"; sig = [2,0];
 					break;
 				case Token.AND:
-					name = "∧"; sig = [2,0]; active = true;
+					name = "∧"; sig = [2,0];
 					break;
 				case Token.OR:
-					name = "∨"; sig = [2,0]; active = true;
+					name = "∨"; sig = [2,0];
 					break;
 				case Token.NOT:
-					name = "¬"; sig = [1,0]; active = true;
+					name = "¬"; sig = [1,0];
 					break;
 				case Token.EQUALS:
-					name = "=="; sig = [2,0]; active = true;
+					name = "=="; sig = [2,0];
 					break;
 				case Token.IF:
-					name = "if"; sig = [1,2]; active = true;
+					name = "if"; sig = [1,2];
 					break;
 				default:
-					name = this.lexer.value(); sig = [0,0]; active = false;
+					name = this.lexer.value(); sig = [0,0];
 					break;
 			}
 			this.lexer.match(token);
-			if (sig[0] > 0) {
+			const active = (sig[0] > 0);
+			if (active) {
 				this.lexer.match(Token.LPAREN);
 				eas = this.gatherArgs(ctx,sig[0],false);
 				if (sig[1] == 0)
 					this.lexer.match(Token.RPAREN);
 			}
 			if (sig[1] > 0) {
-				if (sig[0] == 0)
+				if (!active)
 					this.lexer.match(Token.LPAREN);
 				this.lexer.match(Token.SEMIC);
 				das = this.gatherArgs(ctx,sig[1],true);

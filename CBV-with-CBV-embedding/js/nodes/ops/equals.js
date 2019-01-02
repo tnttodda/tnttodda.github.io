@@ -16,22 +16,12 @@ define(function(require) {
 		}
 
 		rewrite(token) {
-			var inLink = this.findLinksInto()[0];
 			var outLinks = this.findLinksOutOf();
-
 			var left = this.graph.findNodeByKey(outLinks[0].to).name;
 			var right = this.graph.findNodeByKey(outLinks[1].to).name;
 			var b = (left == right);
-
 			var newNode = new BoolOp(b,false).addToGroup(this.group);
-			inLink.changeTo(newNode.key);
-
-			outLinks.map(x => x.delete());
-			outLinks.map(x => this.graph.findNodeByKey(x.to).delete());
-			this.delete();
-
-			token.rewriteFlag = Flag.SEARCH;
-			return inLink;
+			return this.activeRewrite(token,newNode);
 		}
 
 	}
