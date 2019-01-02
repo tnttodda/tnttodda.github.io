@@ -7,12 +7,12 @@ define(function(require) {
 
 	class SuccOp extends Op {
 
-		constructor() {
-			super("++", true);
+		constructor(active) {
+			super("++", active);
 		}
 
 		copy() {
-			return new SuccOp();
+			return new SuccOp(this.active);
 		}
 
 		rewrite(token) {

@@ -7,12 +7,12 @@ define(function(require) {
 
 	class NotOp extends Op {
 
-		constructor() {
-			super("¬", true);
+		constructor(active) {
+			super("¬", active);
 		}
 
 		copy() {
-			return new NotOp();
+			return new NotOp(this.active);
 		}
 
 		rewrite(token) {

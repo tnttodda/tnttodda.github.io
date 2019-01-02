@@ -133,25 +133,25 @@ define('goi-machine',
 
 			toOp(name,active) {
 				if (Number.isInteger(parseInt(name))) {
-					return new IntOp(name);
+					return new IntOp(name,active);
 				} else if (name == "true" || name == "false") {
-					return new BoolOp(name);
+					return new BoolOp(name,active);
 				} else if (name == "++") {
-					return new SuccOp();
+					return new SuccOp(active);
 				} else if (name == "+") {
-					return new PlusOp();
+					return new PlusOp(active);
 				} else if (name == "*") {
-					return new TimesOp();
+					return new TimesOp(active);
 				} else if (name == "∧") {
-					return new AndOp();
+					return new AndOp(active);
 				} else if (name == "∨") {
-					return new OrOp();
+					return new OrOp(active);
 				} else if (name == "¬") {
-					return new NotOp();
+					return new NotOp(active);
 				} else if (name == "==") {
-					return new EqualsOp();
+					return new EqualsOp(active);
 				} else if (name == "if") {
-					return new IfOp();
+					return new IfOp(active);
 				} else {
 					return new Op(name,active);
 				}

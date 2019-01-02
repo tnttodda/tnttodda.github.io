@@ -7,12 +7,12 @@ define(function(require) {
 
 	class PlusOp extends Op {
 
-		constructor() {
-			super("+", true);
+		constructor(active) {
+			super("+", active);
 		}
 
 		copy() {
-			return new PlusOp();
+			return new PlusOp(this.active);
 		}
 
 		rewrite(token) {

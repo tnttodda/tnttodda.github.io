@@ -4,13 +4,13 @@ define(function(require) {
 
 	class BoolOp extends Op {
 
-		constructor(b) {
+		constructor(b,active) {
 			b = BoolOp.parseBoolean(b);
-			super(b, false);
+			super(b, active);
 		}
 
 		copy() {
-			return new BoolOp();
+			return new BoolOp(this.name,this.active);
 		}
 
 		static parseBoolean(b) {

@@ -7,12 +7,12 @@ define(function(require) {
 
 	class OrOp extends Op {
 
-		constructor() {
-			super("∨", true);
+		constructor(active) {
+			super("∨", active);
 		}
 
 		copy() {
-			return new OrOp();
+			return new OrOp(this.active);
 		}
 
 		rewrite(token) {
