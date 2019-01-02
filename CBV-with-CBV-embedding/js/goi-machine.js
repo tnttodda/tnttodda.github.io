@@ -34,6 +34,7 @@ define('goi-machine',
 		var NotOp = require('nodes/ops/not');
 		var EqualsOp = require('nodes/ops/equals');
 		var IfOp = require('nodes/ops/if');
+		var SuccOp = require('nodes/ops/succ');
 
 		class GoIMachine {
 
@@ -135,6 +136,8 @@ define('goi-machine',
 					return new IntOp(name);
 				} else if (name == "true" || name == "false") {
 					return new BoolOp(name);
+				} else if (name == "++") {
+					return new SuccOp();
 				} else if (name == "+") {
 					return new PlusOp();
 				} else if (name == "*") {

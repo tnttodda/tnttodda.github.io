@@ -25,6 +25,7 @@ define(function() {
     'DEF',
     'IN',
 
+    'SUCC',
     'PLUS',
     'TIMES',
     'INT',

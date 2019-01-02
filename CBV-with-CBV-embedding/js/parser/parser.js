@@ -73,6 +73,9 @@ define(function(require) {
 
 			var token = this.lexer.lookaheadType();
 			switch(token) {
+				case Token.SUCC:
+					name = "++"; sig = [1,0];
+					break;
 				case Token.PLUS:
 					name = "+"; sig = [2,0];
 					break;

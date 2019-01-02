@@ -77,6 +77,8 @@ define(function(require) {
 						this._token = new Token(Token.IN);
 					else if (str == "new")
 						this._token = new Token(Token.NEW);
+					else if (str == "SUCC")
+						this._token = new Token(Token.SUCC)
 					else if (str == "PLUS")
 						this._token = new Token(Token.PLUS);
 					else if (str == "TIMES")
