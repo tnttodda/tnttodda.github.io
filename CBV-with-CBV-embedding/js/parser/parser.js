@@ -97,6 +97,11 @@ define(function(require) {
 				case Token.IF:
 					name = "if"; sig = [1,2];
 					break;
+				case Token.LAMBDA:
+					name = "λ"; sig = [1,1]; // bound arguments?
+					break;
+				case Token.APP:
+					name = "@"; sig = [2,0];
 				default:
 					name = this.lexer.value(); sig = [0,0];
 					break;

@@ -36,7 +36,9 @@ define(function() {
     'FALSE',
     'EQUALS',
 
-    'IF'
+    'IF',
+    'LAMBDA',
+    'APP'
   ].forEach(token => Token[token] = token);
 
   return Token;

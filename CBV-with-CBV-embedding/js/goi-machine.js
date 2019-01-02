@@ -35,6 +35,8 @@ define('goi-machine',
 		var EqualsOp = require('nodes/ops/equals');
 		var IfOp = require('nodes/ops/if');
 		var SuccOp = require('nodes/ops/succ');
+		var LambdaOp = require('nodes/ops/lambda');
+		var AppOp = require('nodes/ops/app');
 
 		class GoIMachine {
 
@@ -152,6 +154,10 @@ define('goi-machine',
 					return new EqualsOp(active);
 				} else if (name == "if") {
 					return new IfOp(active);
+				} else if (name == "λ") {
+					return new LambdaOp(active);
+				} else if (name == "@") {
+					return new AppOp(active);
 				} else {
 					return new Op(name,active);
 				}

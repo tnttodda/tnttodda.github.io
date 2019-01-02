@@ -93,6 +93,10 @@ define(function(require) {
 						this._token = new Token(Token.EQUALS);
 					else if (str == "IF")
 						this._token = new Token(Token.IF);
+					else if (str == "LAMBDA")
+						this._token = new Token(Token.LAMBDA);
+					else if (str == "APP")
+						this._token = new Token(Token.APP);
 					else if (str == "TRUE")
 						this._token = new Token(Token.TRUE, true);
 					else if (str == "FALSE")
