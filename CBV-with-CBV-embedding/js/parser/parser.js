@@ -13,7 +13,7 @@ define(function(require) {
 		}
 
 		parse() {
-			const result = this.term([]);
+			const result = this.term([[],[]]);
 			// make sure we consumed all the program, otherwise there was a syntax error
 			this.lexer.match(Token.EOF);
 			return result;
@@ -30,7 +30,7 @@ define(function(require) {
 					bounds = bounds.concat(this.lexer.token(Token.BOUND));
 					this.lexer.match(Token.DOT);
 				}
-				const inner = this.term(bounds.concat(ctx));
+				const inner = this.term([bounds.concat(ctx[0]),ctx[1]]);
 				return new Thunk(ctx,inner,bounds);
 			} else {
 				if (this.lexer.skip(Token.BIND)) {
@@ -38,14 +38,14 @@ define(function(require) {
 					this.lexer.match(Token.DEF);
 					const P = this.term(ctx);
 					this.lexer.match(Token.IN);
-					const B = this.term([id].concat(ctx));
+					const B = this.term([[id].concat(ctx[0]),ctx[1]]);
 					return new Binding(ctx,id,P,B);
 				} else if (this.lexer.skip(Token.NEW)) {
 					const id = this.lexer.token(Token.LCID);
 					this.lexer.match(Token.DEF);
 					const P = this.term(ctx);
 					this.lexer.match(Token.IN);
-					const B = this.term([id].concat(ctx));
+					const B = this.term([ctx[0],[id].concat(ctx[1])]);
 					return new Reference(ctx,id,P,B);
 				} else {
 					return this.atom(ctx);

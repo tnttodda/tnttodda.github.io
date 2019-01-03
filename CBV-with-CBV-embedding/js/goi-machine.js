@@ -21,6 +21,7 @@ define('goi-machine',
 		var Term = require('term');
 
 		var Atom = require('nodes/atom');
+		var Instance = require('nodes/instance');
 		var Contract = require('nodes/contract');
 		var Start = require('nodes/start');
 		var Op = require('nodes/op');
@@ -82,10 +83,18 @@ define('goi-machine',
 
 				// VARIABLES & ATOMS
 				if (ast instanceof Variable) {
-					var auxs = Contract.createDNet(ast.ctx.length, [], term);
-					var prin = auxs[ast.ctx.indexOf(ast.name)];
+					var prin; var auxs = [];
+					var i = ast.ctx[1].indexOf(ast.name);
+					if (i == -1) {
+						auxs = Contract.createDNet(ast.ctx.flat().length, [], term);
+						prin = auxs[ast.ctx[0].indexOf(ast.name)];
+					} else {
+						auxs = auxs.concat(Contract.createDNet(ast.ctx[0].length+i, [], term));
+						prin = new Instance().addToGroup(term);
+						auxs.push(prin);
+						auxs = auxs.concat(Contract.createDNet(ast.ctx[1].length-i-1, [], term));
+					}
 					term.set(prin, auxs);
-
 
 				// BINDINGS & REFERENCES
 				} else if ((ast instanceof Binding) || (ast instanceof Reference))  {
@@ -93,7 +102,7 @@ define('goi-machine',
 					var param = this.toGraph(ast.param).addToGroup(term);
 
 					var auxs = body.auxs;
-					const i = ast.body.ctx.indexOf(ast.id);
+					const i = ast.body.ctx.flat().indexOf(ast.id);
 					var auxNode = auxs[i];
 					auxs.splice(i,1);
 					auxs = auxs.concat(param.auxs);
@@ -105,7 +114,7 @@ define('goi-machine',
 					}
 					new Link(auxNode.key, param.prin.key).addToGroup(term);
 
-					auxs = Contract.createDNet(ast.ctx.length, auxs, term);
+					auxs = Contract.createDNet(ast.ctx.flat().length, auxs, term);
 					term.set(body.prin, auxs);
 
 				// OPERATIONS
@@ -127,14 +136,14 @@ define('goi-machine',
 						auxs = auxs.concat(next.auxs);
 					}
 
-					auxs = Contract.createDNet(ast.ctx.length, auxs, term);
+					auxs = Contract.createDNet(ast.ctx.flat().length, auxs, term);
 					term.set(op, auxs);
 				}
 
 				term.buxs = []; // put this in a more integrated place e.g. ops
 				while (bounds.length > 0) {
-					term.buxs.push(auxs[ast.ctx.indexOf(bounds[0])]);
-					auxs.splice(ast.ctx.indexOf(bounds[0]),1);
+					term.buxs.push(auxs[ast.ctx[0].indexOf(bounds[0])]);
+					auxs.splice(ast.ctx[0].indexOf(bounds[0]),1);
 					bounds.splice(0,1);
 				}
 
