@@ -38,6 +38,10 @@ define(function(require) {
 				this._token = new Token(Token.COMMA);
 				break;
 
+			case '.':
+				this._token = new Token(Token.DOT);
+				break;
+
 			case ';':
 				this._token = new Token(Token.SEMIC);
 				break;
@@ -68,9 +72,11 @@ define(function(require) {
 
 					} while (/[a-zA-Z]|'|_/.test(c));
 
+					if (c == ".") str += c;
 					// put back the last char which is not part of the identifier
 					this._index--;
 
+					console.log(str);
 					if (str == "bind")
 						this._token = new Token(Token.BIND);
 					else if (str == "in")
@@ -101,6 +107,8 @@ define(function(require) {
 						this._token = new Token(Token.TRUE, true);
 					else if (str == "FALSE")
 						this._token = new Token(Token.FALSE, false);
+					else if (str.endsWith("."))
+						this._token = new Token(Token.BOUND, str.substring(0,str.length-1))
 					else
 						this._token = new Token(Token.LCID, str);
 				}
@@ -143,6 +151,20 @@ define(function(require) {
 
 		lookahead() {
 			return this._token;
+		}
+
+		hasBounds() {
+			console.log(this.lookaheadType());
+			if (this.lookaheadType() == "LCID") {
+				var saveInput = this._input;
+				var saveToken = this._token;
+				var saveIndex = this._index;
+				this.skip(Token.LCID);
+				console.log(this.lookahead());
+				this._input = saveInput;
+				this._token = saveToken;
+				this._index = saveIndex;
+			}
 		}
 
 		lookaheadType() {

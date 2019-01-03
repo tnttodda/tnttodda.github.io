@@ -107,11 +107,14 @@ define('term', function(require) {
 				} else if (node.contract) { // change
 					var inLinks = node.findLinksInto();
 					var outLinks = node.findLinksOutOf();
-					if ((inLinks.length < 2) ||
-						  (this.graph.findNodeByKey(outLinks[0].to).contract)) {
+					if (outLinks.length > 0 &&
+						 (this.graph.findNodeByKey(outLinks[0].to).contract // hacking
+					    || inLinks.length < 2)) {
 						changed = true;
 						inLinks.map(x => x.changeTo(outLinks[0].to));
 						outLinks[0].delete();
+						node.delete();
+					} else if (outLinks.length == 0 && inLinks.length == 0) {
 						node.delete();
 					}
 				}

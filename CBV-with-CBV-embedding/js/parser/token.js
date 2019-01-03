@@ -19,6 +19,8 @@ define(function() {
     'LPAREN',
     'RPAREN',
     'SEMIC',
+    'BOUND',
+    'DOT',
 
     'BIND',
     'NEW',

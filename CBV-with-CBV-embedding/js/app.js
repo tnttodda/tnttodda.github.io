@@ -168,7 +168,7 @@ require(["jquery", "renderer", "goi-machine"],
 
 		renderer.init("#graph");
 		//renderer.init({element: "#graph", zoom: {extent: [0.1, 10]}})
-		$("#ta-program").val(ex5);
+		$("#ta-program").val(ex6);
   		$("#btn-make-graph").click();
 	}
 );

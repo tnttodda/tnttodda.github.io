@@ -43,9 +43,10 @@ define('ast/thunk', function(require) {
   var Term = require('ast/term');
 
   class Thunk extends Term {
-    constructor(ctx, inner) {
+    constructor(ctx, inner, bounds) {
       super(ctx);
       this.inner = inner;
+      this.bounds = bounds;
     }
   }
   return Thunk;

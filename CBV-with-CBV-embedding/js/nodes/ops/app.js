@@ -15,9 +15,29 @@ define(function(require) {
 		}
 
 		rewrite(token) {
-			var n = this.findLinksOutOf().reduce((sum,x) => sum + this.graph.findNodeByKey(x.to).name, 0);
-			var newNode = new IntOp(n,false).addToGroup(this.group);
-			return this.activeRewrite(token,newNode);
+			var inLink = this.findLinksInto()[0];
+			var outLinks = this.findLinksOutOf();
+
+			var lambdaNode = this.graph.findNodeByKey(outLinks[0].to);
+			var lambdaLink = lambdaNode.outLinks[0];
+			var newNode = this.graph.findNodeByKey(lambdaLink.to);
+			var argNode = this.graph.findNodeByKey(outLinks[1].to);
+
+			var newGroup = newNode.group;
+			while (!newGroup.boxed)
+				newGroup = newGroup.group;
+
+			inLink.changeTo(newNode.key);
+			newGroup.unbox();
+
+			outLinks.map(x => x.delete());
+			this.graph.findNodeByKey(outLinks[0].to).delete();
+			this.delete();
+
+			new Link(newGroup.auxs[0].key,argNode.key).addToGroup(this.group);
+
+			token.rewriteFlag = Flag.SEARCH;
+			return inLink;
 		}
 
 	}

@@ -25,20 +25,24 @@ define(function(require) {
 
 		term(ctx,thunk) {
 			if (thunk) {
-				const inner = this.term(ctx);
-				return new Thunk(ctx,inner);
+				var bounds = [];
+				while (this.lexer.lookaheadType() == Token.BOUND) {
+					bounds = bounds.concat(this.lexer.token(Token.BOUND));
+					this.lexer.match(Token.DOT);
+				}
+				console.log(bounds);
+				const inner = this.term(bounds.concat(ctx));
+				return new Thunk(ctx,inner,bounds);
 			} else {
 				if (this.lexer.skip(Token.BIND)) {
-					const id = this.term(ctx);
-					id.ctx = [id].concat(id.ctx);
+					const id = this.lexer.token(Token.LCID);
 					this.lexer.match(Token.DEF);
 					const P = this.term(ctx);
 					this.lexer.match(Token.IN);
 					const B = this.term([id].concat(ctx));
 					return new Binding(ctx,id,P,B);
 				} else if (this.lexer.skip(Token.NEW)) {
-					const id = this.term(ctx);
-					id.ctx = [id].concat(id.ctx);
+					const id = this.lexer.token(Token.LCID);
 					this.lexer.match(Token.DEF);
 					const P = this.term(ctx);
 					this.lexer.match(Token.IN);
@@ -55,11 +59,13 @@ define(function(require) {
 		atom(ctx) {
 			if (this.lexer.skip(Token.LPAREN)) {
 				const term = this.term(ctx);
+				console.log("a");
 				this.lexer.match(Token.RPAREN);
+				console.log("b");
 				return term;
 			} else if (this.lexer.next(Token.LCID)) {
-				const id = this.lexer.token(Token.LCID);
-				return new Var(ctx, id);
+				const name = this.lexer.token(Token.LCID);
+				return new Var(ctx, name);
 			} else {
 				return this.operation(ctx);
 			}
@@ -98,10 +104,11 @@ define(function(require) {
 					name = "if"; sig = [1,2];
 					break;
 				case Token.LAMBDA:
-					name = "λ"; sig = [1,1]; // bound arguments?
+					name = "λ"; sig = [0,1]; // bound arguments?
 					break;
 				case Token.APP:
 					name = "@"; sig = [2,0];
+					break;
 				default:
 					name = this.lexer.value(); sig = [0,0];
 					break;

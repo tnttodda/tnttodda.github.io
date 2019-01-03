@@ -60,19 +60,21 @@ define('goi-machine',
 
 				this.graph.clear();
 				var start = new Start().addToGroup(this.graph.child);
-				var term = this.toGraph(ast).addToGroup(this.graph.child);
+				var term = this.toGraph(ast,[]).addToGroup(this.graph.child);
 				this.term = term;
 				var link = new Link(start.key, term.prin.key).addToGroup(this.graph.child);
 				this.token.reset(link);
 			}
 
 			// translation
-			toGraph(ast) {
+			toGraph(ast,bounds) { // i'd like boudns to be in the ast tbh
 				var graph = this.graph;
-
 				var term = new Term();
+
+				// THUNKS
 				if (ast instanceof Thunk) {
 					term.box();
+					bounds = bounds.concat(ast.bounds);
 					ast = ast.inner;
 				}
 
@@ -82,24 +84,26 @@ define('goi-machine',
 					var prin;
 					for (var i = 0; i < ast.ctx.length; i++) {
 						var c = new Contract().addToGroup(term);
-						auxs.push(c);
-						if ((ast.ctx[i]).name == ast.name)
-						 	prin = c;
+						// if (!bounds.includes(ast.ctx[i]))
+							auxs.push(c);
+						if (ast.ctx[i] == ast.name)
+					 		prin = c;
 					}
 					term.set(prin, auxs);
 
 				// BINDINGS & REFERENCES
 				} else if ((ast instanceof Binding) || (ast instanceof Reference))  {
-					var body = this.toGraph(ast.body, term, false).addToGroup(term);
-					var param = this.toGraph(ast.param, term, false).addToGroup(term);
+					var body = this.toGraph(ast.body,bounds).addToGroup(term);
+					var param = this.toGraph(ast.param,bounds).addToGroup(term);
 
 					var auxs = body.auxs;
-					var auxNode = auxs[0];
-					auxs.splice(0,1)
+					const i = ast.body.ctx.indexOf(ast.id);
+					var auxNode = auxs[i];
+					auxs.splice(i,1);
 					auxs = auxs.concat(param.auxs);
 
 					if (ast instanceof Reference) {
-						var atomNode = new Atom("a").addToGroup(param);
+						var atomNode = new Atom().addToGroup(param);
 						new Link(atomNode.key, param.prin.key).addToGroup(param);
 						param.prin = atomNode;
 					}
@@ -116,12 +120,12 @@ define('goi-machine',
 
 					var next;
 					for (var i = 0; i < ast.sig[0]; i++) {
-						next = this.toGraph(ast.eas[i], term).addToGroup(term);
+						next = this.toGraph(ast.eas[i],bounds).addToGroup(term);
 						new Link(op.key, next.prin.key,i).addToGroup(term);
 						auxs = auxs.concat(next.auxs);
 					}
 					for (var i = 0; i < ast.sig[1]; i++) {
-						next = this.toGraph(ast.das[i], term).addToGroup(term);
+						next = this.toGraph(ast.das[i],bounds).addToGroup(term);
 						var link = new Link(op.key, next.prin.key,i+ast.sig[0]);
 						link.addToGroup(term);
 						auxs = auxs.concat(next.auxs);
@@ -202,7 +206,7 @@ define('goi-machine',
 					if (to instanceof Atom) {
 						token.rewriteFlag = Flag.RETURN;
 					} else if (to instanceof Op) {
-						if (outlinks.length == 0) {
+						if (outlinks.length == 0 || !to.active) {
 							if (to.active)  token.rewriteFlag = Flag.REWRITE;
 							if (!to.active) token.rewriteFlag = Flag.RETURN;
 						} else {
