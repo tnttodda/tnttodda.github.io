@@ -102,20 +102,24 @@ define('term', function(require) {
 					if (node.nodes.length == 0) {
 						node.delete();
 					} else {
-						node.quotient();
+						if (!(node.boxed && node.nodes.length == 1))
+							node.quotient();
 					}
 				} else if (node.contract) { // change
 					var inLinks = node.findLinksInto();
 					var outLinks = node.findLinksOutOf();
-					if (outLinks.length > 0 &&
-						 (this.graph.findNodeByKey(outLinks[0].to).contract // hacking
-					    || inLinks.length < 2)) {
-						changed = true;
-						inLinks.map(x => x.changeTo(outLinks[0].to));
-						outLinks[0].delete();
-						node.delete();
-					} else if (outLinks.length == 0 && inLinks.length == 0) {
-						node.delete();
+					if (outLinks.length > 0) {
+						var outNode = this.graph.findNodeByKey(outLinks[0].to);
+						if (outNode.contract || inLinks.length < 2) {
+							if (!(inLinks.length == 1 && outLinks.length == 1 && node.group.boxed && !outNode.group.boxed)) {
+								changed = true;
+								inLinks.map(x => x.changeTo(outLinks[0].to));
+								outLinks[0].delete();
+								node.delete();
+							}
+						}
+						} else if (outLinks.length == 0 && inLinks.length == 0) {
+							node.delete();
 					}
 				}
 			}

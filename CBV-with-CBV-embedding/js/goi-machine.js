@@ -216,7 +216,7 @@ define('goi-machine',
 				if (token.rewriteFlag == Flag.SEARCH) {
 					var to = this.graph.findNodeByKey(link.to);
 					var outlinks = to.findLinksOutOf();
-					if (to instanceof Atom) {
+					if (to instanceof Instance) {
 						token.rewriteFlag = Flag.RETURN;
 					} else if (to instanceof Op) {
 						if (outlinks.length == 0 || !to.active) {
