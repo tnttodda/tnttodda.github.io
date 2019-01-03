@@ -30,7 +30,6 @@ define(function(require) {
 					bounds = bounds.concat(this.lexer.token(Token.BOUND));
 					this.lexer.match(Token.DOT);
 				}
-				console.log(bounds);
 				const inner = this.term(bounds.concat(ctx));
 				return new Thunk(ctx,inner,bounds);
 			} else {
@@ -59,9 +58,7 @@ define(function(require) {
 		atom(ctx) {
 			if (this.lexer.skip(Token.LPAREN)) {
 				const term = this.term(ctx);
-				console.log("a");
 				this.lexer.match(Token.RPAREN);
-				console.log("b");
 				return term;
 			} else if (this.lexer.next(Token.LCID)) {
 				const name = this.lexer.token(Token.LCID);

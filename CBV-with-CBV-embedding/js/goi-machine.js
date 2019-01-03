@@ -67,34 +67,30 @@ define('goi-machine',
 			}
 
 			// translation
-			toGraph(ast,bounds) { // i'd like boudns to be in the ast tbh
+			toGraph(ast) { // i'd like boudns to be in the ast tbh
 				var graph = this.graph;
 				var term = new Term();
+				var bounds = [];
+				var thunk = false;
 
 				// THUNKS
 				if (ast instanceof Thunk) {
 					term.box();
-					bounds = bounds.concat(ast.bounds);
+					bounds = ast.bounds;
 					ast = ast.inner;
 				}
 
 				// VARIABLES & ATOMS
 				if (ast instanceof Variable) {
-					var auxs = [];
-					var prin;
-					for (var i = 0; i < ast.ctx.length; i++) {
-						var c = new Contract().addToGroup(term);
-						// if (!bounds.includes(ast.ctx[i]))
-							auxs.push(c);
-						if (ast.ctx[i] == ast.name)
-					 		prin = c;
-					}
+					var auxs = Contract.createDNet(ast.ctx.length, [], term);
+					var prin = auxs[ast.ctx.indexOf(ast.name)];
 					term.set(prin, auxs);
+
 
 				// BINDINGS & REFERENCES
 				} else if ((ast instanceof Binding) || (ast instanceof Reference))  {
-					var body = this.toGraph(ast.body,bounds).addToGroup(term);
-					var param = this.toGraph(ast.param,bounds).addToGroup(term);
+					var body = this.toGraph(ast.body).addToGroup(term);
+					var param = this.toGraph(ast.param).addToGroup(term);
 
 					var auxs = body.auxs;
 					const i = ast.body.ctx.indexOf(ast.id);
@@ -120,20 +116,28 @@ define('goi-machine',
 
 					var next;
 					for (var i = 0; i < ast.sig[0]; i++) {
-						next = this.toGraph(ast.eas[i],bounds).addToGroup(term);
+						next = this.toGraph(ast.eas[i]).addToGroup(term);
 						new Link(op.key, next.prin.key,i).addToGroup(term);
 						auxs = auxs.concat(next.auxs);
 					}
 					for (var i = 0; i < ast.sig[1]; i++) {
-						next = this.toGraph(ast.das[i],bounds).addToGroup(term);
+						next = this.toGraph(ast.das[i]).addToGroup(term);
 						var link = new Link(op.key, next.prin.key,i+ast.sig[0]);
 						link.addToGroup(term);
 						auxs = auxs.concat(next.auxs);
 					}
 
-					auxs = Contract.createDNet(ast.ctx.length, auxs, term, op);
+					auxs = Contract.createDNet(ast.ctx.length, auxs, term);
 					term.set(op, auxs);
 				}
+
+				term.buxs = []; // put this in a more integrated place e.g. ops
+				while (bounds.length > 0) {
+					term.buxs.push(auxs[ast.ctx.indexOf(bounds[0])]);
+					auxs.splice(ast.ctx.indexOf(bounds[0]),1);
+					bounds.splice(0,1);
+				}
+
 				return term;
 			}
 

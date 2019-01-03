@@ -26,4 +26,4 @@ var ex5 =
   'bind x = PLUS(4,y) in\n'+
   'EQUALS(x,x)'
 
-var ex6 = "APP(LAMBDA(;w.(bind y = IF(EQUALS(w,3);PLUS(1,w),PLUS(2,w)) in bind x = PLUS(4,y) in EQUALS(x,x))),PLUS(1,2))"
+var ex6 = "bind z = PLUS(1,2) in APP(LAMBDA(;w.(bind y = IF(EQUALS(z,3);PLUS(1,w),PLUS(2,w)) in bind x = PLUS(4,y) in EQUALS(x,x))),z)"
