@@ -54,7 +54,7 @@ define('term', function(require) {
 			newTerm.prin = newPrin;
 			map.set(this.prin.key, newPrin.key);
 
-			newTerm.auxs = [];
+			newTerm.auxs = []; newTerm.buxs = [];
 			for (let node of this.nodes) {
 				if (!map.has(node.key)) {
 					var newNode;
@@ -69,6 +69,10 @@ define('term', function(require) {
 			for (let aux of this.auxs) {
 				var newAux = this.graph.findNodeByKey(this.getEndpoint(map,aux.key));
 				newTerm.auxs.push(newAux);
+			}
+			for (let bux of this.buxs) {
+				var newBux = this.graph.findNodeByKey(this.getEndpoint(map,bux.key));
+				newTerm.buxs.push(newAux);
 			}
 
 			for (let link of this.links) {
