@@ -22,14 +22,16 @@ define(function(require) {
 
 			var instanceNode = this.graph.findNodeByKey(this.findLinksOutOf()[0].to);
 			var atomNode = this.graph.findNodeByKey(instanceNode.findLinksOutOf()[0].to);
+			var prinNode = this.graph.findNodeByKey(atomNode.findLinksOutOf()[0].to);
 			var newNode = new Contract().addToGroup(this.group);
 
 			inLink.changeTo(newNode.key);
-			atomNode.findLinksOutOf()[0].changeFrom(newNode.key);
+			instanceNode.findLinksOutOf()[0].changeTo(prinNode.key);
+			instanceNode.findLinksOutOf()[0].changeFrom(newNode.key);
+			atomNode.findLinksOutOf()[0].changeTo(newNode.key);
 
-			instanceNode.findLinksOutOf()[0].delete();
 			instanceNode.delete();
-			atomNode.delete();
+			if (atomNode.findLinksInto().length == 0) atomNode.delete();
 			this.delete();
 
 			token.rewriteFlag = Flag.SEARCH;

@@ -108,7 +108,7 @@ define('term', function(require) {
 					var outLinks = node.findLinksOutOf();
 					if (outLinks.length > 0) {
 						var outNode = this.graph.findNodeByKey(outLinks[0].to);
-						if (outNode.contract || inLinks.length < 2) {
+						if (outNode.contract || outNode.atom || inLinks.length < 2) { // change "contract" and "atom"
 							if (!(inLinks.length == 1 && outLinks.length == 1 && node.group.boxed && !outNode.group.boxed)) {
 								changed = true;
 								inLinks.map(x => x.changeTo(outLinks[0].to));
