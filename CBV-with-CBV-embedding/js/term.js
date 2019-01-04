@@ -72,7 +72,7 @@ define('term', function(require) {
 			}
 			for (let bux of this.buxs) {
 				var newBux = this.graph.findNodeByKey(this.getEndpoint(map,bux.key));
-				newTerm.buxs.push(newAux);
+				newTerm.buxs.push(newBux);
 			}
 
 			for (let link of this.links) {
