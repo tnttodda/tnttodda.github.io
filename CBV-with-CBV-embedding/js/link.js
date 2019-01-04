@@ -80,7 +80,7 @@ define(function() {
 			if (this.argNo == 2) p = "e";
 			if (this.colour == "red") label = "  " + state;
 			var str = level += this.from + '->' + this.to + '[';
-					str += 'label="' + label + '",fontcolor=red,fontsize=25,'
+					str += 'label="' + label + '",fontcolor=red,fontsize=30,'
 					str += 'tailport=' + p + ',headport=_,'
 					str += 'color=' + this.colour + ",penwidth=" + this.penWidth + '];'
 			return str;

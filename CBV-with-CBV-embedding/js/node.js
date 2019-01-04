@@ -10,7 +10,6 @@ define(function(require) {
 			this.name = name; // identifier name or constant name if any
 			this.graph = null;
 			this.group = null;
-			this.width = 0.3; this.height = 0.3;
 			this.inLinks = []; this.outLinks = [];
 			this.addToGraph(graph); // cheating!
 		}
@@ -82,7 +81,7 @@ define(function(require) {
 				str += ',width=' + this.width;
 			if (this.height != null)
 				str += ',height=' + this.height;
-			return str += '];'
+			return str += 'fontsize=30];'
 		}
 
 		// machine instructions

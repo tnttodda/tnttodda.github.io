@@ -11,8 +11,10 @@ define('nodes/contract',function(require) {
 	class Contract extends Node {
 
 		constructor(name) {
-			super("point", "", name);
+			super("circle", "⊗", name);
 			this.contract = true; // change
+			this.height = 0.3;
+			this.width = 0.3;
 		}
 
 		transition(token, link) {
@@ -102,9 +104,9 @@ define('nodes/contract',function(require) {
 			return new Contract(this.name);
 		}
 
-		draw(level) {
-			return level + this.key + '[shape=' + this.shape + '];';
-		}
+		// draw(level) {
+		// 	return level + this.key + '[shape=' + this.shape + '];';
+		// }
 	}
 
 	return Contract;
