@@ -30,17 +30,15 @@ define('term', function(require) {
 		}
 
 		draw(level) {
+			var str = super.draw(level);
 			if (this.boxed) {
-				var str = "";
-				for (let node of this.nodes) {
-					str += node.draw(level + '  ');
-				}
 				return level + 'subgraph cluster_' + this.key + ' {'
 					 + level + '  graph[style=dotted];'
-					 + str
+					 + str + ' '
 					 + level + '};';
-			 }
-			 return super.draw(level);
+			} else {
+			 	return str;
+			}
 		}
 
 		removeNode(node) {
