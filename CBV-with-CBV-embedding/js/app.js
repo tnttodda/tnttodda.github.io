@@ -35,7 +35,7 @@ require(["jquery", "renderer", "goi-machine"],
         var width = $("#graph").width();
 		    var height = $("#graph").height();
 		    // update stage with new dot source
-        var result = machine.graph.draw(width/dpi, height/dpi);
+        var result = machine.graph.draw(width/dpi, height/dpi, machine.token.rewriteFlag);
       }
     $("#ta-graph").val(result);
     if (isDraw)	renderer.render(result);

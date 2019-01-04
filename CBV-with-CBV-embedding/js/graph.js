@@ -49,11 +49,11 @@ define(function(require) {
 			return fromNode.findLinksOutOf().filter(x => x.to == to)[0];
 		}
 
-		draw(width, height) {
+		draw(width, height, state) {
 			var str = this.child.draw('\n  ');
 			str += '\n';
 			for (let link of this.allLinks) {
-				str += link.draw('\n  ');
+				str += link.draw('\n  ', state);
 			}
 			return 'digraph G {'
 			   	+'\n  rankdir=BT;'

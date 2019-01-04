@@ -73,10 +73,15 @@ define(function() {
 
 		toString() { return this.from + "->" + this.to; }
 
-		draw(level) {
+		draw(level,state) {
+			var p = "_"
+			var label = " ";
+			if (this.argNo == 0) p = "w";
+			if (this.argNo == 2) p = "e";
+			if (this.colour == "red") label = "  " + state;
 			var str = level += this.from + '->' + this.to + '[';
-					if (this.argNo != null) str += 'label="' + this.argNo + '",'
-					str += 'tailport=_,headport=_,'
+					str += 'label="' + label + '",fontcolor=red,fontsize=25,'
+					str += 'tailport=' + p + ',headport=_,'
 					str += 'color=' + this.colour + ",penwidth=" + this.penWidth + '];'
 			return str;
 		}
