@@ -100,10 +100,10 @@ define('term', function(require) {
 			for (let node of this.nodes) {
 				if (node instanceof Term) {
 					if (node.nodes.length == 0) {
+						changed = true;
 						node.delete();
-					} else {
-						if (!(node.boxed && node.nodes.length == 1))
-							node.quotient();
+					} else if (!(node.boxed && node.nodes.length == 1)) {
+						node.quotient();
 					}
 				} else if (node.contract) { // change
 					var inLinks = node.findLinksInto();
@@ -118,13 +118,13 @@ define('term', function(require) {
 								node.delete();
 							}
 						}
-						} else if (outLinks.length == 0 && inLinks.length == 0) {
-							node.delete();
-					}
+					} else if (outLinks.length == 0 && inLinks.length == 0) {
+						node.delete();
 				}
 			}
-			if (changed) this.quotient();
 		}
+		if (changed) this.quotient();
+	}
 
 }
 

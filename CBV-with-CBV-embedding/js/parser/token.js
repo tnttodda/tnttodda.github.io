@@ -40,7 +40,9 @@ define(function() {
 
     'IF',
     'LAMBDA',
-    'APP'
+    'APP',
+    'REF',
+    'DEREF'
   ].forEach(token => Token[token] = token);
 
   return Token;

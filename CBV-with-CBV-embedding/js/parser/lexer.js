@@ -102,6 +102,10 @@ define(function(require) {
 						this._token = new Token(Token.LAMBDA);
 					else if (str == "APP")
 						this._token = new Token(Token.APP);
+					else if (str == "REF")
+						this._token = new Token(Token.REF);
+					else if (str == "DEREF")
+						this._token = new Token(Token.DEREF);
 					else if (str == "TRUE")
 						this._token = new Token(Token.TRUE, true);
 					else if (str == "FALSE")

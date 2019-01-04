@@ -38,6 +38,8 @@ define('goi-machine',
 		var SuccOp = require('nodes/ops/succ');
 		var LambdaOp = require('nodes/ops/lambda');
 		var AppOp = require('nodes/ops/app');
+		var RefOp = require('nodes/ops/ref');
+		var DerefOp = require('nodes/ops/deref');
 
 		class GoIMachine {
 
@@ -175,6 +177,10 @@ define('goi-machine',
 					return new LambdaOp(active);
 				} else if (name == "@") {
 					return new AppOp(active);
+				} else if (name == "ref") {
+					return new RefOp(active);
+				} else if (name == "!") {
+					return new DerefOp(active);
 				} else {
 					return new Op(name,active);
 				}

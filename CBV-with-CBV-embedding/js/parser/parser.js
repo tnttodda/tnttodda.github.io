@@ -106,6 +106,12 @@ define(function(require) {
 				case Token.APP:
 					name = "@"; sig = [2,0];
 					break;
+				case Token.REF:
+					name = "ref"; sig = [1,0];
+					break;
+				case Token.DEREF:
+					name = "!"; sig = [1,0];
+					break;
 				default:
 					name = this.lexer.value(); sig = [0,0];
 					break;
