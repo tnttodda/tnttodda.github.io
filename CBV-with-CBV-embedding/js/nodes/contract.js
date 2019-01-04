@@ -13,8 +13,8 @@ define('nodes/contract',function(require) {
 		constructor(name) {
 			super("circle", "⊗", name);
 			this.contract = true; // change
-			this.height = 0.3;
-			this.width = 0.3;
+			this.height = 0.23;
+			this.width = 0.23;
 		}
 
 		transition(token, link) {

@@ -50,6 +50,7 @@ define(function(require) {
 		}
 
 		draw(width, height, state) {
+			this.child.nodes[1].quotient();
 			var str = this.child.draw('\n  ');
 			str += '\n';
 			for (let link of this.allLinks) {
