@@ -106,6 +106,10 @@ define(function(require) {
 						this._token = new Token(Token.REF);
 					else if (str == "DEREF")
 						this._token = new Token(Token.DEREF);
+					else if (str == "ASSIGN")
+						this._token = new Token(Token.ASSIGN);
+					else if (str == "UNIT")
+						this._token = new Token(Token.UNIT);
 					else if (str == "TRUE")
 						this._token = new Token(Token.TRUE, true);
 					else if (str == "FALSE")

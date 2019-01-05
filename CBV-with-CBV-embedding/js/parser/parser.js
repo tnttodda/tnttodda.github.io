@@ -112,6 +112,12 @@ define(function(require) {
 				case Token.DEREF:
 					name = "!"; sig = [1,0];
 					break;
+				case Token.ASSIGN:
+					name = ":="; sig = [2,0];
+					break;
+				case Token.UNIT:
+						name = "()"; sig = [0,0];
+						break;
 				default:
 					name = this.lexer.value(); sig = [0,0];
 					break;

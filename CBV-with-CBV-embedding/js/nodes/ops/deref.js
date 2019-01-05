@@ -19,8 +19,9 @@ define(function(require) {
 
 		rewrite(token) {
 			var inLink = this.findLinksInto()[0];
+			var outLinks = this.findLinksOutOf();
 
-			var instanceNode = this.graph.findNodeByKey(this.findLinksOutOf()[0].to);
+			var instanceNode = this.graph.findNodeByKey(outLinks[0].to);
 			var atomNode = this.graph.findNodeByKey(instanceNode.findLinksOutOf()[0].to);
 			var prinNode = this.graph.findNodeByKey(atomNode.findLinksOutOf()[0].to);
 			var newNode = new Contract().addToGroup(this.group);

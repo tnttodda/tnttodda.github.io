@@ -42,7 +42,9 @@ define(function() {
     'LAMBDA',
     'APP',
     'REF',
-    'DEREF'
+    'DEREF',
+    'ASSIGN',
+    'UNIT'
   ].forEach(token => Token[token] = token);
 
   return Token;

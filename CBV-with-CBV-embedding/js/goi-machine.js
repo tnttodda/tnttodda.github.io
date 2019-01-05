@@ -40,6 +40,8 @@ define('goi-machine',
 		var AppOp = require('nodes/ops/app');
 		var RefOp = require('nodes/ops/ref');
 		var DerefOp = require('nodes/ops/deref');
+		var AssignOp = require('nodes/ops/assign');
+		var UnitOp = require('nodes/ops/unit');
 
 		class GoIMachine {
 
@@ -181,6 +183,10 @@ define('goi-machine',
 					return new RefOp(active);
 				} else if (name == "!") {
 					return new DerefOp(active);
+				} else if (name == ":=") {
+					return new AssignOp(active);
+				} else if (name == "()") {
+					return new UnitOp(active);
 				} else {
 					return new Op(name,active);
 				}
