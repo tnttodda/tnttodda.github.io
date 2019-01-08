@@ -25,7 +25,6 @@ define(function(require) {
 			this.graph.findNodeByKey(outLinks[0].to).delete();
 			this.delete();
 
-			console.log("!!")
 			token.rewriteFlag = Flag.SEARCH;
 			return inLink;
 		}
