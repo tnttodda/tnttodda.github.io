@@ -23,9 +23,7 @@ define(function(require) {
 			var newNode = this.graph.findNodeByKey(lambdaLink.to);
 			var argNode = this.graph.findNodeByKey(outLinks[1].to);
 
-			var newGroup = newNode.group;
-			while (!newGroup.boxed)
-				newGroup = newGroup.group;
+			var newGroup = newNode.prinOf.filter(x => x.buxs.length > 0)[0];
 
 			inLink.changeTo(newNode.key);
 			newGroup.unbox();

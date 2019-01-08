@@ -233,10 +233,10 @@ define('goi-machine',
 				if (token.rewriteFlag == Flag.SEARCH) {
 					var to = this.graph.findNodeByKey(link.to);
 					var outlinks = to.findLinksOutOf();
-					if (to instanceof Instance) {
+					if (to.text == "I" || to instanceof Instance) { // fix
 						token.rewriteFlag = Flag.RETURN;
 					} else if (to instanceof Op) {
-						if (outlinks.length == 0 || !to.active) {
+						if (outlinks.filter(x => !this.graph.findNodeByKey(x.to).group.boxed).length == 0 || !to.active) {
 							if (to.active)  token.rewriteFlag = Flag.REWRITE;
 							if (!to.active) token.rewriteFlag = Flag.RETURN;
 						} else {

@@ -10,11 +10,13 @@ define('term', function(require) {
 		constructor(prin, auxs) {
 			super();
 			this.set(prin, auxs)
+			this.buxs = [];
 			this.boxed = false;
 		}
 
 		set(prin, auxs) {
 			this.prin = prin;
+			if (prin) prin.addPrinOf(this);
 			this.auxs = auxs;
 			return this;
 		}
@@ -25,7 +27,7 @@ define('term', function(require) {
 		}
 
 		unbox() {
-			this.boxed = false;
+			this.prin.prinOf.map(x => x.boxed = false)
 			return this.prin;
 		}
 
@@ -44,22 +46,24 @@ define('term', function(require) {
 		removeNode(node) {
 			if (this.auxs.indexOf(node) > -1)
 				this.auxs.splice(this.auxs.indexOf(node), 1);
-			return super.removeNode(node);
+			if (this.buxs.indexOf(node) > -1)
+				this.buxs.splice(this.buxs.indexOf(node), 1);
+			super.removeNode(node);
 		}
 
 		copyBox(map) {
 			var newTerm = new Term();
 			newTerm.boxed = this.boxed;
 			var newPrin = this.prin.copy().addToGroup(newTerm);
-			newTerm.prin = newPrin;
+			newTerm.set(newPrin,[]); newTerm.buxs = [];
 			map.set(this.prin.key, newPrin.key);
 
-			newTerm.auxs = []; newTerm.buxs = [];
 			for (let node of this.nodes) {
 				if (!map.has(node.key)) {
 					var newNode;
 					if (node instanceof Term) {
-						newNode = node.copyBox(map).addToGroup(newTerm);
+						var list = node.copyBox(map);
+						newNode = list[1].addToGroup(newTerm);
 					} else {
 						newNode = node.copy().addToGroup(newTerm);
 						map.set(node.key, newNode.key);
@@ -76,13 +80,23 @@ define('term', function(require) {
 			}
 
 			for (let link of this.links) {
-				var from = this.getEndpoint(map,link.from);
-				var to = this.getEndpoint(map,link.to);
-				var newLink = new Link(from, to).addToGroup(newTerm);
+				var newLink = new Link(link.from,link.to).addToGroup(newTerm);
 				newLink.reverse = link.reverse;
 				newLink.colour = link.colour;
 			}
 
+			return [map,newTerm];
+		}
+
+		copyLinks(map,newTerm) {
+			for (let node of newTerm.nodes) {
+				if (node instanceof Term)
+					this.copyLinks(map,node);
+			}
+			for (let link of newTerm.links) {
+				link.changeFrom(this.getEndpoint(map,link.from));
+				link.changeTo(this.getEndpoint(map,link.to));
+			}
 			return newTerm;
 		}
 
@@ -94,7 +108,8 @@ define('term', function(require) {
 
 		copy() {
 			var map = new Map();
-			return this.copyBox(map);
+			var list = this.copyBox(map);
+			return this.copyLinks(list[0],list[1])
 		}
 
 		quotient() {
@@ -121,6 +136,7 @@ define('term', function(require) {
 							}
 						}
 					} else if (outLinks.length == 0 && inLinks.length == 0) {
+						changed = true;
 						node.delete();
 				}
 			}

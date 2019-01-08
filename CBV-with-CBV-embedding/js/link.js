@@ -78,7 +78,7 @@ define(function() {
 			var label = " ";
 			if (this.argNo == 0) p = "w";
 			if (this.argNo == 2) p = "e";
-			if (this.graph.findNodeByKey(this.from).outLinks.length < 2) p = "_";
+			//if (this.graph.findNodeByKey(this.from).outLinks.length < 2) p = "_";
 			if (this.colour == "red") label = "  " + state;
 			var str = level += this.from + '->' + this.to + '[';
 					str += 'label="' + label + '",fontcolor=red,fontsize=30,'

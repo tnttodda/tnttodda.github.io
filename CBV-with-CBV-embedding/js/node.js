@@ -10,6 +10,7 @@ define(function(require) {
 			this.name = name; // identifier name or constant name if any
 			this.graph = null;
 			this.group = null;
+			this.prinOf = [];
 			this.inLinks = []; this.outLinks = [];
 			this.addToGraph(graph); // cheating!
 		}
@@ -22,6 +23,7 @@ define(function(require) {
 		}
 
 		addToGroup(group) {
+			this.addToGraph(graph);
 			group.addNode(this);
 			this.group = group;
 			return this; // to provide chain operation
@@ -66,6 +68,7 @@ define(function(require) {
 
 		// also delete any connected links
 		delete() {
+			this.prinOf.map(x => x.prin = null)
 			this.group.removeNode(this);
 			this.graph.removeNode(this);
 		}
@@ -92,6 +95,12 @@ define(function(require) {
 		rewrite(token, nextLink) {
 			token.rewrite = false;
 			return nextLink;
+		}
+
+		addPrinOf(term) {
+			this.prinOf.push(term);
+			var boxed = this.prinOf.filter(x => x.boxed);
+			if (boxed.length > 0) this.prinOf.map(x => x.boxed = true);
 		}
 	}
 
