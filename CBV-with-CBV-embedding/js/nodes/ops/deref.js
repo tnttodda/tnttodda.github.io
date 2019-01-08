@@ -14,7 +14,7 @@ define(function(require) {
 		}
 
 		copy() {
-			return new RefOp(this.active);
+			return new DerefOp(this.active);
 		}
 
 		rewrite(token) {

@@ -29,6 +29,7 @@ define('goi-machine',
 		var IntOp = require('nodes/ops/int');
 		var BoolOp = require('nodes/ops/bool');
 		var PlusOp = require('nodes/ops/plus');
+		var MinusOp = require('nodes/ops/minus');
 		var TimesOp = require('nodes/ops/times');
 		var AndOp = require('nodes/ops/and');
 		var OrOp = require('nodes/ops/or');
@@ -42,6 +43,9 @@ define('goi-machine',
 		var DerefOp = require('nodes/ops/deref');
 		var AssignOp = require('nodes/ops/assign');
 		var UnitOp = require('nodes/ops/unit');
+		var SecOp = require('nodes/ops/sec');
+		var AbortOp = require('nodes/ops/abort');
+		var RecOp = require('nodes/ops/rec');
 
 		class GoIMachine {
 
@@ -163,6 +167,8 @@ define('goi-machine',
 					return new SuccOp(active);
 				} else if (name == "+") {
 					return new PlusOp(active);
+				} else if (name == "-") {
+					return new MinusOp(active);
 				} else if (name == "*") {
 					return new TimesOp(active);
 				} else if (name == "∧") {
@@ -187,6 +193,12 @@ define('goi-machine',
 					return new AssignOp(active);
 				} else if (name == "()") {
 					return new UnitOp(active);
+				} else if (name == ";") {
+					return new SecOp(active);
+				} else if (name == "abort") {
+					return new AbortOp(active);
+				} else if (name == "μ") {
+					return new RecOp(active);
 				} else {
 					return new Op(name,active);
 				}
@@ -207,7 +219,6 @@ define('goi-machine',
 
 					if (nextLink != null) {
 						this.token.setLink(nextLink);
-						this.printHistory(graphTxt, linkTxt, flagTxt);
 					} else {
 						this.token.setLink(null);
 						play = false;
@@ -215,12 +226,6 @@ define('goi-machine',
 						finished = true;
 					}
 				}
-			}
-
-			printHistory(graphTxt, linkTxt, flagTxt) {
-				graphTxt.val(this.graph.draw().replace(/\n/g, "") + '\n' + graphTxt.val());
-				linkTxt.val(this.token.link + '\n' + linkTxt.val());
-				flagTxt.val(this.token.rewriteFlag + '\n' + flagTxt.val());
 			}
 
 			pass(token) { // this needs cleaning up!

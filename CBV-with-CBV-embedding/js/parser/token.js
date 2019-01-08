@@ -29,6 +29,7 @@ define(function() {
 
     'SUCC',
     'PLUS',
+    'MINUS',
     'TIMES',
     'INT',
     'AND',
@@ -44,7 +45,11 @@ define(function() {
     'REF',
     'DEREF',
     'ASSIGN',
-    'UNIT'
+    'UNIT',
+    'SEC',
+    'REC',
+    'ABORT',
+    'CALLCC'
   ].forEach(token => Token[token] = token);
 
   return Token;

@@ -45,7 +45,6 @@ require(["jquery", "renderer", "goi-machine"],
       $("#flagTxt").val("");
       machine.compile(currentSource);
       draw();
-      machine.printHistory($("#graphTxt"),$("#linkTxt"),$("#flagTxt"));
       finished = false;
     }
 

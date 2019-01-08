@@ -82,6 +82,9 @@ define(function(require) {
 				case Token.PLUS:
 					name = "+"; sig = [2,0];
 					break;
+				case Token.MINUS:
+					name = "-"; sig = [2,0];
+					break;
 				case Token.TIMES:
 					name = "*"; sig = [2,0];
 					break;
@@ -116,8 +119,20 @@ define(function(require) {
 					name = ":="; sig = [2,0];
 					break;
 				case Token.UNIT:
-						name = "()"; sig = [0,0];
-						break;
+					name = "()"; sig = [0,0];
+					break;
+				case Token.SEC:
+					name = ";"; sig = [1,1];
+					break;
+				case Token.REC:
+					name = "μ"; sig = [0,1];
+					break;
+				case Token.ABORT:
+					name = "abort"; sig = [0,1];
+					break;
+				case Token.CALLCC:
+					name = "callcc"; sig = [0,0];
+					break;
 				default:
 					name = this.lexer.value(); sig = [0,0];
 					break;

@@ -12,7 +12,8 @@ define('group', function(require) {
 		}
 
 		addNode(node) {
-			this.nodes.push(node);
+			if (!this.nodes.includes(node))
+				this.nodes.push(node);
 		}
 
 		removeNode(node) {

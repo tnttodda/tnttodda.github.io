@@ -86,6 +86,8 @@ define(function(require) {
 						this._token = new Token(Token.SUCC)
 					else if (str == "PLUS")
 						this._token = new Token(Token.PLUS);
+					else if (str == "MINUS")
+						this._token = new Token(Token.MINUS);
 					else if (str == "TIMES")
 						this._token = new Token(Token.TIMES);
 					else if (str == "AND")
@@ -110,6 +112,14 @@ define(function(require) {
 						this._token = new Token(Token.ASSIGN);
 					else if (str == "UNIT")
 						this._token = new Token(Token.UNIT);
+					else if (str == "SEC")
+						this._token = new Token(Token.SEC);
+					else if (str == "REC")
+						this._token = new Token(Token.REC);
+					else if (str == "ABORT")
+						this._token = new Token(Token.ABORT);
+					else if (str == "CALLCC")
+						this._token = new Token(Token.CALLCC);
 					else if (str == "TRUE")
 						this._token = new Token(Token.TRUE, true);
 					else if (str == "FALSE")

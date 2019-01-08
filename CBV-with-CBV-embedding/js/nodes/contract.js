@@ -77,7 +77,7 @@ define('nodes/contract',function(require) {
 			return link;
 		}
 
-		static createDNet(cs, inputs, group, op) {
+		static createDNet(cs, inputs, group) {
 			var c;
 			var from;
 			var to;
@@ -86,10 +86,8 @@ define('nodes/contract',function(require) {
 			for (var n = 0; n < cs; n++) {
 				c = new Contract().addToGroup(group);
 				cList.push(c);
-
-			// if (inputs.length == 0) // maybe this needs to be "more elegant"
-			// 	new Link(op.key, c.key, "_", "_", "lightgrey").addToGroup(group);
 			}
+
 			if (cList.length > 0) {
 				for (var i = 0; i < inputs.length; i++) {
 					from = inputs[i]; to = cList[i%cs];
