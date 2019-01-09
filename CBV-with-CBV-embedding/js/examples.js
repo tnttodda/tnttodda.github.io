@@ -26,8 +26,4 @@ var ex5 =
   'bind x = PLUS(4,y) in\n'+
   'EQUALS(x,x)'
 
-//var ex6 = "bind z = PLUS(1,2) in APP(LAMBDA(;w.(bind y = IF(EQUALS(z,3);PLUS(1,w),PLUS(2,w)) in bind x = PLUS(4,y) in EQUALS(x,x))),z)"
-
-//var ex6 = 'PLUS(CALLCC(;PLUS(3,4)),TIMES(8,9))'
-
-var ex6 = 'bind y = IF(1;bind x = 1 in bind z = 2 in new u = 3 in PLUS(x,MINUS(z,u)),0) in PLUS(y,y)';
+var ex6 = "bind z = PLUS(1,2) in APP(LAMBDA(;w.(bind y = IF(EQUALS(z,3);PLUS(1,w),PLUS(2,w)) in bind x = PLUS(4,y) in EQUALS(x,x))),z)"
