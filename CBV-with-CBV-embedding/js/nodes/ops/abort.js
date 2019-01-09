@@ -21,7 +21,7 @@ define(function(require) {
 			var newNode = this.graph.findNodeByKey(outLinks[0].to).group.unbox();
 			var startNode = this.graph.findNodeByKey("nd1");
 			inLink.changeTo(newNode.key);
-			startNode.findLinksOutOf().map(x => x.delete())
+			startNode.findLinksOutOf().filter(l => l != inLink).map(x => x.delete())
 			inLink.changeFrom(startNode.key);
 
 			this.delete();

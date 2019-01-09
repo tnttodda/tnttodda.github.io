@@ -41,13 +41,13 @@ define('nodes/contract',function(require) {
 
 				// clean up here
 				var opLinks = nextNode.findLinksOutOf();
-				var opLinksE = opLinks.filter(x => !this.graph.findNodeByKey(x.to).group.boxed);
+				var opLinksE = opLinks.filter(x => !this.graph.findNodeByKey(x.to).prinOf.filter(x => x.boxed).length > 0);
 				var opLinksD = opLinks.filter(x => !opLinksE.includes(x))
 
 				// fully copy deferred arguments
 				var thunks = []; var thunkCopies = []; var links = opLinksE;
 				for (var i = 0; i < opLinksD.length; i++) {
-					var thunk = this.graph.findNodeByKey(opLinksD[i].to).group;
+					var thunk = this.graph.findNodeByKey(opLinksD[i].to).prinOf.filter(x => x.boxed)[0];
 					var thunkCopy = thunk.copy().addToGroup(term);
 					thunks.push(thunk);
 					thunkCopies.push(thunkCopy);

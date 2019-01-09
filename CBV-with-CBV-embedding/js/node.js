@@ -29,6 +29,11 @@ define(function(require) {
 			return this; // to provide chain operation
 		}
 
+		removeFromGroup() {
+			this.group.removeNode(this);
+			this.group = null;
+		}
+
 		changeToGroup(group) {
 			this.group.removeNode(this);
 			this.addToGroup(group);
@@ -99,8 +104,6 @@ define(function(require) {
 
 		addPrinOf(term) {
 			this.prinOf.push(term);
-			var boxed = this.prinOf.filter(x => x.boxed);
-			if (boxed.length > 0) this.prinOf.map(x => x.boxed = true);
 		}
 	}
 

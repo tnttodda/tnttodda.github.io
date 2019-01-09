@@ -12,6 +12,7 @@ define('term', function(require) {
 			this.set(prin, auxs)
 			this.buxs = [];
 			this.boxed = false;
+			this.thunk = false;
 		}
 
 		set(prin, auxs) {
@@ -27,7 +28,7 @@ define('term', function(require) {
 		}
 
 		unbox() {
-			this.prin.prinOf.map(x => x.boxed = false)
+			this.boxed = false;
 			return this.prin;
 		}
 
@@ -54,10 +55,14 @@ define('term', function(require) {
 		copyBox(map) {
 			var newTerm = new Term();
 			newTerm.boxed = this.boxed;
-			var newPrin = this.prin.copy().addToGroup(newTerm);
-			newTerm.set(newPrin,[]); newTerm.buxs = [];
-			map.set(this.prin.key, newPrin.key);
+			if (!map.has(this.prin.key)) {
+				var newPrin = this.prin.copy().addToGroup(newTerm);
+				map.set(this.prin.key, newPrin.key);
+			} else {
+				var newPrin = this.graph.findNodeByKey(map.get(this.prin.key));
+			}
 
+			newTerm.set(newPrin,[]); newTerm.buxs = [];
 			for (let node of this.nodes) {
 				if (!map.has(node.key)) {
 					var newNode;

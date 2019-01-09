@@ -131,7 +131,7 @@ define(function(require) {
 					name = "abort"; sig = [0,1];
 					break;
 				case Token.CALLCC:
-					name = "callcc"; sig = [0,0];
+					name = "callcc"; sig = [0,1];
 					break;
 				default:
 					name = this.lexer.value(); sig = [0,0];

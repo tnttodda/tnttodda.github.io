@@ -45,6 +45,7 @@ define('goi-machine',
 		var UnitOp = require('nodes/ops/unit');
 		var SecOp = require('nodes/ops/sec');
 		var AbortOp = require('nodes/ops/abort');
+		var CallccOp = require('nodes/ops/callcc');
 		var RecOp = require('nodes/ops/rec');
 
 		class GoIMachine {
@@ -197,6 +198,8 @@ define('goi-machine',
 					return new SecOp(active);
 				} else if (name == "abort") {
 					return new AbortOp(active);
+				} else if (name == "callcc") {
+					return new CallccOp(active);
 				} else if (name == "μ") {
 					return new RecOp(active);
 				} else {
@@ -236,7 +239,7 @@ define('goi-machine',
 					if (to.text == "I" || to instanceof Instance) { // fix
 						token.rewriteFlag = Flag.RETURN;
 					} else if (to instanceof Op) {
-						if (outlinks.filter(x => !this.graph.findNodeByKey(x.to).group.boxed).length == 0 || !to.active) {
+						if (outlinks.filter(x => !this.graph.findNodeByKey(x.to).prinOf.filter(x => x.boxed).length > 0).length == 0 || !to.active) {
 							if (to.active)  token.rewriteFlag = Flag.REWRITE;
 							if (!to.active) token.rewriteFlag = Flag.RETURN;
 						} else {
@@ -262,7 +265,7 @@ define('goi-machine',
 			}
 
 			doneVisiting(link, links) {
-				links = links.filter(x => !this.graph.findNodeByKey(x.to).group.boxed);
+				links = links.filter(x => !this.graph.findNodeByKey(x.to).prinOf.filter(x => x.boxed).length > 0);
 				return (links.length == (1 + links.findIndex(x => (x == link))));
 			}
 
