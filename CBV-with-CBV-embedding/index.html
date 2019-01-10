@@ -30,7 +30,6 @@
 							case "ex3": prog = ex3; break;
 							case "ex4": prog = ex4; break;
   						case "ex5": prog = ex5; break;
-							case "ex6": prog = ex6; break;
   					}
   					$("#ta-program").val(prog);
   					$("#btn-make-graph").click();
@@ -47,10 +46,9 @@
 		<select id="sm-example">
 			<option value="ex1" selected>Ex1 - Simple Arithmetic</option>
 			<option value="ex2" selected>Ex2 - Arithmetic w/ Copying</option>
-			<option value="ex3" selected>Ex3 - Some Logic</option>
-			<option value="ex4" selected>Ex4 - An If Statement</option>
-			<option value="ex5" selected>Ex5 - There's a lot going on!</option>
-			<option value="ex6" selected>Ex6 - Lambda</option>
+			<option value="ex3" selected>Ex3 - If Statement w/ Copying</option>
+			<option value="ex4" selected>Ex4 - Recursive Factorial</option>
+			<option value="ex5" selected>Ex5 - Some Imperative Computation</option>
 
 		</select>
 		<button id="btn-info" onclick="window.open('help.html')">?</button>
@@ -60,11 +58,10 @@
 		</textarea>
 		<button id="btn-make-graph" style="width:100%;height:10%">>></button>
 		<div align="center">
-				<button style="width:18%;" id="btn-refresh">⟲</button><button
-				style="width:18%;" id="btn-prev">|◄</button><button
-				style="width:22%;" id="btn-play"
-				onclick="if (this.innerHTML == '►') { this.innerHTML = '❚❚'} else { this.innerHTML = '►'} ">►</button><button
-				style="width:18%;" id="btn-next">►|</button><button style="width:18%;" id="btn-skip">⟳</button>
+				<button style="width:18%;" id="btn-refresh">⏮️</button><button
+				style="width:18%;" id="btn-prev">⏪</button><button
+				style="width:22%;" id="btn-play">⏯️</button><button
+				style="width:18%;" id="btn-next">⏩</button><button style="width:18%;" id="btn-skip">⏭️</button>
 		</div>
 
 		<div>
