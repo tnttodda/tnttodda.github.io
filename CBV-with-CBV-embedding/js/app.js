@@ -65,10 +65,6 @@ require(["jquery", "renderer", "goi-machine"],
 		      event.preventDefault();
 		});
 
-		$("#btn-info").click(function (event) {
-		      alert("hello there");
-		});
-
 		$('#cb-show-key').change(function() {
 	        showKey = this.checked;
 	        $("#btn-refresh").click();

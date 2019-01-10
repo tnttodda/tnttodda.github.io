@@ -1,0 +1,176 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>README.md</title><style></style></head><body id="preview">
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 600px;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  width: 300px;
+}
+
+/* tr:nth-child(even) {
+  background-color: #dddddd;
+} */
+</style>
+
+<p>A term in Sᴘᴀʀᴛᴀɴ is a variable, a binding, a reference, an operation or a thunk (i.e. a term that cannot yet be evaluated).<br>
+For the visualiser, the syntax for a term is as follows:</p>
+<pre><code>term ::= &lt;var&gt;
+        | bind &lt;var&gt; = &lt;term&gt; in &lt;term&gt;
+        | new &lt;var&gt; = &lt;term&gt; in &lt;term&gt;
+        | ϕ(&lt;term&gt;*;&lt;thunk&gt;*)
+
+thunk ::= &lt;term&gt; | &lt;var&gt;.&lt;term&gt;
+</code></pre>
+<p>where <code>ϕ</code> refers to an operation that has a number of eager arguments (those terms before the <code>;</code>) and a number of deferred arguments (those thunks after the <code>;</code>). A thunk is given as either a term, or a term with a bound variable.<br>
+<em>Note: We omit the <code>;</code> when there are no deferred arguments, and the parentheses when there are no arguments whatsoever.</em></p>
+<p>Below, we have a list of operations that have been implemented in this visualiser:</p>
+<table>
+<thead>
+<tr>
+<th>Arithmetic Operation</th>
+<th>Sᴘᴀʀᴛᴀɴ Operation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>n</td>
+<td>n</td>
+</tr>
+<tr>
+<td>succ n</td>
+<td>SUCC(n)</td>
+</tr>
+<tr>
+<td>n + m</td>
+<td>PLUS(n,m)</td>
+</tr>
+<tr>
+<td>n - m</td>
+<td>MINUS(n,m)</td>
+</tr>
+<tr>
+<td>n * m</td>
+<td>TIMES(n,m)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Logical Operation</th>
+<th>Sᴘᴀʀᴛᴀɴ Operation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>true</td>
+<td>TRUE</td>
+</tr>
+<tr>
+<td>false</td>
+<td>FALSE</td>
+</tr>
+<tr>
+<td>a &amp;&amp; b</td>
+<td>AND(a,b)</td>
+</tr>
+<tr>
+<td>a || b</td>
+<td>OR(a,b)</td>
+</tr>
+<tr>
+<td>¬ a</td>
+<td>NOT(a)</td>
+</tr>
+<tr>
+<td>a == b</td>
+<td>EQUALS(a,b)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>PCF Operation</th>
+<th>Sᴘᴀʀᴛᴀɴ Operation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>if b then t else f</td>
+<td>IF(b;t,f)</td>
+</tr>
+<tr>
+<td>λx.t</td>
+<td>LAMBDA(;x.t)</td>
+</tr>
+<tr>
+<td>t u</td>
+<td>APP(t,u)</td>
+</tr>
+<tr>
+<td>rec f.t</td>
+<td>REC(;f.t)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Imperative Operation</th>
+<th>Sᴘᴀʀᴛᴀɴ Operation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>! a</td>
+<td>DEREF(a)</td>
+</tr>
+<tr>
+<td>a := n</td>
+<td>ASSIGN(a,n)</td>
+</tr>
+<tr>
+<td>()</td>
+<td>UNIT</td>
+</tr>
+<tr>
+<td>a ; b</td>
+<td>SEC(a;b)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Control Operation</th>
+<th>Sᴘᴀʀᴛᴀɴ Operation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>callcc(f)</td>
+<td>CALLCC(;f)</td>
+</tr>
+<tr>
+<td>abort(f)</td>
+<td>ABORT(;f)</td>
+</tr>
+<tr>
+<td>… break; …</td>
+<td>SCOPE(;w. … BREAK(w) …)</td>
+</tr>
+<tr>
+<td>… continue; …</td>
+<td>SCOPE(;w. … CONTINUE(w) …)</td>
+</tr>
+</tbody>
+</table>
+
+</body></html>
