@@ -105,6 +105,15 @@ define(function(require) {
 		addPrinOf(term) {
 			this.prinOf.push(term);
 		}
+
+		unbox() {
+			return this.getBoxed().unbox();
+		}
+
+		getBoxed() {
+			return this.prinOf.filter(x => x.boxed)[0];
+		}
+
 	}
 
 	return Node;

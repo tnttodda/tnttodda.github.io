@@ -133,6 +133,15 @@ define(function(require) {
 				case Token.CALLCC:
 					name = "callcc"; sig = [0,1];
 					break;
+				case Token.SCOPE:
+					name = "scope"; sig = [0,1];
+					break;
+				case Token.BREAK:
+					name = "break"; sig = [1,0];
+					break;
+				case Token.CONTINUE:
+					name = "cont."; sig = [1,0];
+					break;
 				default:
 					name = this.lexer.value(); sig = [0,0];
 					break;

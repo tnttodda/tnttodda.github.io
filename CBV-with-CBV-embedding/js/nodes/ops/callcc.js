@@ -31,7 +31,7 @@ define(function(require) {
 			var C = this.graph.findNodeByKey("nd3").copy();
 			term.addToGroup(group);
 
-			this.graph.findNodeByKey(outLinks[0].to).group.unbox();
+			this.graph.findNodeByKey(outLinks[0].to).unbox();
 
 			var newNode = new AppOp(true).addToGroup(this.group);
 			var lambdaTerm = new Term().addToGroup(this.group);

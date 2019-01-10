@@ -47,6 +47,10 @@ define('goi-machine',
 		var AbortOp = require('nodes/ops/abort');
 		var CallccOp = require('nodes/ops/callcc');
 		var RecOp = require('nodes/ops/rec');
+		var ScopeOp = require('nodes/ops/scope');
+		var BreakOp = require('nodes/ops/break');
+		var ContOp = require('nodes/ops/cont');
+
 
 		class GoIMachine {
 
@@ -202,6 +206,12 @@ define('goi-machine',
 					return new CallccOp(active);
 				} else if (name == "μ") {
 					return new RecOp(active);
+				} else if (name == "scope") {
+					return new ScopeOp(active);
+				} else if (name == "break") {
+					return new BreakOp(active);
+				} else if (name == "cont.") {
+					return new ContOp(active);
 				} else {
 					return new Op(name,active);
 				}

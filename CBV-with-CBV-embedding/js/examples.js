@@ -1,12 +1,3 @@
-// var fact_prog =
-//   'let fact = rec f. λx.\n'
-// + '  if (x <= 1)\n'
-// + '  then 1\n'
-// + '  else (x * (f (x - 1)))\n'
-// + 'in\n'
-// + '\n'
-// + 'fact 4';
-
 var ex1 = 'PLUS(3,TIMES(5,6))'
 
 var ex2 =
@@ -26,4 +17,8 @@ var ex5 =
   'bind x = PLUS(4,y) in\n'+
   'EQUALS(x,x)'
 
-var ex6 = "bind z = PLUS(1,2) in APP(LAMBDA(;w.(bind y = IF(EQUALS(z,3);PLUS(1,w),PLUS(2,w)) in bind x = PLUS(4,y) in EQUALS(x,x))),z)"
+var ex6 = 'bind fact = REC(;f.LAMBDA(;x.\n'+
+          'IF(EQUALS(x,1);\n'+
+          '1,\n'+
+          'TIMES(x,APP(f,MINUS(x,1))))))\n'+
+          'in APP(fact,5)'

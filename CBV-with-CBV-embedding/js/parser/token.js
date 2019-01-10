@@ -49,7 +49,10 @@ define(function() {
     'SEC',
     'REC',
     'ABORT',
-    'CALLCC'
+    'CALLCC',
+    'SCOPE',
+    'BREAK',
+    'CONTINUE'
   ].forEach(token => Token[token] = token);
 
   return Token;

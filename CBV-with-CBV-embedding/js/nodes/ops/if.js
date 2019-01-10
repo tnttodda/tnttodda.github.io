@@ -26,12 +26,14 @@ define(function(require) {
 			} else {
 				keep = 2; del = 1;
 			}
-			outLinks[del].delete();
+
 			var newNode = this.graph.findNodeByKey(outLinks[keep].to).prinOf.filter(x => x.boxed)[0].unbox();
 			inLink.changeTo(newNode.key);
 
 			outLinks[0].delete();
 			this.graph.findNodeByKey(outLinks[0].to).delete();
+			outLinks[del].delete();
+			this.graph.findNodeByKey(outLinks[del].to).delete();
 			this.delete();
 
 			token.rewriteFlag = Flag.SEARCH;

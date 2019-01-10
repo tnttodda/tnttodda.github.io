@@ -120,6 +120,12 @@ define(function(require) {
 						this._token = new Token(Token.ABORT);
 					else if (str == "CALLCC")
 						this._token = new Token(Token.CALLCC);
+					else if (str == "SCOPE")
+						this._token = new Token(Token.SCOPE);
+					else if (str == "BREAK")
+						this._token = new Token(Token.BREAK);
+					else if (str == "CONTINUE")
+						this._token = new Token(Token.CONTINUE);
 					else if (str == "TRUE")
 						this._token = new Token(Token.TRUE, true);
 					else if (str == "FALSE")
