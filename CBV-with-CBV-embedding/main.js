@@ -2,6 +2,7 @@ requirejs.config({
 	//urlArgs: "bust=" + (new Date()).getTime(),
 	//By default load any module IDs from js/lib
 	baseUrl: 'js',
+  urlArgs: "time=" + (new Date()).getTime(),
 	//except, if the module ID starts with "app",
 	//load it from the js/app directory. paths
 	//config is relative to the baseUrl, and
@@ -10,11 +11,7 @@ requirejs.config({
 	bundles: {
         'parser/ast': ['ast/term', 'ast/var', 'ast/atom'
         			 , 'ast/binding', 'ast/reference', 'ast/thunk'
-        			 , 'ast/operation'],
-        //'op': ['unop-type', 'biop-type'],
-        'group': ['group', 'box'],
-        'term': ['term', 'box-wrapper'],
-        'nodes/der': ['nodes/der', 'nodes/var'],
+        			 , 'ast/operation']
    	},
 	paths: {
 		d3: '../bower_components/d3/d3',
