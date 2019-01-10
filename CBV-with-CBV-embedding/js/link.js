@@ -2,23 +2,19 @@ define(function() {
 
 	class Link {
 		constructor(from, to, argNo) {
-			this.from = from;
-			this.to = to;
-			this.argNo = argNo;
-			this.clearFocus();
+			this.from = from; this.to = to;
+			this.group = null; this.graph = null;
+			this.colour = "black"; this.penWidth = null
 			this.addToGraph(graph); // cheating
-			this.addToNode();
+			this.addToNode(argNo);
 		}
 
-		addToNode() {
+		addToNode(argNo) {
 			var fromNode = this.graph.findNodeByKey(this.from);
 			var toNode = this.graph.findNodeByKey(this.to);
 			toNode.inLinks.push(this);
-			if (this.argNo == null) {
-				fromNode.outLinks.push(this);
-			} else {
-				fromNode.outLinks.splice(this.argNo,0,this);
-			}
+			if (argNo == null) argNo = fromNode.outLinks.length+1;
+			fromNode.outLinks.splice(argNo,0,this);
 		}
 
 		addToGraph(graph) {
@@ -73,12 +69,20 @@ define(function() {
 
 		toString() { return this.from + "->" + this.to; }
 
+		getPort() {
+			var fromNode = this.graph.findNodeByKey(this.from);
+			var fromNodeOutLinks = fromNode.findLinksOutOf();
+			if (fromNodeOutLinks.length > 1) {
+				var i = fromNodeOutLinks.findIndex(x => x == this);
+				if (i == 0) return "nw";
+				if (i == 2) return "ne";
+			}
+			return "_";
+		}
+
 		draw(level,state) {
-			var p = "_"
+			var p = this.getPort();
 			var label = " ";
-			if (this.argNo == 0) p = "w";
-			if (this.argNo == 2) p = "e";
-			//if (this.graph.findNodeByKey(this.from).outLinks.length < 2) p = "_";
 			if (this.colour == "red") label = "  " + state;
 			var str = level += this.from + '->' + this.to + '[';
 					str += 'label="' + label + '",fontcolor=red,fontsize=30,'

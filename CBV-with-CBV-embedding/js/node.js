@@ -5,11 +5,8 @@ define(function(require) {
 	class Node {
 		constructor(shape, text, name) {
 			this.key = null;
-			this.shape = shape;
-			this.text = text;
-			this.name = name; // identifier name or constant name if any
-			this.graph = null;
-			this.group = null;
+			this.shape = shape; this.text = text; this.name = name;
+			this.group = null; this.graph = null;
 			this.prinOf = [];
 			this.inLinks = []; this.outLinks = [];
 			this.addToGraph(graph); // cheating!
@@ -112,6 +109,10 @@ define(function(require) {
 
 		getBoxed() {
 			return this.prinOf.filter(x => x.boxed)[0];
+		}
+
+		isBoxed() {
+			return !(this.getBoxed() == null);
 		}
 
 	}

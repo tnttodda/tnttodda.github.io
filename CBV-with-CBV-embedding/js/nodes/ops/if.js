@@ -7,12 +7,8 @@ define(function(require) {
 
 	class IfOp extends Op {
 
-		constructor(active) {
-			super("if", active);
-		}
-
 		copy() {
-			return new IfOp(this.active);
+			return new IfOp(this.name,this.active);
 		}
 
 		rewrite(token) {
@@ -27,13 +23,12 @@ define(function(require) {
 				keep = 2; del = 1;
 			}
 
-			var newNode = this.graph.findNodeByKey(outLinks[keep].to).prinOf.filter(x => x.boxed)[0].unbox();
+			var newNode = this.graph.findNodeByKey(outLinks[keep].to).unbox();
 			inLink.changeTo(newNode.key);
 
 			outLinks[0].delete();
 			this.graph.findNodeByKey(outLinks[0].to).delete();
 			outLinks[del].delete();
-			this.graph.findNodeByKey(outLinks[del].to).delete();
 			this.delete();
 
 			token.rewriteFlag = Flag.SEARCH;

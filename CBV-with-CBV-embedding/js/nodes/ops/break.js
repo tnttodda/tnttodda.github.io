@@ -9,12 +9,8 @@ define(function(require) {
 
 	class BreakOp extends Op {
 
-		constructor(active) {
-			super("break", true);
-		}
-
 		copy() {
-			return new BreakOp(this.active);
+			return new BreakOp(this.name,this.active);
 		}
 
 		rewrite(token) {

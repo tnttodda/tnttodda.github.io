@@ -70,84 +70,83 @@ define(function(require) {
 
 		// BUILT-IN OPERATIONS
 		operation(ctx) {
-			var name; var sig;
+			var name; var sig; var active;
 			var eas = [];
 			var das = [];
 
 			var token = this.lexer.lookaheadType();
 			switch(token) {
 				case Token.SUCC:
-					name = "++"; sig = [1,0];
+					name = "++"; sig = [1,0]; active = true;
 					break;
 				case Token.PLUS:
-					name = "+"; sig = [2,0];
+					name = "+"; sig = [2,0]; active = true;
 					break;
 				case Token.MINUS:
-					name = "-"; sig = [2,0];
+					name = "-"; sig = [2,0]; active = true;
 					break;
 				case Token.TIMES:
-					name = "*"; sig = [2,0];
+					name = "*"; sig = [2,0]; active = true;
 					break;
 				case Token.AND:
-					name = "∧"; sig = [2,0];
+					name = "∧"; sig = [2,0]; active = true;
 					break;
 				case Token.OR:
-					name = "∨"; sig = [2,0];
+					name = "∨"; sig = [2,0]; active = true;
 					break;
 				case Token.NOT:
-					name = "¬"; sig = [1,0];
+					name = "¬"; sig = [1,0]; active = true;
 					break;
 				case Token.EQUALS:
-					name = "=="; sig = [2,0];
+					name = "=="; sig = [2,0]; active = true;
 					break;
 				case Token.IF:
-					name = "if"; sig = [1,2];
+					name = "if"; sig = [1,2]; active = true;
 					break;
 				case Token.LAMBDA:
-					name = "λ"; sig = [0,1]; // bound arguments?
+					name = "λ"; sig = [0,1]; active = false;
 					break;
 				case Token.APP:
-					name = "@"; sig = [2,0];
+					name = "@"; sig = [2,0]; active = true;
 					break;
 				case Token.REF:
-					name = "ref"; sig = [1,0];
+					name = "ref"; sig = [1,0]; active = true;
 					break;
 				case Token.DEREF:
-					name = "!"; sig = [1,0];
+					name = "!"; sig = [1,0]; active = true;
 					break;
 				case Token.ASSIGN:
-					name = ":="; sig = [2,0];
+					name = ":="; sig = [2,0]; active = true;
 					break;
 				case Token.UNIT:
-					name = "()"; sig = [0,0];
+					name = "()"; sig = [0,0]; active = false;
 					break;
 				case Token.SEC:
-					name = ";"; sig = [1,1];
+					name = ";"; sig = [1,1]; active = true;
 					break;
 				case Token.REC:
-					name = "μ"; sig = [0,1];
+					name = "μ"; sig = [0,1]; active = true;
 					break;
 				case Token.ABORT:
-					name = "abort"; sig = [0,1];
+					name = "abort"; sig = [0,1]; active = true;
 					break;
 				case Token.CALLCC:
-					name = "callcc"; sig = [0,1];
+					name = "callcc"; sig = [0,1]; active = true;
 					break;
 				case Token.SCOPE:
-					name = "scope"; sig = [0,1];
+					name = "scope"; sig = [0,1]; active = true;
 					break;
 				case Token.BREAK:
-					name = "break"; sig = [1,0];
+					name = "break"; sig = [1,0]; active = true;
 					break;
 				case Token.CONTINUE:
-					name = "cont."; sig = [1,0];
+					name = "cont."; sig = [1,0]; active = true;
 					break;
 				default:
-					name = this.lexer.value(); sig = [0,0];
+					name = this.lexer.value(); sig = [0,0]; active = false;
 					break;
 			}
 			this.lexer.match(token);
-			const active = (sig[0] > 0);
 			if (active) {
 				this.lexer.match(Token.LPAREN);
 				eas = this.gatherArgs(ctx,sig[0],false);

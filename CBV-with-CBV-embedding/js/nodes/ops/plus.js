@@ -6,13 +6,9 @@ define(function(require) {
 	var Flag = require('token').RewriteFlag();
 
 	class PlusOp extends Op {
-
-		constructor(active) {
-			super("+", active);
-		}
-
+		
 		copy() {
-			return new PlusOp(this.active);
+			return new PlusOp(this.name,this.active);
 		}
 
 		rewrite(token) {

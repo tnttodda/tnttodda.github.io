@@ -7,12 +7,8 @@ define(function(require) {
 
 	class MinusOp extends Op {
 
-		constructor(active) {
-			super("-", active);
-		}
-
 		copy() {
-			return new MinusOp(this.active);
+			return new MinusOp(this.name,this.active);
 		}
 
 		rewrite(token) {

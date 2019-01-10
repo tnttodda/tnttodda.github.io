@@ -6,12 +6,8 @@ define(function(require) {
 
 	class AppOp extends Op {
 
-		constructor(active) {
-			super("@", active);
-		}
-
 		copy() {
-			return new AppOp(this.active);
+			return new AppOp(this.name,this.active);
 		}
 
 		rewrite(token) {
@@ -23,7 +19,7 @@ define(function(require) {
 			var newNode = this.graph.findNodeByKey(lambdaLink.to);
 			var argNode = this.graph.findNodeByKey(outLinks[1].to);
 
-			var newGroup = newNode.prinOf.filter(x => x.buxs.length > 0)[0];
+			var newGroup = newNode.getBoxed();
 
 			inLink.changeTo(newNode.key);
 			newGroup.unbox();

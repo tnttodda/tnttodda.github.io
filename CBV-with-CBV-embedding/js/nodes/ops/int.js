@@ -4,10 +4,6 @@ define(function(require) {
 
 	class IntOp extends Op {
 
-		constructor(n,active) {
-			super(n, active);
-		}
-
 		copy() {
 			return new IntOp(this.name,this.active);
 		}

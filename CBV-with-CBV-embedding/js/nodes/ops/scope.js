@@ -12,12 +12,8 @@ define(function(require) {
 
 	class ScopeOp extends Op {
 
-		constructor(active) {
-			super("scope", true);
-		}
-
 		copy() {
-			return new ScopeOp(this.active);
+			return new ScopeOp(this.name,this.active);
 		}
 
 		rewrite(token) {

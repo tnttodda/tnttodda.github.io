@@ -51,7 +51,6 @@ define('goi-machine',
 		var BreakOp = require('nodes/ops/break');
 		var ContOp = require('nodes/ops/cont');
 
-
 		class GoIMachine {
 
 			constructor() {
@@ -153,7 +152,7 @@ define('goi-machine',
 					term.set(op, auxs);
 				}
 
-				term.buxs = []; // put this in a more integrated place e.g. ops
+				term.buxs = [];
 				while (bounds.length > 0) {
 					term.buxs.push(auxs[ast.ctx[0].indexOf(bounds[0])]);
 					auxs.splice(ast.ctx[0].indexOf(bounds[0]),1);
@@ -169,56 +168,56 @@ define('goi-machine',
 				} else if (name == "true" || name == "false") {
 					return new BoolOp(name,active);
 				} else if (name == "++") {
-					return new SuccOp(active);
+					return new SuccOp(name,active);
 				} else if (name == "+") {
-					return new PlusOp(active);
+					return new PlusOp(name,active);
 				} else if (name == "-") {
-					return new MinusOp(active);
+					return new MinusOp(name,active);
 				} else if (name == "*") {
-					return new TimesOp(active);
+					return new TimesOp(name,active);
 				} else if (name == "∧") {
-					return new AndOp(active);
+					return new AndOp(name,active);
 				} else if (name == "∨") {
-					return new OrOp(active);
+					return new OrOp(name,active);
 				} else if (name == "¬") {
-					return new NotOp(active);
+					return new NotOp(name,active);
 				} else if (name == "==") {
-					return new EqualsOp(active);
+					return new EqualsOp(name,active);
 				} else if (name == "if") {
-					return new IfOp(active);
+					return new IfOp(name,active);
 				} else if (name == "λ") {
-					return new LambdaOp(active);
+					return new LambdaOp(name,active);
 				} else if (name == "@") {
-					return new AppOp(active);
+					return new AppOp(name,active);
 				} else if (name == "ref") {
-					return new RefOp(active);
+					return new RefOp(name,active);
 				} else if (name == "!") {
-					return new DerefOp(active);
+					return new DerefOp(name,active);
 				} else if (name == ":=") {
-					return new AssignOp(active);
+					return new AssignOp(name,active);
 				} else if (name == "()") {
-					return new UnitOp(active);
+					return new UnitOp(name,active);
 				} else if (name == ";") {
-					return new SecOp(active);
+					return new SecOp(name,active);
 				} else if (name == "abort") {
-					return new AbortOp(active);
+					return new AbortOp(name,active);
 				} else if (name == "callcc") {
-					return new CallccOp(active);
+					return new CallccOp(name,active);
 				} else if (name == "μ") {
-					return new RecOp(active);
+					return new RecOp(name,active);
 				} else if (name == "scope") {
-					return new ScopeOp(active);
+					return new ScopeOp(name,active);
 				} else if (name == "break") {
-					return new BreakOp(active);
+					return new BreakOp(name,active);
 				} else if (name == "cont.") {
-					return new ContOp(active);
+					return new ContOp(name,active);
 				} else {
 					return new Op(name,active);
 				}
 			}
 
 			// machine step
-			transition(graphTxt, linkTxt, flagTxt) {
+			transition() {
 				if (!finished) {
 					this.count++;
 					var node = this.graph.findNodeByKey(this.token.link.to);
@@ -249,7 +248,7 @@ define('goi-machine',
 					if (to.text == "I" || to instanceof Instance) { // fix
 						token.rewriteFlag = Flag.RETURN;
 					} else if (to instanceof Op) {
-						if (outlinks.filter(x => !this.graph.findNodeByKey(x.to).prinOf.filter(x => x.boxed).length > 0).length == 0 || !to.active) {
+						if (!to.active || outlinks.filter(x => !this.graph.findNodeByKey(x.to).isBoxed()).length == 0) {
 							if (to.active)  token.rewriteFlag = Flag.REWRITE;
 							if (!to.active) token.rewriteFlag = Flag.RETURN;
 						} else {
@@ -275,7 +274,7 @@ define('goi-machine',
 			}
 
 			doneVisiting(link, links) {
-				links = links.filter(x => !this.graph.findNodeByKey(x.to).prinOf.filter(x => x.boxed).length > 0);
+				links = links.filter(x => !this.graph.findNodeByKey(x.to).isBoxed());
 				return (links.length == (1 + links.findIndex(x => (x == link))));
 			}
 

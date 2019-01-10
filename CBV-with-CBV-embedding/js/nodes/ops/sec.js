@@ -6,19 +6,15 @@ define(function(require) {
 
 	class SecOp extends Op {
 
-		constructor(active) {
-			super(";", active);
-		}
-
 		copy() {
-			return new SecOp(this.active);
+			return new SecOp(this.name,this.active);;
 		}
 
 		rewrite(token) {
 			var inLink = this.findLinksInto()[0];
 			var outLinks = this.findLinksOutOf();
 
-			var newNode = this.graph.findNodeByKey(outLinks[1].to).group.unbox();
+			var newNode = this.graph.findNodeByKey(outLinks[1].to).unbox();
 			inLink.changeTo(newNode.key);
 
 			outLinks[0].delete();

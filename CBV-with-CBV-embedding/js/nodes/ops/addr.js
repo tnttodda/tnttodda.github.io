@@ -7,12 +7,8 @@ define(function(require) {
 
 	class AddrOp extends Op {
 
-		constructor(active) {
-			super("addr", true);
-		}
-
 		copy() {
-			return new AddrOp(this.active);
+			return new AddrOp(this.name,this.active);
 		}
 
 		rewrite(token) {

@@ -11,12 +11,8 @@ define(function(require) {
 
 	class CallccOp extends Op {
 
-		constructor(active) {
-			super("callcc", true);
-		}
-
 		copy() {
-			return new CallccOp(this.active);
+			return new CallccOp(this.name,this.active);
 		}
 
 		rewrite(token) {

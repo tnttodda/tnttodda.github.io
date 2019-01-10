@@ -124,30 +124,33 @@ define('term', function(require) {
 					if (node.nodes.length == 0) {
 						changed = true;
 						node.delete();
-					} else if (!(node.boxed && node.nodes.length == 1)) {
+					} else if (!(node.boxed && node.nodes.length == 1 && node.nodes[0].contract)) { // change
 						node.quotient();
 					}
-				} else if (node.contract) { // change
+				} else {
 					var inLinks = node.findLinksInto();
 					var outLinks = node.findLinksOutOf();
-					if (outLinks.length > 0) {
-						var outNode = this.graph.findNodeByKey(outLinks[0].to);
-						if (outNode.contract || outNode.atom || inLinks.length < 2) { // change "contract" and "atom"
-							if (!(inLinks.length == 1 && outLinks.length == 1 && node.group.boxed && !outNode.group.boxed)) {
-								changed = true;
-								inLinks.map(x => x.changeTo(outLinks[0].to));
-								outLinks[0].delete();
-								node.delete();
+					if (node.contract) { // change
+						if (outLinks.length > 0) {
+							var outNode = this.graph.findNodeByKey(outLinks[0].to);
+							if (outNode.contract || outNode.atom || inLinks.length < 2) { // change "contract" and "atom"
+								if (!(inLinks.length == 1 && outLinks.length == 1 && node.group.boxed && !outNode.group.boxed)) {
+									changed = true;
+									inLinks.map(x => x.changeTo(outLinks[0].to));
+									outLinks[0].delete();
+									node.delete();
+								}
 							}
 						}
-					} else if (outLinks.length == 0 && inLinks.length == 0) {
+					}
+					if (outLinks.length == 0 && inLinks.length == 0) {
 						changed = true;
 						node.delete();
+					}
 				}
 			}
+			if (changed) this.quotient();
 		}
-		if (changed) this.quotient();
-	}
 
 }
 

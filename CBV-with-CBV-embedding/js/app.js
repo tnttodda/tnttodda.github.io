@@ -40,9 +40,6 @@ require(["jquery", "renderer", "goi-machine"],
 		}
 
     function makeGraph() {
-      $("#graphTxt").val("");
-      $("#linkTxt").val("");
-      $("#flagTxt").val("");
       machine.compile(currentSource);
       draw();
       finished = false;
@@ -99,7 +96,7 @@ require(["jquery", "renderer", "goi-machine"],
         playing = true;
         next();
 				if (isDraw) {
-					setTimeout(autoPlay, 500);
+					setTimeout(autoPlay, 1000);
 				} else {
 					autoPlay();
         }
@@ -114,11 +111,10 @@ require(["jquery", "renderer", "goi-machine"],
 		}
 
 		function next() {
-      // console.log(machine.graph.findNodeByKey("nd32").outLinks);
       if (graphsAhead.length == 0) {
   			if (!finished) {
           graphsBehind.push($("#ta-graph").val());
-  				machine.transition($("#graphTxt"), $("#linkTxt"), $("#flagTxt"));
+  				machine.transition();
   				draw();
   			}
       } else {
@@ -142,38 +138,9 @@ require(["jquery", "renderer", "goi-machine"],
       draw();
     });
 
-		$("#ta-program").on('input', function() {
-		    specialChar(this);
-		}).trigger('input');
-
-		var $stacks = $('#flag, #dataStack, #boxStack');
-		var sync = function(e){
-		    var $other = $stacks.not(this);
-		    $other.get(0).scrollTop = this.scrollTop;
-		    $other.get(1).scrollTop = this.scrollTop;
-		}
-		$stacks.on('scroll', sync);
 
 		renderer.init("#graph");
-		//renderer.init({element: "#graph", zoom: {extent: [0.1, 10]}})
 		$("#ta-program").val(ex6);
   		$("#btn-make-graph").click();
 	}
 );
-
-function specialChar(textarea) {
-	text = textarea.value;
-	if (text.includes("\\lambda")) {
-		var selection = textarea.selectionStart;
-		textarea.value = text.replace("\\lambda", "λ");
-		textarea.setSelectionRange(selection-6, selection-6);
-	}
-}
-
-/*
-var info =
-      "Instructions:" +
-+ "\n  1. Choose an example from the drop down menu or create your own program"
-+ "\n  2. Click '>>' button to display the graph"
-+ "\n  3. Click ";
-*/

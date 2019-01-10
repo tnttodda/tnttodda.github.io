@@ -6,12 +6,8 @@ define(function(require) {
 
 	class RecOp extends Op {
 
-		constructor(active) {
-			super("μ", true);
-		}
-
 		copy() {
-			return new RecOp(this.active);
+			return new RecOp(this.name,this.active);
 		}
 
 		rewrite(token) {

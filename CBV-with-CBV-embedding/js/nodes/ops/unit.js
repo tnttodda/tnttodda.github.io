@@ -4,12 +4,8 @@ define(function(require) {
 
 	class UnitOp extends Op {
 
-		constructor(active) {
-			super("()", active);
-		}
-
 		copy() {
-			return new UnitOp(this.active);
+			return new UnitOp(this.name,this.active);
 		}
 
 	}

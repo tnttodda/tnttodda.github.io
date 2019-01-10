@@ -7,12 +7,8 @@ define(function(require) {
 
 	class AssignOp extends Op {
 
-		constructor(active) {
-			super(":=", active);
-		}
-
 		copy() {
-			return new AssignOp(this.active);
+			return new AssignOp(this.name,this.active);
 		}
 
 		rewrite(token) {

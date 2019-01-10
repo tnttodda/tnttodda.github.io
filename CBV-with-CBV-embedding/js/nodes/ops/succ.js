@@ -6,13 +6,9 @@ define(function(require) {
 	var Flag = require('token').RewriteFlag();
 
 	class SuccOp extends Op {
-
-		constructor(active) {
-			super("++", active);
-		}
-
+		
 		copy() {
-			return new SuccOp(this.active);
+			return new SuccOp(this.name,this.active);
 		}
 
 		rewrite(token) {

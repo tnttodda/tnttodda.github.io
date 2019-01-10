@@ -6,19 +6,15 @@ define(function(require) {
 
 	class AbortOp extends Op {
 
-		constructor(active) {
-			super("abort", true);
-		}
-
 		copy() {
-			return new AbortOp(this.active);
+			return new AbortOp(this.name,this.active);
 		}
 
 		rewrite(token) {
 			var inLink = this.findLinksInto()[0];
 			var outLinks = this.findLinksOutOf();
 
-			var newNode = this.graph.findNodeByKey(outLinks[0].to).group.unbox();
+			var newNode = this.graph.findNodeByKey(outLinks[0].to).unbox();
 			var startNode = this.graph.findNodeByKey("nd1");
 			inLink.changeTo(newNode.key);
 			startNode.findLinksOutOf().filter(l => l != inLink).map(x => x.delete())
