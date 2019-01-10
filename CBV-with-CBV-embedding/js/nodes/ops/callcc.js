@@ -11,8 +11,12 @@ define(function(require) {
 
 	class CallccOp extends Op {
 
+		constructor() {
+			super("call/cc",true)
+		}
+
 		copy() {
-			return new CallccOp(this.name,this.active);
+			return new CallccOp();
 		}
 
 		rewrite(token) {
@@ -29,12 +33,12 @@ define(function(require) {
 
 			this.graph.findNodeByKey(outLinks[0].to).unbox();
 
-			var newNode = new AppOp(true).addToGroup(this.group);
+			var newNode = new AppOp().addToGroup(this.group);
 			var lambdaTerm = new Term().addToGroup(this.group);
-			var lambdaNode = new LambdaOp(false).addToGroup(lambdaTerm);
+			var lambdaNode = new LambdaOp().addToGroup(lambdaTerm);
 			lambdaTerm.set(lambdaNode,[]);
 			var abortTerm = new Term().addToGroup(lambdaTerm);
-			var abortNode = new AbortOp(true).addToGroup(abortTerm);
+			var abortNode = new AbortOp().addToGroup(abortTerm);
 			abortTerm.set(abortNode,[]);
 			abortTerm.box();
 

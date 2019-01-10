@@ -6,8 +6,12 @@ define(function(require) {
 
 	class AbortOp extends Op {
 
+		constructor() {
+			super("abort",true)
+		}
+
 		copy() {
-			return new AbortOp(this.name,this.active);
+			return new AbortOp();
 		}
 
 		rewrite(token) {

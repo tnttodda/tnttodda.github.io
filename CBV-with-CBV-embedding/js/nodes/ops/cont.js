@@ -9,8 +9,12 @@ define(function(require) {
 
 	class ContOp extends Op {
 
+		constructor() {
+			super("cont.",true)
+		}
+
 		copy() {
-			return new ContOp(this.name,this.active);
+			return new ContOp();
 		}
 
 		rewrite(token) {

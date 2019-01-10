@@ -6,8 +6,12 @@ define(function(require) {
 
 	class SecOp extends Op {
 
+		constructor() {
+			super(";",true)
+		}
+
 		copy() {
-			return new SecOp(this.name,this.active);;
+			return new SecOp();
 		}
 
 		rewrite(token) {

@@ -4,8 +4,12 @@ define(function(require) {
 
 	class IntOp extends Op {
 
+		constructor(n) {
+			super(n,false)
+		}
+
 		copy() {
-			return new IntOp(this.name,this.active);
+			return new IntOp(this.name);
 		}
 
 	}

@@ -6,8 +6,12 @@ define(function(require) {
 
 	class AppOp extends Op {
 
+		constructor() {
+			super("@",true)
+		}
+
 		copy() {
-			return new AppOp(this.name,this.active);
+			return new AppOp();
 		}
 
 		rewrite(token) {

@@ -7,9 +7,13 @@ define(function(require) {
 	var Flag = require('token').RewriteFlag();
 
 	class RefOp extends Op {
-		
+
+		constructor() {
+			super("ref",true)
+		}
+
 		copy() {
-			return new RefOp(this.name,this.active);
+			return new RefOp();
 		}
 
 		rewrite(token) {

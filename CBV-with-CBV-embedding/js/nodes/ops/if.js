@@ -7,8 +7,12 @@ define(function(require) {
 
 	class IfOp extends Op {
 
+		constructor() {
+			super("if",true)
+		}
+
 		copy() {
-			return new IfOp(this.name,this.active);
+			return new IfOp();
 		}
 
 		rewrite(token) {

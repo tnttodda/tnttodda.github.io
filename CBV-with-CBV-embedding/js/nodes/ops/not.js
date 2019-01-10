@@ -6,9 +6,13 @@ define(function(require) {
 	var Flag = require('token').RewriteFlag();
 
 	class NotOp extends Op {
-		
+
+		constructor() {
+			super("¬",true)
+		}
+
 		copy() {
-			return new NotOp(this.name,this.active);
+			return new NotOp();
 		}
 
 		rewrite(token) {

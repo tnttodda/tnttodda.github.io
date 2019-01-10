@@ -162,57 +162,57 @@ define('goi-machine',
 				return term;
 			}
 
-			toOp(name,active) {
+			toOp(name) {
 				if (Number.isInteger(parseInt(name))) {
-					return new IntOp(name,active);
+					return new IntOp(name);
 				} else if (name == "true" || name == "false") {
-					return new BoolOp(name,active);
+					return new BoolOp(name);
 				} else if (name == "++") {
-					return new SuccOp(name,active);
+					return new SuccOp();
 				} else if (name == "+") {
-					return new PlusOp(name,active);
+					return new PlusOp();
 				} else if (name == "-") {
-					return new MinusOp(name,active);
+					return new MinusOp();
 				} else if (name == "*") {
-					return new TimesOp(name,active);
+					return new TimesOp();
 				} else if (name == "∧") {
-					return new AndOp(name,active);
+					return new AndOp();
 				} else if (name == "∨") {
-					return new OrOp(name,active);
+					return new OrOp();
 				} else if (name == "¬") {
-					return new NotOp(name,active);
+					return new NotOp();
 				} else if (name == "==") {
-					return new EqualsOp(name,active);
+					return new EqualsOp();
 				} else if (name == "if") {
-					return new IfOp(name,active);
+					return new IfOp();
 				} else if (name == "λ") {
-					return new LambdaOp(name,active);
+					return new LambdaOp();
 				} else if (name == "@") {
-					return new AppOp(name,active);
+					return new AppOp();
 				} else if (name == "ref") {
-					return new RefOp(name,active);
+					return new RefOp();
 				} else if (name == "!") {
-					return new DerefOp(name,active);
+					return new DerefOp();
 				} else if (name == ":=") {
-					return new AssignOp(name,active);
+					return new AssignOp();
 				} else if (name == "()") {
-					return new UnitOp(name,active);
+					return new UnitOp();
 				} else if (name == ";") {
-					return new SecOp(name,active);
+					return new SecOp();
 				} else if (name == "abort") {
-					return new AbortOp(name,active);
+					return new AbortOp();
 				} else if (name == "callcc") {
-					return new CallccOp(name,active);
+					return new CallccOp();
 				} else if (name == "μ") {
-					return new RecOp(name,active);
+					return new RecOp();
 				} else if (name == "scope") {
-					return new ScopeOp(name,active);
+					return new ScopeOp();
 				} else if (name == "break") {
-					return new BreakOp(name,active);
+					return new BreakOp();
 				} else if (name == "cont.") {
-					return new ContOp(name,active);
+					return new ContOp();
 				} else {
-					return new Op(name,active);
+					return new Op(name);
 				}
 			}
 

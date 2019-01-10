@@ -7,8 +7,12 @@ define(function(require) {
 
 	class EqualsOp extends Op {
 
+		constructor() {
+			super("==",true)
+		}
+
 		copy() {
-			return new EqualsOp(this.name,this.active);
+			return new EqualsOp();
 		}
 
 		rewrite(token) {

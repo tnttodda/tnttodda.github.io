@@ -7,8 +7,12 @@ define(function(require) {
 
 	class AndOp extends Op {
 
+		constructor() {
+			super("∧",true)
+		}
+
 		copy() {
-			return new AndOp(this.name,this.active);
+			return new AndOp();
 		}
 
 		rewrite(token) {

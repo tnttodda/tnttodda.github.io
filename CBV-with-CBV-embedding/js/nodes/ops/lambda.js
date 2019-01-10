@@ -6,8 +6,12 @@ define(function(require) {
 
 	class LambdaOp extends Op {
 
+		constructor() {
+			super("λ",false)
+		}
+
 		copy() {
-			return new LambdaOp(this.name,this.active);
+			return new LambdaOp();
 		}
 
 	}

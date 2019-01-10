@@ -9,8 +9,12 @@ define(function(require) {
 
 	class DerefOp extends Op {
 
+		constructor() {
+			super("!",true)
+		}
+
 		copy() {
-			return new DerefOp(this.name,this.active);
+			return new DerefOp();
 		}
 
 		rewrite(token) {

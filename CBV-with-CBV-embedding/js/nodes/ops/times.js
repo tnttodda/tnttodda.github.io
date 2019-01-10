@@ -7,8 +7,12 @@ define(function(require) {
 
 	class TimesOp extends Op {
 
+		constructor() {
+			super("*",true)
+		}
+
 		copy() {
-			return new TimesOp(this.name,this.active);
+			return new TimesOp();
 		}
 
 		rewrite(token) {
