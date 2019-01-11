@@ -71,6 +71,7 @@ define(function(require) {
 		// also delete any connected links
 		delete() {
 			this.prinOf.map(x => x.prin = null)
+			this.prinOf.map(x => x.prin = x.nodes[0]);
 			this.group.removeNode(this);
 			this.graph.removeNode(this);
 		}

@@ -12,7 +12,7 @@ define(function(require) {
 	class CallccOp extends Op {
 
 		constructor() {
-			super("call/cc",true)
+			super("ccc",true)
 		}
 
 		copy() {
