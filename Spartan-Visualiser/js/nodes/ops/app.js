@@ -24,7 +24,6 @@ define(function(require) {
 			var argNode = this.graph.findNodeByKey(outLinks[1].to);
 
 			var newGroup = newNode.getBoxed();
-			console.log(newGroup);
 
 			inLink.changeTo(newNode.key);
 			newGroup.unbox();
