@@ -98,7 +98,7 @@ define('goi-machine',
 					var prin; var auxs = [];
 					var i = ast.ctx[1].indexOf(ast.name);
 					if (i == -1) {
-						auxs = Contract.createDNet(ast.ctx.flat().length, [], term);
+						auxs = Contract.createDNet(([].concat.apply([], ast.ctx)).length, [], term);
 						prin = auxs[ast.ctx[0].indexOf(ast.name)];
 					} else {
 						auxs = auxs.concat(Contract.createDNet(ast.ctx[0].length+i, [], term));
@@ -114,7 +114,7 @@ define('goi-machine',
 					var param = this.toGraph(ast.param).addToGroup(term);
 
 					var auxs = body.auxs;
-					const i = ast.body.ctx.flat().indexOf(ast.id);
+					const i = ([].concat.apply([], ast.body.ctx)).indexOf(ast.id);
 					var auxNode = auxs[i];
 					auxs.splice(i,1);
 					auxs = auxs.concat(param.auxs);
@@ -126,7 +126,7 @@ define('goi-machine',
 					}
 					new Link(auxNode.key, param.prin.key).addToGroup(term);
 
-					auxs = Contract.createDNet(ast.ctx.flat().length, auxs, term);
+					auxs = Contract.createDNet(([].concat.apply([], ast.ctx)).length, auxs, term);
 					term.set(body.prin, auxs);
 
 				// OPERATIONS
@@ -148,7 +148,7 @@ define('goi-machine',
 						auxs = auxs.concat(next.auxs);
 					}
 
-					auxs = Contract.createDNet(ast.ctx.flat().length, auxs, term);
+					auxs = Contract.createDNet(([].concat.apply([], ast.ctx)).length, auxs, term);
 					term.set(op, auxs);
 				}
 
