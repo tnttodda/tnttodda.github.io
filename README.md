@@ -9,7 +9,7 @@ term ::= <var>
 
 thunk ::= <term> | <var>.<term>
 ```
-where `ϕ` refers to an operation that has a number of eager arguments (those terms before the `;`) and a number of deferred arguments (those thunks after the `;`). A thunk is given is either a term, or a term with a bound variable.
+where `ϕ` refers to an operation that has a number of eager arguments (those terms before the `;`) and a number of deferred arguments (those thunks after the `;`). A thunk is given as either a term, or a term with a bound variable.\
 *Note: We omit the `;` when there are no deferred arguments.*
 
 Below, we have a list of operations that have been implemented in this visualiser.
