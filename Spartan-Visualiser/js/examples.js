@@ -22,7 +22,7 @@ var ex4 = 'bind fact = REC (\n'+
 var ex5 = 'new b = 10 in\n'+
           'new a = 5 in\n'+
           'bind x = TIMES (DEREF(a), 2) in\n'+
-          'SEC (ASSIGN (a, b)\n'+
+          'SEC (ASSIGN (a, x)\n'+
           '  ; SEC (SCOPE\n'+
           '      (; w.IF (EQUALS (DEREF(a), DEREF(b))\n'+
           '         ; SEC ( BREAK (w)\n'+
