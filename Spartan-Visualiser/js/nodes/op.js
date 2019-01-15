@@ -7,10 +7,9 @@ define(function(require) {
 	class Op extends Node {
 
 		constructor(name, active) {
-			name = String(name);
 			super(null, name, name);
 			this.active = active;
-			this.height = 0.4 + 0.1 * (name.length).toFixed(1);
+			this.height = 0.4 + 0.1 * name.toString().length;
 			this.width = this.height;
 		}
 
