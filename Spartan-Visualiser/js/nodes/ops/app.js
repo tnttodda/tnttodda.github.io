@@ -32,7 +32,8 @@ define(function(require) {
 			this.graph.findNodeByKey(outLinks[0].to).delete();
 			this.delete();
 
-			new Link(newGroup.buxs[0].key,argNode.key).addToGroup(this.group);
+			if (newGroup.buxs.length > 0)
+				new Link(newGroup.buxs[0].key,argNode.key).addToGroup(this.group);
 
 			token.rewriteFlag = Flag.SEARCH;
 			return inLink;
