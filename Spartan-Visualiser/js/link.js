@@ -74,8 +74,8 @@ define(function() {
 			var fromNodeOutLinks = fromNode.findLinksOutOf();
 			if (fromNodeOutLinks.length > 1) {
 				var i = fromNodeOutLinks.findIndex(x => x == this);
-				if (i == 0) return "nw";
-				if (i == 2) return "ne";
+				if (i == 0) return "w";
+				if (i == 2) return "e";
 			}
 			return "_";
 		}
