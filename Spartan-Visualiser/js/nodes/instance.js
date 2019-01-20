@@ -11,6 +11,10 @@ define(function(require) {
 			this.width = 0.4;
 		}
 
+		copy() {
+			return new Instance();
+		}
+
 	}
 
 	return Instance;

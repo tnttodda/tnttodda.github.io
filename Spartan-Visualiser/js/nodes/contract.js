@@ -4,6 +4,7 @@ define('nodes/contract',function(require) {
 	var Node = require('node');
 	var Atom = require('nodes/atom');
 	var Op = require('nodes/op');
+	var Instance = require('nodes/instance');
 	var Term = require('term');
 	var Link = require('link');
 	var Group = require('group');
@@ -30,11 +31,17 @@ define('nodes/contract',function(require) {
 			var nextLink = outLinks[0];
 			var nextNode = this.graph.findNodeByKey(nextLink.to);
 
+			console.log(nextNode instanceof Instance);
+
 			if (nextNode instanceof Contract || nextNode instanceof Atom) {
 				for (let l of inLinks)
 					l.changeTo(nextNode.key);
 				nextLink.delete();
 				this.delete();
+			} else if (nextNode instanceof Instance) {
+				var instance = new Instance().addToGroup(nextNode.group);
+				link.changeTo(instance.key);
+				new Link(instance.key,nextNode.findLinksOutOf()[0].to).addToGroup(nextNode.group);
 			} else if (nextNode instanceof Op) {
 				var term = new Term().addToGroup(this.group);
 				var copy = nextNode.copy().addToGroup(term);
@@ -102,9 +109,6 @@ define('nodes/contract',function(require) {
 			return new Contract(this.name);
 		}
 
-		// draw(level) {
-		// 	return level + this.key + '[shape=' + this.shape + '];';
-		// }
 	}
 
 	return Contract;
