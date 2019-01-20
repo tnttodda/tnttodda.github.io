@@ -80,7 +80,7 @@ define('goi-machine',
 			}
 
 			// translation
-			toGraph(ast) { // i'd like boudns to be in the ast tbh
+			toGraph(ast) {
 				var graph = this.graph;
 				var term = new Term();
 				var bounds = [];

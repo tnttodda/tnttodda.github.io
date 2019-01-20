@@ -7,7 +7,7 @@ var ex2 =
 
 var ex3 =
   'bind z = PLUS (1, 2) in\n'+
-  'bind y = IF (EQUALS (z,3) ; PLUS(1,z), PLUS(2,z) ) in\n' +
+  'bind y = IF (EQUALS (z,3) ; PLUS(1,z), PLUS(2,z)) in\n' +
   'bind x = PLUS (4, y) in\n'+
   'AND (NOT (EQUALS (z, 4)), EQUALS (x, x))'
 
@@ -29,3 +29,15 @@ var ex5 = 'new b = 10 in\n'+
           '             ; ABORT (; 8))\n'+
           '         , ABORT (; 9)))\n'+
           '      ; 10))'
+
+var ex6 = 'new state = UNIT in\n'+
+          'bind saveState = LAMBDA (\n'+
+          '; x.CALLCC (\n'+
+          '  ; LAMBDA (\n'+
+          '    ; c.SEC (\n'+
+          '        ASSIGN (state, c)\n'+
+          '      ; x)\n'+
+          '      )\n'+
+          '  )) in\n'+
+          'bind loadState = DEREF(state) in\n'+
+          'IF ( APP (saveState, FALSE) ; 1, APP (loadState, TRUE))'

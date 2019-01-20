@@ -27,11 +27,18 @@ define(function(require) {
 			var group = term.group;
 			var fromNode = this.graph.findNodeByKey(inLink.from);
 
-			term.removeFromGroup(null);
-			var C = this.graph.findNodeByKey("nd3").copy();
-			term.addToGroup(group);
+			var boxedTerm = this.graph.findNodeByKey(outLinks[0].to).getBoxed();
+			var auxs = boxedTerm.auxs;
 
-			this.graph.findNodeByKey(outLinks[0].to).unbox();
+			boxedTerm.removeFromGroup();
+			var C = this.graph.findNodeByKey("nd3");
+			C.set(this.graph.findNodeByKey(this.graph.findNodeByKey("nd2").findLinksOutOf()[0].to),[]); // cheating
+			C = C.copy();
+			boxedTerm.addToGroup(group);
+
+			boxedTerm.unbox();
+			var ccCopy = this.graph.findNodeByKey(boxedTerm.prin.findLinksInto()[1].from);
+			var inLinkCopy = ccCopy.findLinksInto()[0]
 
 			var newNode = new AppOp().addToGroup(this.group);
 			var lambdaTerm = new Term().addToGroup(this.group);
@@ -52,9 +59,9 @@ define(function(require) {
 			new Link(newNode.key,lambdaTerm.prin.key).addToGroup(this.group);
 			new Link(lambdaNode.key,abortTerm.prin.key).addToGroup(lambdaTerm);
 			new Link(abortNode.key,xTerm.prin.key).addToGroup(abortTerm);
-			var inLinkCopy = this.findLinksInto()[1];
 			inLinkCopy.clearFocus();
 			inLinkCopy.changeTo(xNode.key);
+			ccCopy.delete();
 
 			inLink.changeTo(newNode.key);
 			outLinks[0].changeFrom(newNode.key);

@@ -25,6 +25,7 @@ define(function(require) {
 			inLink.changeFrom(startNode.key);
 
 			this.delete();
+			this.prinOf.map(x => x.prin = newNode);
 
 			token.rewriteFlag = Flag.SEARCH;
 			return inLink;

@@ -28,6 +28,7 @@ define(function(require) {
 			outLink.changeFrom(atomNode.key);
 
 			this.delete();
+			this.prinOf.map(x => x.prin = newNode);
 
 			token.rewriteFlag = Flag.SEARCH;
 			return inLink;

@@ -46,6 +46,7 @@ define(function(require) {
 			}
 
 			this.delete();
+			this.prinOf.map(x => x.prin = addrNode);
 
 			token.rewriteFlag = Flag.SEARCH;
 			return addrNode.findLinksOutOf()[1];

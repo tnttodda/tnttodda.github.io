@@ -34,6 +34,7 @@ define(function(require) {
 			instanceNode.delete();
 			if (atomNode.findLinksInto().length == 0) atomNode.delete();
 			this.delete();
+			this.prinOf.map(x => x.prin = newNode);
 
 			token.rewriteFlag = Flag.SEARCH;
 			return inLink;

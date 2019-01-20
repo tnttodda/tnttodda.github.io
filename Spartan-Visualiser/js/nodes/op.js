@@ -23,6 +23,7 @@ define(function(require) {
 
 			outLinks.map(x => x.delete());
 			outLinks.map(x => this.graph.findNodeByKey(x.to).delete());
+			this.prinOf.map(x => x.prin = newNode);
 			this.delete();
 
 			token.rewriteFlag = Flag.SEARCH;
