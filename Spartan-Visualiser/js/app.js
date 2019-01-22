@@ -49,23 +49,10 @@ require(["jquery", "renderer", "goi-machine"],
 		$("#btn-make-graph").click(function(event) {
       clearGraph(function() {
         currentSource = $("#ta-program").val();
-        makeGraph()
+        currentSource = currentSource.replace(/(\/\/)(.*)(\r\n|\r|\n|$)/g,"");
+        makeGraph();
       });
 		});
-
-		$("#btn-save").click(function (event) {
-		      var img = renderer.stage.getImage(false);
-		      img.onload = function () {
-		        $("#download").attr("href", img.src);
-		        $("#download")[0].click();
-		      };
-		      event.preventDefault();
-		});
-
-		$('#cb-show-key').change(function() {
-	        showKey = this.checked;
-	        $("#btn-refresh").click();
-   		 });
 
 		$("#btn-refresh").click(function(event) {
       graphsBehind = [];
@@ -118,7 +105,6 @@ require(["jquery", "renderer", "goi-machine"],
   				draw();
   			}
       } else {
-
         graphsBehind.push($("#ta-graph").val());
         draw(graphsAhead[0]);
         graphsAhead = graphsAhead.slice(1);
