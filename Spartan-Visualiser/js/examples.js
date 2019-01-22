@@ -24,7 +24,7 @@ var ex4 = '// 5! done recursively; for higher values, perhaps skip to the end\n\
           'in APP(fact, 5)                   // Change 5 to another value for n!'
 
 var ex5 = '// What value will this return? \n'+
-          '// A trivial example to display some diffrent kinds of imperative computation \n\n'+
+          '// A trivial example to display some different kinds of imperative computation \n\n'+
           'new b = 10 in\n'+
           'new a = 5 in\n'+
           'bind x = TIMES (DEREF(a), 2) in\n'+
