@@ -30,9 +30,7 @@ define('nodes/contract',function(require) {
 			var outLinks = this.findLinksOutOf();
 			var nextLink = outLinks[0];
 			var nextNode = this.graph.findNodeByKey(nextLink.to);
-
-			console.log(nextNode instanceof Instance);
-
+			
 			if (nextNode instanceof Contract || nextNode instanceof Atom) {
 				for (let l of inLinks)
 					l.changeTo(nextNode.key);
