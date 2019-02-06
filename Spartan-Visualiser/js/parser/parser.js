@@ -142,6 +142,9 @@ define(function(require) {
 				case Token.CONTINUE:
 					name = "cont."; sig = [1,0]; active = true;
 					break;
+				case Token.RETURN:
+					name = "ret."; sig = [1,1]; active = true;
+					break;
 				default:
 					name = this.lexer.value(); sig = [0,0]; active = false;
 					break;

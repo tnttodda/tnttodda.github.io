@@ -49,3 +49,10 @@ var ex6 = '// This uses callcc to explore both branches of a conditional \n'+
           '  )) in\n'+
           'bind loadState = DEREF(state) in\n'+
           'IF ( APP (saveState, FALSE) ; 1, APP (loadState, TRUE))'
+
+var ex7 = '// The divergent lambda term commonly referred to as Ω \n'+
+          '// WARNING: You can\'t skip to the end of this one! \n'+
+          'bind o = LAMBDA(;x.APP(x, x)) in \n'+
+          'APP(o, o)'
+
+//var 

@@ -50,6 +50,7 @@ define('goi-machine',
 		var ScopeOp = require('nodes/ops/scope');
 		var BreakOp = require('nodes/ops/break');
 		var ContOp = require('nodes/ops/cont');
+		var ReturnOp = require('nodes/ops/return');
 
 		class GoIMachine {
 
@@ -211,6 +212,8 @@ define('goi-machine',
 					return new BreakOp();
 				} else if (name == "cont.") {
 					return new ContOp();
+				} else if (name == "ret.") {
+					return new ReturnOp();
 				} else {
 					return new Op(name);
 				}

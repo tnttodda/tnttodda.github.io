@@ -126,6 +126,8 @@ define(function(require) {
 						this._token = new Token(Token.BREAK);
 					else if (str == "CONTINUE")
 						this._token = new Token(Token.CONTINUE);
+					else if (str == "RETURN")
+						this._token = new Token(Token.RETURN);
 					else if (str == "TRUE")
 						this._token = new Token(Token.TRUE, true);
 					else if (str == "FALSE")

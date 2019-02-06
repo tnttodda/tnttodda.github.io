@@ -52,7 +52,8 @@ define(function() {
     'CALLCC',
     'SCOPE',
     'BREAK',
-    'CONTINUE'
+    'CONTINUE',
+    'RETURN'
   ].forEach(token => Token[token] = token);
 
   return Token;

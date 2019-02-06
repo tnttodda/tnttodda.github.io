@@ -167,6 +167,11 @@ thunk ::= &lt;term&gt; | &lt;var&gt;.&lt;term&gt;
 <td>SCOPE(;w. … BREAK(w) …)</td>
 </tr>
 <tr>
+<td>… return x; …</td>
+<td>SCOPE(;w. … RETURN(w;x) …)</td>
+</tr>
+
+<tr>
 <td>… continue; …</td>
 <td>SCOPE(;w. … CONTINUE(w) …)</td>
 </tr>
