@@ -6,14 +6,14 @@ define(function(require) {
 	var AddrOp = require('nodes/ops/addr');
 	var Contract = require('nodes/contract');
 
-	class BreakOp extends Op {
+	class ReturnOp extends Op {
 
 		constructor() {
 			super("ret.",true)
 		}
 
 		copy() {
-			return new BreakOp();
+			return new ReturnOp();
 		}
 
 		rewrite(token) {
@@ -45,5 +45,5 @@ define(function(require) {
 
 	}
 
-	return BreakOp;
+	return ReturnOp;
 });
