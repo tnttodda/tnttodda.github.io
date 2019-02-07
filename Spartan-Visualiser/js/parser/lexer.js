@@ -90,6 +90,10 @@ define(function(require) {
 						this._token = new Token(Token.MINUS);
 					else if (str == "TIMES")
 						this._token = new Token(Token.TIMES);
+					else if (str == "MOD")
+						this._token = new Token(Token.MOD);
+					else if (str == "LEQ")
+						this._token = new Token(Token.LEQ);
 					else if (str == "AND")
 						this._token = new Token(Token.AND);
 					else if (str == "OR")

@@ -51,8 +51,26 @@ var ex6 = '// This uses callcc to explore both branches of a conditional \n'+
           'IF ( APP (saveState, FALSE) ; 1, APP (loadState, TRUE))'
 
 var ex7 = '// The divergent lambda term commonly referred to as Ω \n'+
-          '// WARNING: You can\'t skip to the end of this one! \n'+
+          '// WARNING: You can\'t skip to the end of this one! \n\n'+
           'bind o = LAMBDA(;x.APP(x, x)) in \n'+
           'APP(o, o)'
 
-//var 
+var ex8 = '// This is the primality test from wikipedia.org/wiki/Primality_test\n'+
+          '// Change n to whatever you like to find out whether it is prime or not!\n\n'+
+          'bind n = 13 in\n'+
+          'new iStore = 5 in\n'+
+          'bind i = DEREF(iStore) in\n'+
+          'SCOPE(\n'+
+          '    ; w.IF (LEQ (n, 4)\n'+
+          '      ; RETURN (w ; LEQ(n, 2))\n'+
+          '      , IF (OR (EQUALS (MOD (n, 2), 0)\n'+
+          '              , EQUALS (MOD (n, 3), 0))\n'+
+          '          ; RETURN(w;FALSE)\n'+
+          '          , REC (\n'+
+          '               ; f.IF (LEQ (TIMES (i, i), n)\n'+
+          '                 ; IF (OR (EQUALS (MOD (n, i), 0)\n'+
+          '                         , EQUALS (MOD (n, PLUS(i,2)), 0))\n'+
+          '                     ; RETURN(w;FALSE)\n'+
+          '                     , SEC (ASSIGN (iStore, PLUS (i, 6))\n'+
+          '                          ; f))\n'+
+          '                 , RETURN(w;TRUE))))))'

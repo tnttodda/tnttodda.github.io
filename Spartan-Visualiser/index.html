@@ -31,6 +31,8 @@
 							case "ex4": prog = ex4; break;
 							case "ex5": prog = ex5; break;
 							case "ex6": prog = ex6; break;
+							case "ex7": prog = ex7; break;
+							case "ex8": prog = ex8; break;
   					}
   					$("#ta-program").val(prog);
   					$("#btn-make-graph").click();
@@ -51,6 +53,8 @@
 			<option value="ex4">Ex4: Recursive Factorial</option>
 			<option value="ex5">Ex5: Imperative Computation</option>
 			<option value="ex6" selected>Ex6: Call-with-current-continuation</option>
+			<option value="ex7">Ex7: Divergent Computation</option>
+			<option value="ex8">Ex8: Primality Test</option>
 		</select>
 		<button id="btn-info" onclick="window.open('help.html')">?</button>
 		<textarea id="ta-program" rows="40" spellcheck=false style="width: 100%; height: 300px; resize: none; font-size: 12px;">

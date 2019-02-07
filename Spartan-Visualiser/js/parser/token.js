@@ -32,6 +32,8 @@ define(function() {
     'MINUS',
     'TIMES',
     'INT',
+    'MOD',
+    'LEQ',
     'AND',
     'OR',
     'NOT',

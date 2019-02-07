@@ -88,6 +88,12 @@ define(function(require) {
 				case Token.TIMES:
 					name = "*"; sig = [2,0]; active = true;
 					break;
+				case Token.MOD:
+					name = "%"; sig = [2,0]; active = true;
+					break;
+				case Token.LEQ:
+					name = "<="; sig = [2,0]; active = true;
+					break;
 				case Token.AND:
 					name = "∧"; sig = [2,0]; active = true;
 					break;

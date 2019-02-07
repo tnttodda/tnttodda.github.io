@@ -31,6 +31,8 @@ define('goi-machine',
 		var PlusOp = require('nodes/ops/plus');
 		var MinusOp = require('nodes/ops/minus');
 		var TimesOp = require('nodes/ops/times');
+		var ModOp = require('nodes/ops/mod');
+		var LeqOp = require('nodes/ops/leq');
 		var AndOp = require('nodes/ops/and');
 		var OrOp = require('nodes/ops/or');
 		var NotOp = require('nodes/ops/not');
@@ -176,6 +178,10 @@ define('goi-machine',
 					return new MinusOp();
 				} else if (name == "*") {
 					return new TimesOp();
+				} else if (name == "%") {
+					return new ModOp();
+				} else if (name == "<=") {
+					return new LeqOp();
 				} else if (name == "∧") {
 					return new AndOp();
 				} else if (name == "∨") {
