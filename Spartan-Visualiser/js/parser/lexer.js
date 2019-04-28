@@ -82,6 +82,12 @@ define(function(require) {
 						this._token = new Token(Token.IN);
 					else if (str == "new")
 						this._token = new Token(Token.NEW);
+					else if (str == "PAIR")
+						this._token = new Token(Token.PAIR)
+					else if (str == "FST")
+						this._token = new Token(Token.FST)
+					else if (str == "SND")
+						this._token = new Token(Token.SND)
 					else if (str == "SUCC")
 						this._token = new Token(Token.SUCC)
 					else if (str == "PLUS")

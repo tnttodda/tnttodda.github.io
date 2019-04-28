@@ -27,6 +27,9 @@ define(function() {
     'DEF',
     'IN',
 
+    'PAIR',
+    'FST',
+    'SND',
     'SUCC',
     'PLUS',
     'MINUS',

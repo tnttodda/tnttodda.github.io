@@ -76,6 +76,15 @@ define(function(require) {
 
 			var token = this.lexer.lookaheadType();
 			switch(token) {
+				case Token.PAIR:
+					name = "P"; sig = [2,0]; active = false;
+					break;
+				case Token.FST:
+					name = "π₁"; sig = [1,0]; active = true;
+					break;
+				case Token.SND:
+					name = "π₂"; sig = [1,0]; active = true;
+					break;
 				case Token.SUCC:
 					name = "++"; sig = [1,0]; active = true;
 					break;
@@ -156,14 +165,14 @@ define(function(require) {
 					break;
 			}
 			this.lexer.match(token);
-			if (active) {
+			if (sig[0] > 0) {
 				this.lexer.match(Token.LPAREN);
 				eas = this.gatherArgs(ctx,sig[0],false);
 				if (sig[1] == 0)
 					this.lexer.match(Token.RPAREN);
 			}
 			if (sig[1] > 0) {
-				if (!active)
+				if (sig[0] == 0)
 					this.lexer.match(Token.LPAREN);
 				this.lexer.match(Token.SEMIC);
 				das = this.gatherArgs(ctx,sig[1],true);

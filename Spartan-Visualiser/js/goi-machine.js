@@ -28,6 +28,9 @@ define('goi-machine',
 
 		var IntOp = require('nodes/ops/int');
 		var BoolOp = require('nodes/ops/bool');
+		var PairOp = require('nodes/ops/pair');
+		var FstOp = require('nodes/ops/fst');
+		var SndOp = require('nodes/ops/snd');
 		var PlusOp = require('nodes/ops/plus');
 		var MinusOp = require('nodes/ops/minus');
 		var TimesOp = require('nodes/ops/times');
@@ -170,6 +173,12 @@ define('goi-machine',
 					return new IntOp(name);
 				} else if (name == "true" || name == "false") {
 					return new BoolOp(name);
+				} else if (name == "P") {
+					return new PairOp();
+		    } else if (name == "π₁") {
+					return new FstOp();
+				} else if (name == "π₂") {
+					return new SndOp();
 				} else if (name == "++") {
 					return new SuccOp();
 				} else if (name == "+") {
@@ -257,7 +266,7 @@ define('goi-machine',
 					if (to.text == "I" || to instanceof Instance) { // fix
 						token.rewriteFlag = Flag.RETURN;
 					} else if (to instanceof Op) {
-						if (!to.active || outlinks.filter(x => !this.graph.findNodeByKey(x.to).isBoxed()).length == 0) {
+						if (outlinks.filter(x => !this.graph.findNodeByKey(x.to).isBoxed()).length == 0) {
 							if (to.active)  token.rewriteFlag = Flag.REWRITE;
 							if (!to.active) token.rewriteFlag = Flag.RETURN;
 						} else {
