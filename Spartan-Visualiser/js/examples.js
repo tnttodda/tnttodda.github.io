@@ -74,3 +74,31 @@ var ex8 = '// This is the primality test from wikipedia.org/wiki/Primality_test\
           '                     , SEC (ASSIGN (iStore, PLUS (i, 6))\n'+
           '                          ; f))\n'+
           '                 , RETURN(w;TRUE))))))'
+
+var ex9 = '// A simple model of state effects\n'+
+          'new a = 0 in\n'+
+          'bind inc = LAMBDA(;x.ASSIGN(a, PLUS(DEREF(a),1))) in\n'+
+          'PLUS(SEC(APP(inc, UNIT);DEREF(a)), SEC(APP(inc, UNIT);DEREF(a)))'
+
+var ex10 ='// The same as Example 9, but using a simple state monad isntead\n'+
+          '// Note that the Spartan version has a lot less steps!\n'+
+          'bind map = LAMBDA(; f.(LAMBDA(; a.(LAMBDA(; s.(\n'+
+          '  bind bt = APP (a, s) in\n'+
+          '  bind b = FST(bt) in\n'+
+          '  bind t = SND(bt) in\n'+
+          '  PAIR(APP(f, b), t))))))) in\n'+
+          'bind mult = LAMBDA(; att.(LAMBDA(; sa.(\n'+
+          '  bind atsb = APP(att, sa) in\n'+
+          '  bind at = FST(atsb) in\n'+
+          '  bind sb = SND(atsb) in\n'+
+          '  APP(at, sb))))) in\n'+
+          'bind unit = LAMBDA(; a.(LAMBDA(; s.(PAIR (a, s))))) in\n'+
+          'bind run = LAMBDA(; m.(FST(APP(m, 0)))) in\n'+
+          'bind set = LAMBDA(; s.(LAMBDA(; x.(PAIR(0, s))))) in\n'+
+          'bind get = LAMBDA(; s.(PAIR(s, s))) in\n'+
+          'bind bnd = LAMBDA(; at.(LAMBDA(; f.(APP(mult, APP(APP(map, f), at)))))) in\n'+
+          'bind plus = LAMBDA(;x.LAMBDA(;y.APP(APP(bnd,x),LAMBDA(;a.APP(APP(bnd,y),LAMBDA(;b.APP(unit,PLUS(a,b)))))))) in\n'+
+          'bind inc = LAMBDA(; s.(\n'+
+          '  APP(APP(bnd, get), LAMBDA(; n.\n'+
+          '  APP(APP(bnd, APP(set, PLUS(n, 1))), LAMBDA(; x.get)))))) in\n'+
+          'APP(run,APP(APP(plus,APP(inc, 0)), APP(inc, 0)))'

@@ -33,6 +33,8 @@
 							case "ex6": prog = ex6; break;
 							case "ex7": prog = ex7; break;
 							case "ex8": prog = ex8; break;
+							case "ex9": prog = ex9; break;
+							case "ex10": prog = ex10; break;
   					}
   					$("#ta-program").val(prog);
   					$("#btn-make-graph").click();
@@ -48,11 +50,13 @@
 			<option value="ex1">Ex1: Simple Arithmetic</option>
 			<option value="ex2">Ex2: Arithmetic w/ Copying</option>
 			<option value="ex3">Ex3: If Statement w/ Copying</option>
-			<option value="ex4">Ex4: Recursive Factorial</option>
+			<option value="ex4" selected>Ex4: Recursive Factorial</option>
 			<option value="ex5">Ex5: Imperative Computation</option>
-			<option value="ex6" selected>Ex6: Call-with-current-continuation</option>
+			<option value="ex6">Ex6: Call-with-current-continuation</option>
 			<option value="ex7">Ex7: Divergent Computation</option>
 			<option value="ex8">Ex8: Primality Test</option>
+			<option value="ex9">Ex9: Simple State via Spartan Ops.</option>
+			<option value="ex10">Ex10: Simple State via State Monad</option>
 		</select>
 		<button id="btn-info" onclick="window.open('help.html')">?</button>
 		<textarea id="ta-program" rows="40" spellcheck=false style="width: 100%; height: 300px; resize: none; font-size: 12px;">
