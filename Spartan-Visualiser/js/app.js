@@ -13,6 +13,7 @@ var graphsBehind = [];
 var graphsAhead = [];
 
 var isDraw = true;
+var count = 0;
 
 require(["jquery", "renderer", "goi-machine"],
 	function ($, renderer, Machine) {
@@ -20,6 +21,7 @@ require(["jquery", "renderer", "goi-machine"],
 		var machine = new Machine();
 
 		function clearGraph(callback) {
+      count = 0;
 			renderer.render('digraph G {\n\t\n}');
       graphsBehind = [];
       graphsAhead = [];
@@ -36,6 +38,7 @@ require(["jquery", "renderer", "goi-machine"],
         var result = machine.graph.draw(width/dpi, height/dpi, machine.token.rewriteFlag);
       }
     $("#ta-graph").val(result);
+    $("#stepcount")[0].innerText = "Step Count: " + count;
     if (isDraw)	renderer.render(result);
 		}
 
@@ -55,12 +58,14 @@ require(["jquery", "renderer", "goi-machine"],
 		});
 
 		$("#btn-refresh").click(function(event) {
+      count = 0;
       graphsBehind = [];
       graphsAhead = [];
 			makeGraph();
 		});
 
     $("#btn-prev").click(function(event) {
+      if (count > 0) count -= 1;
       if (graphsBehind.length > 0) {
         graphsAhead = [$("#ta-graph").val()].concat(graphsAhead);
         var result = graphsBehind[graphsBehind.length-1];
@@ -98,6 +103,7 @@ require(["jquery", "renderer", "goi-machine"],
 		}
 
 		function next() {
+      if (count <= machine.count) count += 1;
       if (graphsAhead.length == 0) {
   			if (!finished) {
           graphsBehind.push($("#ta-graph").val());
