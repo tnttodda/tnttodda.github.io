@@ -30,9 +30,13 @@ define(function() {
 		}
 
 		changeToGroup(group) {
-			this.group.removeLink(this);
-			this.addToGroup(group);
-			return this;
+			if (!this.group) {
+				return this.addToGroup(group);
+			} else {
+				this.group.removeLink(this);
+				this.addToGroup(group);
+				return this;
+			}
 		}
 
 		changeFrom(key) {

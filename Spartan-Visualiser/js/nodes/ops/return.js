@@ -34,8 +34,8 @@ define(function(require) {
 			var nextNode = this.graph.findNodeByKey(outLinks[1].to).unbox();
 			var inLink = addrNode.findLinksInto()[0];
 			inLink.changeTo(nextNode.key);
-			var contract = new Contract().addToGroup(this.group);
-			new Link(contract.key,addrNode.key).addToGroup(this.group);
+			var contract = new Contract().changeToGroup(this.group);
+			new Link(contract.key,addrNode.key).changeToGroup(this.group);
 
 			outLinks[1].delete();
 

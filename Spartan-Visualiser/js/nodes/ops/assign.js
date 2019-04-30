@@ -22,7 +22,7 @@ define(function(require) {
 			var instanceNode = this.graph.findNodeByKey(outLinks[0].to);
 			var prinNode = this.graph.findNodeByKey(outLinks[1].to);
 			var atomNode = this.graph.findNodeByKey(instanceNode.findLinksOutOf()[0].to);
-			var newNode = new UnitOp().addToGroup(this.group);
+			var newNode = new UnitOp().changeToGroup(this.group);
 
 			inLink.changeTo(newNode.key);
 			atomNode.findLinksOutOf()[0].changeTo(prinNode.key);

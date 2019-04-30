@@ -17,7 +17,7 @@ define(function(require) {
 
 		rewrite(token) {
 			var n = this.graph.findNodeByKey(this.findLinksOutOf()[0].to).name + 1;
-			var newNode = new IntOp(n,false).addToGroup(this.group);
+			var newNode = new IntOp(n,false).changeToGroup(this.group);
 			return this.activeRewrite(token,newNode);
 		}
 

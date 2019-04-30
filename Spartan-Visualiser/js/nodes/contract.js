@@ -30,19 +30,19 @@ define('nodes/contract',function(require) {
 			var outLinks = this.findLinksOutOf();
 			var nextLink = outLinks[0];
 			var nextNode = this.graph.findNodeByKey(nextLink.to);
-			
+
 			if (nextNode instanceof Contract || nextNode instanceof Atom) {
 				for (let l of inLinks)
 					l.changeTo(nextNode.key);
 				nextLink.delete();
 				this.delete();
 			} else if (nextNode instanceof Instance) {
-				var instance = new Instance().addToGroup(nextNode.group);
+				var instance = new Instance().changeToGroup(nextNode.group);
 				link.changeTo(instance.key);
-				new Link(instance.key,nextNode.findLinksOutOf()[0].to).addToGroup(nextNode.group);
+				new Link(instance.key,nextNode.findLinksOutOf()[0].to).changeToGroup(nextNode.group);
 			} else if (nextNode instanceof Op) {
-				var term = new Term().addToGroup(this.group);
-				var copy = nextNode.copy().addToGroup(term);
+				var term = new Term().changeToGroup(this.group);
+				var copy = nextNode.copy().changeToGroup(term);
 
 				// clean up here
 				var opLinks = nextNode.findLinksOutOf();
@@ -53,7 +53,7 @@ define('nodes/contract',function(require) {
 				var thunks = []; var thunkCopies = []; var links = opLinksE;
 				for (var i = 0; i < opLinksD.length; i++) {
 					var thunk = this.graph.findNodeByKey(opLinksD[i].to).prinOf.filter(x => x.boxed)[0];
-					var thunkCopy = thunk.copy().addToGroup(term);
+					var thunkCopy = thunk.copy().changeToGroup(term);
 					thunks.push(thunk);
 					thunkCopies.push(thunkCopy);
 					links = links.concat.apply(links,(thunk.auxs.map(x => x.findLinksOutOf())));
@@ -70,7 +70,7 @@ define('nodes/contract',function(require) {
 				for (var i = 0; i < links.length; i++)
 					links[i].changeFrom(auxs[i].key);
 				for (var i = 0; i < thunkCopies.length; i++) {
-					var l = new Link(copy.key,thunkCopies[i].prin.key).addToGroup(term);
+					var l = new Link(copy.key,thunkCopies[i].prin.key).changeToGroup(term);
 					l.visited = true;
 				}
 
@@ -89,14 +89,14 @@ define('nodes/contract',function(require) {
 			var cList = [];
 
 			for (var n = 0; n < cs; n++) {
-				c = new Contract().addToGroup(group);
+				c = new Contract().changeToGroup(group);
 				cList.push(c);
 			}
 
 			if (cList.length > 0) {
 				for (var i = 0; i < inputs.length; i++) {
 					from = inputs[i]; to = cList[i%cs];
-					new Link(from.key,to.key,i%cs).addToGroup(group);
+					new Link(from.key,to.key,i%cs).changeToGroup(group);
 				}
 			}
 

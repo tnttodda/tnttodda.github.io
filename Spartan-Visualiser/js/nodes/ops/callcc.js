@@ -34,31 +34,31 @@ define(function(require) {
 			var C = this.graph.findNodeByKey("nd3");
 			C.set(this.graph.findNodeByKey(this.graph.findNodeByKey("nd2").findLinksOutOf()[0].to),[]); // cheating
 			C = C.copy();
-			boxedTerm.addToGroup(group);
+			boxedTerm.changeToGroup(group);
 
 			boxedTerm.unbox();
 			var ccCopy = this.graph.findNodeByKey(boxedTerm.prin.findLinksInto()[1].from);
 			var inLinkCopy = ccCopy.findLinksInto()[0]
 
-			var newNode = new AppOp().addToGroup(this.group);
-			var lambdaTerm = new Term().addToGroup(this.group);
-			var lambdaNode = new LambdaOp().addToGroup(lambdaTerm);
+			var newNode = new AppOp().changeToGroup(this.group);
+			var lambdaTerm = new Term().changeToGroup(this.group);
+			var lambdaNode = new LambdaOp().changeToGroup(lambdaTerm);
 			lambdaTerm.set(lambdaNode,[]);
-			var abortTerm = new Term().addToGroup(lambdaTerm);
-			var abortNode = new AbortOp().addToGroup(abortTerm);
+			var abortTerm = new Term().changeToGroup(lambdaTerm);
+			var abortNode = new AbortOp().changeToGroup(abortTerm);
 			abortTerm.set(abortNode,[]);
 			abortTerm.box();
 
-			var xTerm = new Term().addToGroup(abortTerm)
-			C.addToGroup(xTerm);
-			var xNode = new Contract().addToGroup(abortTerm);
+			var xTerm = new Term().changeToGroup(abortTerm)
+			C.changeToGroup(xTerm);
+			var xNode = new Contract().changeToGroup(abortTerm);
 			xTerm.set(C.prin,[]);
 			xTerm.box();
 			abortTerm.buxs = [xNode];
 
-			new Link(newNode.key,lambdaTerm.prin.key).addToGroup(this.group);
-			new Link(lambdaNode.key,abortTerm.prin.key).addToGroup(lambdaTerm);
-			new Link(abortNode.key,xTerm.prin.key).addToGroup(abortTerm);
+			new Link(newNode.key,lambdaTerm.prin.key).changeToGroup(this.group);
+			new Link(lambdaNode.key,abortTerm.prin.key).changeToGroup(lambdaTerm);
+			new Link(abortNode.key,xTerm.prin.key).changeToGroup(abortTerm);
 			inLinkCopy.clearFocus();
 			inLinkCopy.changeTo(xNode.key);
 			ccCopy.delete();

@@ -20,9 +20,9 @@ define(function(require) {
 			var inLink = this.findLinksInto()[0];
 			var outLink = this.findLinksOutOf()[0];
 
-			var newNode = new Instance().addToGroup(this.group);
-			var atomNode = new Atom().addToGroup(this.group);
-			new Link(newNode.key,atomNode.key).addToGroup(this.group);
+			var newNode = new Instance().changeToGroup(this.group);
+			var atomNode = new Atom().changeToGroup(this.group);
+			new Link(newNode.key,atomNode.key).changeToGroup(this.group);
 
 			inLink.changeTo(newNode.key);
 			outLink.changeFrom(atomNode.key);

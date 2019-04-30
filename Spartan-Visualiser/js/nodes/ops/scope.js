@@ -27,22 +27,22 @@ define(function(require) {
 			var boxedG = this.graph.findNodeByKey(outLinks[0].to).getBoxed();
 			boxedG.unbox();
 
-			var addrNode = new AddrOp(true).addToGroup(this.group);
-			var iNodeA = new Instance().addToGroup(this.group);
-			var atomNode = new Atom().addToGroup(this.group);
-			var unitNode = new UnitOp(false).addToGroup(this.group);
+			var addrNode = new AddrOp(true).changeToGroup(this.group);
+			var iNodeA = new Instance().changeToGroup(this.group);
+			var atomNode = new Atom().changeToGroup(this.group);
+			var unitNode = new UnitOp(false).changeToGroup(this.group);
 
 			boxedG.prin.findLinksInto()[0].changeFrom(addrNode.key);
-			new Link(addrNode.key,iNodeA.key,0).addToGroup(this.group);
+			new Link(addrNode.key,iNodeA.key,0).changeToGroup(this.group);
 			boxedG.prin.findLinksInto()[0].argNo = 1; // change
-			new Link(iNodeA.key,atomNode.key).addToGroup(this.group);
-			new Link(atomNode.key,unitNode.key).addToGroup(this.group);
+			new Link(iNodeA.key,atomNode.key).changeToGroup(this.group);
+			new Link(atomNode.key,unitNode.key).changeToGroup(this.group);
 			inLink.changeTo(addrNode.key);
 
 			if (boxedG.buxs.length > 0) {
-				var iNodeB = new Instance().addToGroup(this.group);
-				new Link(iNodeB.key,atomNode.key).addToGroup(this.group);
-				new Link(boxedG.buxs[0].key,iNodeB.key,0).addToGroup(this.group); // ?
+				var iNodeB = new Instance().changeToGroup(this.group);
+				new Link(iNodeB.key,atomNode.key).changeToGroup(this.group);
+				new Link(boxedG.buxs[0].key,iNodeB.key,0).changeToGroup(this.group); // ?
 			}
 
 			this.delete();

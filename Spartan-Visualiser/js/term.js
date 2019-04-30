@@ -55,26 +55,23 @@ define('term', function(require) {
 		copyBox(map) {
 			var newTerm = new Term();
 			newTerm.boxed = this.boxed;
-			if (!map.has(this.prin.key)) {
-				var newPrin = this.prin.copy().addToGroup(newTerm);
-				map.set(this.prin.key, newPrin.key);
-			} else {
-				var newPrin = this.graph.findNodeByKey(map.get(this.prin.key));
-			}
 
-			newTerm.set(newPrin,[]); newTerm.buxs = [];
 			for (let node of this.nodes) {
 				if (!map.has(node.key)) {
 					var newNode;
 					if (node instanceof Term) {
 						var list = node.copyBox(map);
-						newNode = list[1].addToGroup(newTerm);
+						newNode = list[1].changeToGroup(newTerm);
+						map = list[0];
 					} else {
-						newNode = node.copy().addToGroup(newTerm);
-						map.set(node.key, newNode.key);
+						newNode = node.copy().changeToGroup(newTerm);
 					}
+					map.set(node.key, newNode.key);
 				}
 			}
+
+			newTerm.set(this.graph.findNodeByKey(map.get(this.prin.key)),[]); newTerm.buxs = [];
+
 			for (let aux of this.auxs) {
 				var newAux = this.graph.findNodeByKey(this.getEndpoint(map,aux.key));
 				newTerm.auxs.push(newAux);
@@ -85,7 +82,7 @@ define('term', function(require) {
 			}
 
 			for (let link of this.links) {
-				var newLink = new Link(link.from,link.to).addToGroup(newTerm);
+				var newLink = new Link(link.from,link.to).changeToGroup(newTerm);
 				newLink.reverse = link.reverse;
 				newLink.colour = link.colour;
 			}
@@ -114,8 +111,9 @@ define('term', function(require) {
 		copy() {
 			var map = new Map();
 			var list = this.copyBox(map);
-			return this.copyLinks(list[0],list[1])
+			return this.copyLinks(list[0],list[1]);
 		}
+
 
 		quotient() {
 			var changed = false;

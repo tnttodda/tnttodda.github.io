@@ -21,7 +21,7 @@ define(function(require) {
 
 			var instanceNode = this.graph.findNodeByKey(outLinks[0].to);
 			var instanceOutLink = instanceNode.findLinksOutOf()[0];
-			var contract = new Contract().addToGroup(this.group);
+			var contract = new Contract().changeToGroup(this.group);
 			instanceOutLink.changeFrom(contract.key);
 
 			inLink.changeTo(outLinks[1].to);

@@ -34,7 +34,7 @@ define(function(require) {
 			this.prinOf.map(x => x.prin = newNode);
 
 			if (newGroup.buxs.length > 0)
-				new Link(newGroup.buxs[0].key,argNode.key).addToGroup(this.group);
+				new Link(newGroup.buxs[0].key,argNode.key).changeToGroup(this.group);
 
 			token.rewriteFlag = Flag.SEARCH;
 			return inLink;

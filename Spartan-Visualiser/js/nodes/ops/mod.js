@@ -20,7 +20,7 @@ define(function(require) {
 			var left = this.graph.findNodeByKey(outLinks[0].to).name;
 			var right = this.graph.findNodeByKey(outLinks[1].to).name;
 			var n = (left % right);
-			var newNode = new IntOp(n,false).addToGroup(this.group);
+			var newNode = new IntOp(n,false).changeToGroup(this.group);
 			return this.activeRewrite(token,newNode);
 		}
 

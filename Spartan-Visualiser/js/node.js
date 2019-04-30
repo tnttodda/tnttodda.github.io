@@ -32,9 +32,13 @@ define(function(require) {
 		}
 
 		changeToGroup(group) {
-			this.group.removeNode(this);
-			this.addToGroup(group);
-			return this;
+			if (!this.group) {
+				return this.addToGroup(group);
+			} else {
+				this.group.removeNode(this);
+				this.addToGroup(group);
+				return this;
+			}
 		}
 
 		findLinksConnected() {

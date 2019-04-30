@@ -22,11 +22,11 @@ define(function(require) {
 			while (!thunk.boxed)
 				thunk = thunk.group;
 
-			var thunkCopy = thunk.copy().addToGroup(this.group);
+			var thunkCopy = thunk.copy().changeToGroup(this.group);
 			inLink.changeTo(thunkCopy.unbox().key);
 
 			if (thunk.buxs.length > 0)
-				new Link(thunkCopy.buxs[0].key,this.key).addToGroup(this.group);
+				new Link(thunkCopy.buxs[0].key,this.key).changeToGroup(this.group);
 
 			token.rewriteFlag = Flag.SEARCH;
 			return inLink;

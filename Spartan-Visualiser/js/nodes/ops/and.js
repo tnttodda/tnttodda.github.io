@@ -17,7 +17,7 @@ define(function(require) {
 
 		rewrite(token) {
 			var b = this.findLinksOutOf().reduce((sum,x) => sum && BoolOp.parseBoolean(this.graph.findNodeByKey(x.to).name), true);
-			var newNode = new BoolOp(b,false).addToGroup(this.group);
+			var newNode = new BoolOp(b,false).changeToGroup(this.group);
 			return this.activeRewrite(token,newNode);
 		}
 

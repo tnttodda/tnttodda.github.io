@@ -32,11 +32,11 @@ define(function(require) {
 				if (addrNode instanceof AddrOp) break;
 			}
 
-			var unit = new UnitOp(false).addToGroup(this.group);
+			var unit = new UnitOp(false).changeToGroup(this.group);
 			var inLink = addrNode.findLinksInto()[0];
 			inLink.changeTo(unit.key);
-			var contract = new Contract().addToGroup(this.group);
-			new Link(contract.key,addrNode.key).addToGroup(this.group);
+			var contract = new Contract().changeToGroup(this.group);
+			new Link(contract.key,addrNode.key).changeToGroup(this.group);
 
 			token.rewriteFlag = Flag.SEARCH;
 			return inLink;

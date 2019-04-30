@@ -78,10 +78,10 @@ define('goi-machine',
 				this.count = 0;
 
 				this.graph.clear();
-				var start = new Start().addToGroup(this.graph.child);
-				var term = this.toGraph(ast,[]).addToGroup(this.graph.child);
+				var start = new Start().changeToGroup(this.graph.child);
+				var term = this.toGraph(ast,[]).changeToGroup(this.graph.child);
 				this.term = term;
-				var link = new Link(start.key, term.prin.key).addToGroup(this.graph.child);
+				var link = new Link(start.key, term.prin.key).changeToGroup(this.graph.child);
 				this.token.reset(link);
 			}
 
@@ -108,7 +108,7 @@ define('goi-machine',
 						prin = auxs[ast.ctx[0].indexOf(ast.name)];
 					} else {
 						auxs = auxs.concat(Contract.createDNet(ast.ctx[0].length+i, [], term));
-						prin = new Instance().addToGroup(term);
+						prin = new Instance().changeToGroup(term);
 						auxs.push(prin);
 						auxs = auxs.concat(Contract.createDNet(ast.ctx[1].length-i-1, [], term));
 					}
@@ -116,8 +116,8 @@ define('goi-machine',
 
 				// BINDINGS & REFERENCES
 				} else if ((ast instanceof Binding) || (ast instanceof Reference))  {
-					var body = this.toGraph(ast.body).addToGroup(term);
-					var param = this.toGraph(ast.param).addToGroup(term);
+					var body = this.toGraph(ast.body).changeToGroup(term);
+					var param = this.toGraph(ast.param).changeToGroup(term);
 
 					var auxs = body.auxs;
 					const i = ([].concat.apply([], ast.body.ctx)).indexOf(ast.id);
@@ -126,31 +126,31 @@ define('goi-machine',
 					auxs = auxs.concat(param.auxs);
 
 					if (ast instanceof Reference) {
-						var atomNode = new Atom().addToGroup(param);
-						new Link(atomNode.key, param.prin.key).addToGroup(param);
+						var atomNode = new Atom().changeToGroup(param);
+						new Link(atomNode.key, param.prin.key).changeToGroup(param);
 						param.prin = atomNode;
 					}
-					new Link(auxNode.key, param.prin.key).addToGroup(term);
+					new Link(auxNode.key, param.prin.key).changeToGroup(term);
 
 					auxs = Contract.createDNet(([].concat.apply([], ast.ctx)).length, auxs, term);
 					term.set(body.prin, auxs);
 
 				// OPERATIONS
 				} else if (ast instanceof Operation) {
-					var op = this.toOp(ast.name,ast.active).addToGroup(term);
+					var op = this.toOp(ast.name,ast.active).changeToGroup(term);
 
 					var auxs = [];
 
 					var next;
 					for (var i = 0; i < ast.sig[0]; i++) {
-						next = this.toGraph(ast.eas[i]).addToGroup(term);
-						new Link(op.key, next.prin.key,i).addToGroup(term);
+						next = this.toGraph(ast.eas[i]).changeToGroup(term);
+						new Link(op.key, next.prin.key,i).changeToGroup(term);
 						auxs = auxs.concat(next.auxs);
 					}
 					for (var i = 0; i < ast.sig[1]; i++) {
-						next = this.toGraph(ast.das[i]).addToGroup(term);
+						next = this.toGraph(ast.das[i]).changeToGroup(term);
 						var link = new Link(op.key, next.prin.key,i+ast.sig[0]);
-						link.addToGroup(term);
+						link.changeToGroup(term);
 						auxs = auxs.concat(next.auxs);
 					}
 
