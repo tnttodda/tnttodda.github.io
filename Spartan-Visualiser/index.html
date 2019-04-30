@@ -10,6 +10,20 @@
   	<script src="./js/examples.js?time=" + (new Date()).getTime()></script>
   	<script>
   		$(function() {
+				var prog;
+				switch(window.location.href[window.location.href.length-1]) {
+					case "1": prog = ex1; break;
+					case "2": prog = ex2; break;
+					case "3": prog = ex3; break;
+					case "4": prog = ex4; break;
+					case "5": prog = ex5; break;
+					case "6": prog = ex6; break;
+					case "7": prog = ex7; break;
+					case "8": prog = ex8; break;
+					case "9": prog = ex9; break;
+					case "0": prog = ex10; break;
+					default: prog = ex4;
+				}
   			$("#btn-make-graph").button();
   			$("#btn-refresh").button();
 				$("#btn-prev").button();
@@ -20,10 +34,9 @@
   			$("#btn-save").button();
   			$("#btn-info").button();
         $("#cb-qrules").checkboxradio();
-
+				$("#ta-program").val(prog);
   			$("#sm-example").selectmenu({
   				select: function(event, ui) {
-  					var prog;
   					switch($("#sm-example option:selected").val()) {
 							case "ex1": prog = ex1; break;
 							case "ex2": prog = ex2; break;

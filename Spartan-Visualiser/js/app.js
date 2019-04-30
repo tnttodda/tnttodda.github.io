@@ -132,7 +132,6 @@ require(["jquery", "renderer", "goi-machine"],
 
 
 		renderer.init("#graph");
-		$("#ta-program").val(ex5);
-  		$("#btn-make-graph").click();
+		$("#btn-make-graph").click();
 	}
 );
