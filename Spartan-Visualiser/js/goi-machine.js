@@ -56,6 +56,8 @@ define('goi-machine',
 		var BreakOp = require('nodes/ops/break');
 		var ContOp = require('nodes/ops/cont');
 		var ReturnOp = require('nodes/ops/return');
+		
+		var CoinOp = require('nodes/ops/coin')
 
 		class GoIMachine {
 
