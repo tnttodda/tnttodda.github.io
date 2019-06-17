@@ -229,6 +229,8 @@ define('goi-machine',
 					return new ContOp();
 				} else if (name == "ret.") {
 					return new ReturnOp();
+				} else if (name == "coin") {
+					return new CoinOp();
 				} else {
 					return new Op(name);
 				}

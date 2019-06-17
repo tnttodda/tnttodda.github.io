@@ -58,7 +58,9 @@ define(function() {
     'SCOPE',
     'BREAK',
     'CONTINUE',
-    'RETURN'
+    'RETURN',
+    
+    'COIN'
   ].forEach(token => Token[token] = token);
 
   return Token;

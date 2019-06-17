@@ -142,6 +142,8 @@ define(function(require) {
 						this._token = new Token(Token.TRUE, true);
 					else if (str == "FALSE")
 						this._token = new Token(Token.FALSE, false);
+					else if (str == "COIN")
+						this._token = new Token(Token.COIN);
 					else if (str.endsWith("."))
 						this._token = new Token(Token.BOUND, str.substring(0,str.length-1))
 					else
