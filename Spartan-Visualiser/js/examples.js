@@ -102,3 +102,5 @@ var ex10 ='// The same as Example 9, but using a simple state monad isntead\n'+
           '  APP(APP(bnd, get), LAMBDA(; n.\n'+
           '  APP(APP(bnd, APP(set, PLUS(n, 1))), LAMBDA(; x.get)))))) in\n'+
           'APP(run,APP(APP(plus,APP(inc, 0)), APP(inc, 0)))'
+
+var ex11 = 'REC(;f.IF(COIN;UNIT,SEC(f;f)))'
