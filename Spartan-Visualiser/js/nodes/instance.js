@@ -7,8 +7,8 @@ define(function(require) {
 
 		constructor(name) {
 			super("circle", "", name);
-			this.height = 0.1;
-			this.width = 0.1;
+			this.height = 0;
+			this.width = 0;
 		}
 
 		copy() {
