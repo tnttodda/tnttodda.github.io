@@ -6,9 +6,9 @@ define(function(require) {
 	class Atom extends Node {
 
 		constructor(name) {
-			super("circle", "", name);
-			this.height = 0.1;
-			this.width = 0.1;
+			super("circle", "⊙", name);
+			this.height = 0.23;
+			this.width = 0.23;
 			this.atom = true;
 		}
 
