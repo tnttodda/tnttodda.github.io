@@ -6,9 +6,9 @@ define(function(require) {
 	class Instance extends Node {
 
 		constructor(name) {
-			super("circle", "I", name);
-			this.height = 0.4;
-			this.width = 0.4;
+			super("circle", "", name);
+			this.height = 0.1;
+			this.width = 0.1;
 		}
 
 		copy() {
