@@ -25,6 +25,9 @@ define(function(require) {
 			var thunkCopy = thunk.copy().changeToGroup(this.group);
 			inLink.changeTo(thunkCopy.unbox().key);
 
+			for (var i=0; i < thunk.auxs.length; i++)
+				new Link(thunkCopy.auxs[i].key,thunk.auxs[i].key).changeToGroup(this.group);
+			
 			if (thunk.buxs.length > 0)
 				new Link(thunkCopy.buxs[0].key,this.key).changeToGroup(this.group);
 
