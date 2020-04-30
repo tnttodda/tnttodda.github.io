@@ -3,7 +3,7 @@ body .Agda {
 }
 
 /* Aspects. */
-.Agda a.Comment       { color: #6272a4 }
+.Agda a.Comment       { color: #e8bb25 }
 .Agda a.Background    {}
 .Agda a.Markup        { color: #6272a4 }
 .Agda a.Keyword       { color: #ff79c6 }
