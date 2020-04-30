@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Two</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Background">Two-point type.
+
+</a><a id="18" class="Markup">\begin{code}</a>
+
+<a id="32" class="Symbol">{-#</a> <a id="36" class="Keyword">OPTIONS</a> <a id="44" class="Pragma">--without-K</a> <a id="56" class="Pragma">--exact-split</a> <a id="70" class="Pragma">--safe</a> <a id="77" class="Symbol">#-}</a>
+
+<a id="82" class="Keyword">module</a> <a id="89" href="Two.html" class="Module">Two</a> <a id="93" class="Keyword">where</a>
+
+<a id="100" class="Keyword">open</a> <a id="105" class="Keyword">import</a> <a id="112" href="Universes.html" class="Module">Universes</a>
+
+<a id="123" class="Keyword">data</a> <a id="𝟚"></a><a id="128" href="Two.html#128" class="Datatype">𝟚</a> <a id="130" class="Symbol">:</a> <a id="132" href="Agda.Primitive.html#590" class="Primitive">𝓤₀</a> <a id="135" href="Universes.html#403" class="Function Operator">̇</a> <a id="137" class="Keyword">where</a>
+ <a id="𝟚.₀"></a><a id="144" href="Two.html#144" class="InductiveConstructor">₀</a> <a id="146" class="Symbol">:</a> <a id="148" href="Two.html#128" class="Datatype">𝟚</a>
+ <a id="𝟚.₁"></a><a id="151" href="Two.html#151" class="InductiveConstructor">₁</a> <a id="153" class="Symbol">:</a> <a id="155" href="Two.html#128" class="Datatype">𝟚</a>
+
+<a id="𝟚-induction"></a><a id="158" href="Two.html#158" class="Function">𝟚-induction</a> <a id="170" class="Symbol">:</a> <a id="172" class="Symbol">{</a><a id="173" href="Two.html#173" class="Bound">A</a> <a id="175" class="Symbol">:</a> <a id="177" href="Two.html#128" class="Datatype">𝟚</a> <a id="179" class="Symbol">→</a> <a id="181" href="Universes.html#260" class="Generalizable">𝓤</a> <a id="183" href="Universes.html#403" class="Function Operator">̇</a> <a id="185" class="Symbol">}</a> <a id="187" class="Symbol">→</a> <a id="189" href="Two.html#173" class="Bound">A</a> <a id="191" href="Two.html#144" class="InductiveConstructor">₀</a> <a id="193" class="Symbol">→</a> <a id="195" href="Two.html#173" class="Bound">A</a> <a id="197" href="Two.html#151" class="InductiveConstructor">₁</a> <a id="199" class="Symbol">→</a> <a id="201" class="Symbol">(</a><a id="202" href="Two.html#202" class="Bound">x</a> <a id="204" class="Symbol">:</a> <a id="206" href="Two.html#128" class="Datatype">𝟚</a><a id="207" class="Symbol">)</a> <a id="209" class="Symbol">→</a> <a id="211" href="Two.html#173" class="Bound">A</a> <a id="213" href="Two.html#202" class="Bound">x</a>
+<a id="215" href="Two.html#158" class="Function">𝟚-induction</a> <a id="227" href="Two.html#227" class="Bound">r</a> <a id="229" href="Two.html#229" class="Bound">s</a> <a id="231" href="Two.html#144" class="InductiveConstructor">₀</a> <a id="233" class="Symbol">=</a> <a id="235" href="Two.html#227" class="Bound">r</a>
+<a id="237" href="Two.html#158" class="Function">𝟚-induction</a> <a id="249" href="Two.html#249" class="Bound">r</a> <a id="251" href="Two.html#251" class="Bound">s</a> <a id="253" href="Two.html#151" class="InductiveConstructor">₁</a> <a id="255" class="Symbol">=</a> <a id="257" href="Two.html#251" class="Bound">s</a>
+
+<a id="𝟚-cases"></a><a id="260" href="Two.html#260" class="Function">𝟚-cases</a> <a id="268" class="Symbol">:</a> <a id="270" class="Symbol">{</a><a id="271" href="Two.html#271" class="Bound">A</a> <a id="273" class="Symbol">:</a> <a id="275" href="Universes.html#260" class="Generalizable">𝓤</a> <a id="277" href="Universes.html#403" class="Function Operator">̇</a> <a id="279" class="Symbol">}</a> <a id="281" class="Symbol">→</a> <a id="283" href="Two.html#271" class="Bound">A</a> <a id="285" class="Symbol">→</a> <a id="287" href="Two.html#271" class="Bound">A</a> <a id="289" class="Symbol">→</a> <a id="291" href="Two.html#128" class="Datatype">𝟚</a> <a id="293" class="Symbol">→</a> <a id="295" href="Two.html#271" class="Bound">A</a>
+<a id="297" href="Two.html#260" class="Function">𝟚-cases</a> <a id="305" class="Symbol">=</a> <a id="307" href="Two.html#158" class="Function">𝟚-induction</a>
+
+<a id="320" class="Markup">\end{code}</a><a id="330" class="Background">
+</a></pre></body></html>

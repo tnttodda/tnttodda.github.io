@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>SpartanMLTT</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Background">Our Spartan (intensional) Martin-Löf type theory has the empty type ∅,
+the unit type 𝟙, two-point-type 𝟚, natural numbers ℕ, product types Π,
+sum types Σ (and hence binary product types _×_), sum types _+_,
+identity types _≡_, and universes 𝓤, 𝓥, 𝓦, ....
+
+</a><a id="257" class="Markup">\begin{code}</a>
+
+<a id="271" class="Symbol">{-#</a> <a id="275" class="Keyword">OPTIONS</a> <a id="283" class="Pragma">--without-K</a> <a id="295" class="Pragma">--exact-split</a> <a id="309" class="Pragma">--safe</a> <a id="316" class="Symbol">#-}</a>
+
+<a id="321" class="Keyword">module</a> <a id="328" href="SpartanMLTT.html" class="Module">SpartanMLTT</a> <a id="340" class="Keyword">where</a>
+
+<a id="347" class="Keyword">open</a> <a id="352" class="Keyword">import</a> <a id="359" href="Empty.html" class="Module">Empty</a>           <a id="375" class="Keyword">public</a>
+<a id="382" class="Keyword">open</a> <a id="387" class="Keyword">import</a> <a id="394" href="One.html" class="Module">One</a>             <a id="410" class="Keyword">public</a>
+<a id="417" class="Keyword">open</a> <a id="422" class="Keyword">import</a> <a id="429" href="Two.html" class="Module">Two</a>             <a id="445" class="Keyword">public</a>
+<a id="452" class="Keyword">open</a> <a id="457" class="Keyword">import</a> <a id="464" href="NaturalNumbers.html" class="Module">NaturalNumbers</a>  <a id="480" class="Keyword">public</a>
+<a id="487" class="Keyword">open</a> <a id="492" class="Keyword">import</a> <a id="499" href="Plus.html" class="Module">Plus</a>            <a id="515" class="Keyword">public</a>
+<a id="522" class="Keyword">open</a> <a id="527" class="Keyword">import</a> <a id="534" href="Pi.html" class="Module">Pi</a>              <a id="550" class="Keyword">public</a>
+<a id="557" class="Keyword">open</a> <a id="562" class="Keyword">import</a> <a id="569" href="Sigma.html" class="Module">Sigma</a>           <a id="585" class="Keyword">public</a>
+<a id="592" class="Keyword">open</a> <a id="597" class="Keyword">import</a> <a id="604" href="Universes.html" class="Module">Universes</a>       <a id="620" class="Keyword">public</a>
+<a id="627" class="Keyword">open</a> <a id="632" class="Keyword">import</a> <a id="639" href="Id.html" class="Module">Id</a>              <a id="655" class="Keyword">public</a>
+
+<a id="663" class="Keyword">open</a> <a id="668" class="Keyword">import</a> <a id="675" href="GeneralNotation.html" class="Module">GeneralNotation</a> <a id="691" class="Keyword">public</a>
+
+<a id="699" class="Markup">\end{code}</a><a id="709" class="Background">
+</a></pre></body></html>

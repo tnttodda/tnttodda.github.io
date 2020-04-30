@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Universes</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Markup">\begin{code}</a>
+
+<a id="15" class="Symbol">{-#</a> <a id="19" class="Keyword">OPTIONS</a> <a id="27" class="Pragma">--without-K</a> <a id="39" class="Pragma">--exact-split</a> <a id="53" class="Pragma">--safe</a> <a id="60" class="Symbol">#-}</a>
+
+<a id="65" class="Keyword">module</a> <a id="72" href="Universes.html" class="Module">Universes</a> <a id="82" class="Keyword">where</a>
+
+<a id="89" class="Keyword">open</a> <a id="94" class="Keyword">import</a> <a id="101" href="Agda.Primitive.html" class="Module">Agda.Primitive</a> <a id="116" class="Keyword">public</a>
+  <a id="125" class="Keyword">using</a> <a id="131" class="Symbol">(</a><a id="132" href="Agda.Primitive.html#636" class="Primitive Operator">_⊔_</a><a id="135" class="Symbol">)</a>
+  <a id="139" class="Keyword">renaming</a> <a id="148" class="Symbol">(</a><a id="149" href="Agda.Primitive.html#590" class="Primitive">lzero</a> <a id="155" class="Symbol">to</a> <a id="Primitive.lzero"></a><a id="158" href="Universes.html#158" class="Primitive">𝓤₀</a>
+          <a id="171" class="Symbol">;</a> <a id="173" href="Agda.Primitive.html#606" class="Primitive">lsuc</a> <a id="178" class="Symbol">to</a> <a id="Primitive.lsuc"></a><a id="181" href="Universes.html#181" class="Primitive">_⁺</a>
+          <a id="194" class="Symbol">;</a> <a id="196" href="Agda.Primitive.html#423" class="Postulate">Level</a> <a id="202" class="Symbol">to</a> <a id="Primitive.Level"></a><a id="205" href="Universes.html#205" class="Postulate">Universe</a>
+          <a id="224" class="Symbol">;</a> <a id="226" href="Agda.Primitive.html#787" class="Primitive">Setω</a> <a id="231" class="Symbol">to</a> <a id="Primitive.Setω"></a><a id="234" href="Universes.html#234" class="Primitive">𝓤ω</a>
+          <a id="247" class="Symbol">)</a>
+
+<a id="250" class="Keyword">variable</a>
+ <a id="260" href="Universes.html#260" class="Generalizable">𝓤</a> <a id="262" href="Universes.html#262" class="Generalizable">𝓥</a> <a id="264" href="Universes.html#264" class="Generalizable">𝓦</a> <a id="266" href="Universes.html#266" class="Generalizable">𝓣</a> <a id="268" href="Universes.html#268" class="Generalizable">𝓤&#39;</a> <a id="271" href="Universes.html#271" class="Generalizable">𝓥&#39;</a> <a id="274" href="Universes.html#274" class="Generalizable">𝓦&#39;</a> <a id="277" href="Universes.html#277" class="Generalizable">𝓣&#39;</a> <a id="280" class="Symbol">:</a> <a id="282" href="Universes.html#205" class="Postulate">Universe</a>
+
+<a id="292" class="Markup">\end{code}</a><a id="302" class="Background">
+
+The following should be the only use of the Agda keyword &#39;Set&#39; in this
+development:
+
+</a><a id="389" class="Markup">\begin{code}</a>
+
+<a id="_̇"></a><a id="403" href="Universes.html#403" class="Function Operator">_̇</a> <a id="406" class="Symbol">:</a> <a id="408" class="Symbol">(</a><a id="409" href="Universes.html#409" class="Bound">𝓤</a> <a id="411" class="Symbol">:</a> <a id="413" href="Universes.html#205" class="Postulate">Universe</a><a id="421" class="Symbol">)</a> <a id="423" class="Symbol">→</a> <a id="425" class="Symbol">_</a>
+<a id="427" href="Universes.html#427" class="Bound">𝓤</a> <a id="429" href="Universes.html#403" class="Function Operator">̇</a> <a id="431" class="Symbol">=</a> <a id="433" class="PrimitiveType">Set</a> <a id="437" href="Universes.html#427" class="Bound">𝓤</a>
+
+<a id="𝓤₁"></a><a id="440" href="Universes.html#440" class="Function">𝓤₁</a> <a id="443" class="Symbol">=</a> <a id="445" href="Universes.html#158" class="Primitive">𝓤₀</a> <a id="448" href="Universes.html#181" class="Primitive Operator">⁺</a>
+<a id="𝓤₂"></a><a id="450" href="Universes.html#450" class="Function">𝓤₂</a> <a id="453" class="Symbol">=</a> <a id="455" href="Universes.html#440" class="Function">𝓤₁</a> <a id="458" href="Universes.html#181" class="Primitive Operator">⁺</a>
+
+<a id="461" class="Markup">\end{code}</a><a id="471" class="Background">
+
+This is mainly to avoid naming implicit arguments:
+
+</a><a id="525" class="Markup">\begin{code}</a>
+
+<a id="universe-of"></a><a id="539" href="Universes.html#539" class="Function">universe-of</a> <a id="551" class="Symbol">:</a> <a id="553" class="Symbol">(</a><a id="554" href="Universes.html#554" class="Bound">X</a> <a id="556" class="Symbol">:</a> <a id="558" href="Universes.html#260" class="Generalizable">𝓤</a> <a id="560" href="Universes.html#403" class="Function Operator">̇</a> <a id="562" class="Symbol">)</a> <a id="564" class="Symbol">→</a> <a id="566" href="Universes.html#205" class="Postulate">Universe</a>
+<a id="575" href="Universes.html#539" class="Function">universe-of</a> <a id="587" class="Symbol">{</a><a id="588" href="Universes.html#588" class="Bound">𝓤</a><a id="589" class="Symbol">}</a> <a id="591" href="Universes.html#591" class="Bound">X</a> <a id="593" class="Symbol">=</a> <a id="595" href="Universes.html#588" class="Bound">𝓤</a>
+
+<a id="598" class="Markup">\end{code}</a><a id="608" class="Background">
+
+precedences:
+
+</a><a id="624" class="Markup">\begin{code}</a>
+
+<a id="638" class="Keyword">infix</a>  <a id="645" class="Number">1</a> <a id="647" href="Universes.html#403" class="Function Operator">_̇</a>
+
+<a id="651" class="Markup">\end{code}</a><a id="661" class="Background">
+</a></pre></body></html>
