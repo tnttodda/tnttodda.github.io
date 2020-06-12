@@ -38,6 +38,7 @@ require(["jquery", "renderer", "goi-machine"],
         var result = machine.graph.draw(width/dpi, height/dpi, machine.token.rewriteFlag);
       }
     $("#ta-graph").val(result);
+    console.log(result);
     $("#stepcount")[0].innerText = "Step Count: " + count;
     if (isDraw)	renderer.render(result);
 		}
