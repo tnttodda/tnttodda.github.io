@@ -150,7 +150,7 @@ thunk ::= &lt;term&gt; | &lt;var&gt;.&lt;term&gt;
 </tr>
 <tr>
 <td>a ; b</td>
-<td>SEC(a;b)</td>
+<td>SEC(a,b)</td>
 </tr>
 </tbody>
 </table>
@@ -172,17 +172,13 @@ thunk ::= &lt;term&gt; | &lt;var&gt;.&lt;term&gt;
 </tr>
 <tr>
 <td>… break; …</td>
-<td>SCOPE(;w. … BREAK(w) …)</td>
+<td>BLOCK(REF(UNIT);w. … BREAK(w,UNIT) …)</td>
 </tr>
 <tr>
 <td>… return x; …</td>
-<td>SCOPE(;w. … RETURN(w;x) …)</td>
+<td>BLOCK(REF(UNIT);w. … BREAK(w,x) …)</td>
 </tr>
 
-<tr>
-<td>… continue; …</td>
-<td>SCOPE(;w. … CONTINUE(w) …)</td>
-</tr>
 </tbody>
 </table>
 
