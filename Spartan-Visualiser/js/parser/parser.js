@@ -137,7 +137,7 @@ define(function(require) {
 					name = "()"; sig = [0,0]; active = false;
 					break;
 				case Token.SEC:
-					name = ";"; sig = [1,1]; active = true;
+					name = ";"; sig = [2,0]; active = true;
 					break;
 				case Token.REC:
 					name = "μ"; sig = [0,1]; active = true;
@@ -148,11 +148,11 @@ define(function(require) {
 				case Token.CALLCC:
 					name = "callcc"; sig = [0,1]; active = true;
 					break;
-				case Token.SCOPE:
-					name = "scope"; sig = [0,1]; active = true;
+				case Token.BLOCK:
+					name = "block"; sig = [1,1]; active = true;
 					break;
 				case Token.BREAK:
-					name = "break"; sig = [1,0]; active = true;
+					name = "break"; sig = [2,0]; active = true;
 					break;
 				case Token.CONTINUE:
 					name = "cont."; sig = [1,0]; active = true;

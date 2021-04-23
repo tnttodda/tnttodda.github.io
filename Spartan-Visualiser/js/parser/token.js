@@ -55,7 +55,7 @@ define(function() {
     'REC',
     'ABORT',
     'CALLCC',
-    'SCOPE',
+    'BLOCK',
     'BREAK',
     'CONTINUE',
     'RETURN',

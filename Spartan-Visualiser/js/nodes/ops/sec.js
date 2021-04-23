@@ -18,7 +18,7 @@ define(function(require) {
 			var inLink = this.findLinksInto()[0];
 			var outLinks = this.findLinksOutOf();
 
-			var newNode = this.graph.findNodeByKey(outLinks[1].to).unbox();
+			var newNode = this.graph.findNodeByKey(outLinks[1].to);
 			inLink.changeTo(newNode.key);
 
 			outLinks[0].delete();

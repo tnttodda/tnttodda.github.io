@@ -223,7 +223,7 @@ define('goi-machine',
 					return new CallccOp();
 				} else if (name == "μ") {
 					return new RecOp();
-				} else if (name == "scope") {
+				} else if (name == "block") {
 					return new ScopeOp();
 				} else if (name == "break") {
 					return new BreakOp();

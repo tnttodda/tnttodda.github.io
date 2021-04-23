@@ -20,26 +20,41 @@ define(function(require) {
 		rewrite(token) {
 			var inLink = this.findLinksInto()[0];
 			var outLinks = this.findLinksOutOf();
+			var outLinkInstance = outLinks[0];
+			var outLinkEscape = outLinks[1];
+			
+			var breakInstance = this.graph.findNodeByKey(outLinkInstance.to);
+			var breakInstanceOutLink = breakInstance.findLinksOutOf()[0];
+			var atom = this.graph.findNodeByKey(breakInstanceOutLink.to);
+			var blockInstanceOutLink = atom.findLinksInto()[0];
+			var blockInstance = this.graph.findNodeByKey(blockInstanceOutLink.from);
+			var blockOutLinkInstance = blockInstance.findLinksInto()[0];
+			var block = this.graph.findNodeByKey(blockOutLinkInstance.from);
+			var blockInLink = block.findLinksInto()[0];
+			var blockOutLinkEscape = block.findLinksOutOf()[1];
 
-			var instanceNode = this.graph.findNodeByKey(outLinks[0].to);
-			var atomNode = this.graph.findNodeByKey(instanceNode.findLinksOutOf()[0].to);
-			var atomInLinks = atomNode.findLinksInto();
-			var atomInNodes = atomInLinks.map(x => this.graph.findNodeByKey(x.from));
-			var n = atomInNodes.findIndex(x => x == instanceNode);
-			var addrNode;
-			for (var i = n-1; i >= 0; i--) {
-				addrNode = this.graph.findNodeByKey(atomInNodes[i].findLinksInto()[0].from);
-				if (addrNode instanceof AddrOp) break;
-			}
+			// green
+			inLink.changeTo(breakInstance.key);
+			this.group.removeLink(outLinkInstance);	
 
-			var unit = new UnitOp(false).changeToGroup(this.group);
-			var inLink = addrNode.findLinksInto()[0];
-			inLink.changeTo(unit.key);
-			var contract = new Contract().changeToGroup(this.group);
-			new Link(contract.key,addrNode.key).changeToGroup(this.group);
+			// blue
+			blockInLink.changeTo(outLinkEscape.to);
+			this.group.removeLink(outLinkEscape);
+
+			// orange
+			this.group.removeLink(blockInstanceOutLink);
+			this.group.removeLink(blockOutLinkInstance);
+			blockInstance.delete();
+
+			// purple
+			var contractRight = new Contract().changeToGroup(block.group);
+			blockOutLinkEscape.changeFrom(contractRight.key);
+
+			block.delete();
+			this.delete()
 
 			token.rewriteFlag = Flag.SEARCH;
-			return inLink;
+			return blockInLink;
 		}
 
 	}

@@ -25,16 +25,16 @@ var ex4 = '// 5! done recursively; for higher values, perhaps skip to the end\n\
 
 var ex5 = '// What value will this return? \n'+
           '// A trivial example to display some different kinds of imperative computation \n\n'+
+          'new c = UNIT in\n'+
           'new b = 10 in\n'+
           'new a = 5 in\n'+
           'bind x = TIMES (DEREF(a), 2) in\n'+
           'SEC (ASSIGN (a, x)\n'+
-          '  ; SEC (SCOPE                             // Sequential behaviour (;)\n'+
-          '      (; w.IF (EQUALS (DEREF(a), DEREF(b))\n'+
-          '         ; SEC ( BREAK (w)                 // Local jump (in SCOPE)\n'+
-          '             ; ABORT (; 8))                // Global jumps\n'+
+          '  , SEC (BLOCK\n'+                       
+          '      (c; w.IF (EQUALS (DEREF(a), DEREF(b))\n'+
+          '         ; SEC ( BREAK (w,7) , ABORT (; 8))\n'+              
           '         , ABORT (; 9)))\n'+
-          '      ; 10))'
+          '      , 10))\n';
 
 var ex6 = '// This uses callcc to explore both branches of a conditional \n'+
           '// "We can have it both ways!"\n\n'+
@@ -44,7 +44,7 @@ var ex6 = '// This uses callcc to explore both branches of a conditional \n'+
           '  ; LAMBDA (\n'+
           '    ; c.SEC (\n'+
           '        ASSIGN (state, c)\n'+
-          '      ; x)\n'+
+          '      , x)\n'+
           '      )\n'+
           '  )) in\n'+
           'bind loadState = DEREF(state) in\n'+
@@ -58,27 +58,32 @@ var ex7 = '// The divergent lambda term commonly referred to as Ω \n'+
 var ex8 = '// This is the primality test from wikipedia.org/wiki/Primality_test\n'+
           '// Change n to whatever you like to find out whether it is prime or not!\n\n'+
           'bind n = 13 in\n'+
-          'new iStore = 5 in\n'+
-          'bind i = DEREF(iStore) in\n'+
-          'SCOPE(\n'+
-          '    ; w.IF (LEQ (n, 4)\n'+
-          '      ; RETURN (w ; LEQ(n, 2))\n'+
-          '      , IF (OR (EQUALS (MOD (n, 2), 0)\n'+
-          '              , EQUALS (MOD (n, 3), 0))\n'+
-          '          ; RETURN(w;FALSE)\n'+
-          '          , REC (\n'+
-          '               ; f.IF (LEQ (TIMES (i, i), n)\n'+
-          '                 ; IF (OR (EQUALS (MOD (n, i), 0)\n'+
-          '                         , EQUALS (MOD (n, PLUS(i,2)), 0))\n'+
-          '                     ; RETURN(w;FALSE)\n'+
-          '                     , SEC (ASSIGN (iStore, PLUS (i, 6))\n'+
-          '                          ; f))\n'+
-          '                 , RETURN(w;TRUE))))))'
+          'IF(LEQ(n,3)\n'+
+          '  ;LEQ(2,n)\n'+
+          '  ,IF(OR(EQUALS(MOD(n,2),0)\n'+
+          '        ,EQUALS(MOD(n,3),0))\n'+
+          '    ;FALSE\n'+
+          '     ,new a = UNIT in\n'+
+          '      new i = 5 in\n'+
+          '      BLOCK(a \n'+
+          '           ;w.IF(OR(EQUALS(MOD(n,DEREF(i)),0)\n'+
+          '                  ,EQUALS(MOD(n,PLUS(DEREF(i),2)),0))\n'+
+          '                ;BREAK(w,FALSE)\n'+
+          '                ,SEC(ASSIGN(i,PLUS(DEREF(i),6))\n'+
+          '                   ,IF(NOT(LEQ(TIMES(DEREF(i),DEREF(i)),n))\n'+
+          '                       ;BREAK(w,TRUE)\n'+
+          '                      ,UNIT\n'+
+          '                       )\n'+
+          '                    )\n'+
+          '                )\n'+
+          '           ) \n'+
+          '     )\n'+
+          ')\n';
 
 var ex9 = '// A simple model of state effects\n'+
           'new a = 0 in\n'+
           'bind inc = LAMBDA(;x.ASSIGN(a, PLUS(DEREF(a),1))) in\n'+
-          'PLUS(SEC(APP(inc, UNIT);DEREF(a)), SEC(APP(inc, UNIT);DEREF(a)))'
+          'PLUS(SEC(APP(inc, UNIT),DEREF(a)), SEC(APP(inc, UNIT),DEREF(a)))'
 
 var ex10 ='// The same as Example 9, but using a simple state monad isntead\n'+
           '// Note that the Spartan version has a lot less steps!\n'+
@@ -103,4 +108,4 @@ var ex10 ='// The same as Example 9, but using a simple state monad isntead\n'+
           '  APP(APP(bnd, APP(set, PLUS(n, 1))), LAMBDA(; x.get)))))) in\n'+
           'APP(run,APP(APP(plus,APP(inc, 0)), APP(inc, 0)))'
 
-var ex11 = 'REC(;f.IF(COIN;UNIT,SEC(f;f)))'
+var ex11 = 'REC(;f.IF(COIN;UNIT,SEC(f,f)))'
