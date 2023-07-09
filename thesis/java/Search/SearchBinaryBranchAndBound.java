@@ -1,0 +1,126 @@
+package Search;
+
+import FunctionsAndPredicates.UCBinaryPredicate;
+import DyadicsAndIntervals.TBIntervalCode;
+import TernaryBoehm.TBEncoding;
+import Utilities.Pair;
+
+/*
+ * This file implements search algorithms on binary predicates, with a branching approach.
+ */
+
+public class SearchBinaryBranchAndBound {
+    UCBinaryPredicate predicate; // The predicate to search for
+    Pair<Integer,Integer> delta; // The modulus of uniform continuity of the predicate
+    Pair<TBIntervalCode,TBIntervalCode> compactInterval; // The range of each argument
+    Boolean found = false; // Whether a real has been found
+    Pair<TBIntervalCode,TBIntervalCode> answer; // The interval that contains the real, once found
+    int intervalsChecked = 0; // The number of intervals checked
+    long timeTaken; // The time taken to do the search
+
+    // Constructor    
+    public SearchBinaryBranchAndBound(UCBinaryPredicate predicate, Pair<TBIntervalCode, TBIntervalCode> compactInterval) {
+        this.predicate = predicate;
+        this.delta = predicate.getDelta();
+        this.compactInterval = compactInterval;
+    }
+
+    // Getters
+    public UCBinaryPredicate getPredicate() {
+        return predicate;
+    }
+
+    public Boolean getFound() {
+        return found;
+    }
+
+    public Pair<TBIntervalCode, TBIntervalCode> getAnswer() {
+        return answer;
+    }
+
+    public Pair<TBEncoding,TBEncoding> getAnswerReal() {
+        return new Pair<>(new TBEncoding(answer.getFst()),new TBEncoding(answer.getSnd()));
+    }
+
+    public Pair<Double,Double> getAnswerDouble() {
+    	return new Pair<>(getAnswerReal().getFst().toDouble(delta.getFst())
+    					, getAnswerReal().getSnd().toDouble(delta.getSnd()));
+    }
+
+    public TBIntervalCode getAnswer2() {
+        return answer.getSnd();
+    }
+
+    public TBEncoding getAnswerReal2() {
+        return new TBEncoding(getAnswer2());
+    }
+
+    public Double getAnswerDouble2() {
+    	return getAnswerReal2().toDouble(delta.getSnd());
+    }
+    
+    public long getTimeTaken() {
+        return timeTaken;
+    }
+
+    public long getTimeTakenMillis() {
+        return timeTaken / 1000000;
+    }
+
+    public int getIntervalsChecked() {
+        return intervalsChecked;
+    }
+
+    // Methods
+ 
+    Boolean search() {
+        long startTime = System.nanoTime();
+        intervalsChecked++;
+        if (predicate.apply(new TBEncoding(compactInterval.getFst()), new TBEncoding(compactInterval.getSnd()))) {
+        	found = true;
+        	answer = compactInterval;
+        } else {
+        	for (int prec1 = compactInterval.getFst().getPrec()+1; prec1 <= delta.getFst(); prec1++) {
+        		if (found) { break; }
+        		TBIntervalCode current1 = compactInterval.getFst().downLeft(prec1 - compactInterval.getFst().getPrec());
+                TBIntervalCode end1 = compactInterval.getFst().downRight(prec1 - compactInterval.getFst().getPrec());
+                for (int prec2 = compactInterval.getSnd().getPrec()+1; prec2 <= delta.getSnd(); prec2++) {
+                	if (found) { break; }
+                	TBIntervalCode start2 = compactInterval.getFst().downLeft(delta.getSnd() - compactInterval.getSnd().getPrec());
+                	TBIntervalCode current2 = start2;
+                    TBIntervalCode end2 = compactInterval.getFst().downRight(delta.getSnd() - compactInterval.getSnd().getPrec());
+                    while (!found && current1.getCode().compareTo(end1.getCode()) < 0) {
+                        while (!found && current2.getCode().compareTo(end2.getCode()) < 0) {
+                        	intervalsChecked++;
+            	        	if (predicate.apply(new TBEncoding(current1), new TBEncoding(current2))) {
+            	        		found = true;
+            	        		answer = new Pair<>(current1, current2);
+            	        	} else {
+            	        		current2 = current2.next();
+            	        	}
+                    	}
+                        current2 = start2;
+                    	current1 = current1.next();
+                    }
+                }
+        	}
+        }
+        timeTaken = System.nanoTime() - startTime;
+        return found;
+    }
+
+    public Boolean search_verbose() {
+        search();
+        System.out.println("Intervals checked: " + intervalsChecked);
+        System.out.println("Time taken: " + getTimeTakenMillis() + "ms");
+        if (found) {
+        	System.out.println("Intervals found: " + getAnswer());
+            System.out.println("Reals found: " + getAnswerDouble());
+        } else {
+            System.out.println("No real found");
+        }
+        return found;
+    }
+
+}
+
