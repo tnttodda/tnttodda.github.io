@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>MLTT.Spartan</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Background">Our Spartan (intensional) Martin-Löf type theory has the empty type ∅,
+the unit type 𝟙, two-point-type 𝟚, natural numbers ℕ, product types Π,
+sum types Σ (and hence binary product types _×_), sum types _+_,
+identity types _＝_, and universes 𝓤, 𝓥, 𝓦, ....
+
+</a><a id="257" class="Markup">\begin{code}</a>
+
+<a id="271" class="Symbol">{-#</a> <a id="275" class="Keyword">OPTIONS</a> <a id="283" class="Pragma">--safe</a> <a id="290" class="Pragma">--without-K</a> <a id="302" class="Pragma">--exact-split</a> <a id="316" class="Symbol">#-}</a>
+
+<a id="321" class="Keyword">module</a> <a id="328" href="MLTT.Spartan.html" class="Module">MLTT.Spartan</a> <a id="341" class="Keyword">where</a>
+
+<a id="348" class="Keyword">open</a> <a id="353" class="Keyword">import</a> <a id="360" href="MLTT.Empty.html" class="Module">MLTT.Empty</a>           <a id="381" class="Keyword">public</a>
+<a id="388" class="Keyword">open</a> <a id="393" class="Keyword">import</a> <a id="400" href="MLTT.Unit.html" class="Module">MLTT.Unit</a>            <a id="421" class="Keyword">public</a>
+<a id="428" class="Keyword">open</a> <a id="433" class="Keyword">import</a> <a id="440" href="MLTT.Two.html" class="Module">MLTT.Two</a>             <a id="461" class="Keyword">public</a>
+<a id="468" class="Keyword">open</a> <a id="473" class="Keyword">import</a> <a id="480" href="MLTT.NaturalNumbers.html" class="Module">MLTT.NaturalNumbers</a>  <a id="501" class="Keyword">public</a>
+<a id="508" class="Keyword">open</a> <a id="513" class="Keyword">import</a> <a id="520" href="MLTT.Plus.html" class="Module">MLTT.Plus</a>            <a id="541" class="Keyword">public</a>
+<a id="548" class="Keyword">open</a> <a id="553" class="Keyword">import</a> <a id="560" href="MLTT.Pi.html" class="Module">MLTT.Pi</a>              <a id="581" class="Keyword">public</a>
+<a id="588" class="Keyword">open</a> <a id="593" class="Keyword">import</a> <a id="600" href="MLTT.Sigma.html" class="Module">MLTT.Sigma</a>           <a id="621" class="Keyword">public</a>
+<a id="628" class="Keyword">open</a> <a id="633" class="Keyword">import</a> <a id="640" href="MLTT.Universes.html" class="Module">MLTT.Universes</a>       <a id="661" class="Keyword">public</a>
+<a id="668" class="Keyword">open</a> <a id="673" class="Keyword">import</a> <a id="680" href="MLTT.Id.html" class="Module">MLTT.Id</a>              <a id="701" class="Keyword">public</a>
+
+<a id="709" class="Keyword">open</a> <a id="714" class="Keyword">import</a> <a id="721" href="Notation.General.html" class="Module">Notation.General</a> <a id="738" class="Keyword">public</a>
+
+<a id="746" class="Markup">\end{code}</a><a id="756" class="Background">
+</a></pre></body></html>

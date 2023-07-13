@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>MLTT.Unit</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Background">One element type.
+
+</a><a id="20" class="Markup">\begin{code}</a>
+
+<a id="34" class="Symbol">{-#</a> <a id="38" class="Keyword">OPTIONS</a> <a id="46" class="Pragma">--safe</a> <a id="53" class="Pragma">--without-K</a> <a id="65" class="Pragma">--exact-split</a> <a id="79" class="Symbol">#-}</a>
+
+<a id="84" class="Keyword">module</a> <a id="91" href="MLTT.Unit.html" class="Module">MLTT.Unit</a> <a id="101" class="Keyword">where</a>
+
+<a id="108" class="Keyword">open</a> <a id="113" class="Keyword">import</a> <a id="120" href="MLTT.Universes.html" class="Module">MLTT.Universes</a>
+
+<a id="136" class="Keyword">record</a> <a id="𝟙"></a><a id="143" href="MLTT.Unit.html#143" class="Record">𝟙</a> <a id="145" class="Symbol">{</a><a id="146" href="MLTT.Unit.html#146" class="Bound">𝓤</a><a id="147" class="Symbol">}</a> <a id="149" class="Symbol">:</a> <a id="151" href="MLTT.Unit.html#146" class="Bound">𝓤</a> <a id="153" href="MLTT.Universes.html#408" class="Function Operator">̇</a> <a id="155" class="Keyword">where</a>
+ <a id="162" class="Keyword">constructor</a>
+  <a id="⋆"></a><a id="176" href="MLTT.Unit.html#176" class="InductiveConstructor">⋆</a>
+
+<a id="179" class="Keyword">open</a> <a id="184" href="MLTT.Unit.html#143" class="Module">𝟙</a> <a id="186" class="Keyword">public</a>
+
+<a id="unique-to-𝟙"></a><a id="194" href="MLTT.Unit.html#194" class="Function">unique-to-𝟙</a> <a id="206" class="Symbol">:</a> <a id="208" class="Symbol">{</a><a id="209" href="MLTT.Unit.html#209" class="Bound">A</a> <a id="211" class="Symbol">:</a> <a id="213" href="MLTT.Universes.html#265" class="Generalizable">𝓤</a> <a id="215" href="MLTT.Universes.html#408" class="Function Operator">̇</a> <a id="217" class="Symbol">}</a> <a id="219" class="Symbol">→</a> <a id="221" href="MLTT.Unit.html#209" class="Bound">A</a> <a id="223" class="Symbol">→</a> <a id="225" href="MLTT.Unit.html#143" class="Record">𝟙</a> <a id="227" class="Symbol">{</a><a id="228" href="MLTT.Universes.html#267" class="Generalizable">𝓥</a><a id="229" class="Symbol">}</a>
+<a id="231" href="MLTT.Unit.html#194" class="Function">unique-to-𝟙</a> <a id="243" class="Symbol">{</a><a id="244" href="MLTT.Unit.html#244" class="Bound">𝓤</a><a id="245" class="Symbol">}</a> <a id="247" class="Symbol">{</a><a id="248" href="MLTT.Unit.html#248" class="Bound">𝓥</a><a id="249" class="Symbol">}</a> <a id="251" href="MLTT.Unit.html#251" class="Bound">a</a> <a id="253" class="Symbol">=</a> <a id="255" href="MLTT.Unit.html#176" class="InductiveConstructor">⋆</a> <a id="257" class="Symbol">{</a><a id="258" href="MLTT.Unit.html#248" class="Bound">𝓥</a><a id="259" class="Symbol">}</a>
+
+<a id="262" class="Markup">\end{code}</a><a id="272" class="Background">
+</a></pre></body></html>
