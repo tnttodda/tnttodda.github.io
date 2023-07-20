@@ -1,0 +1,330 @@
+body .Agda {
+  color: #50FA7B;
+}
+
+/* Aspects. */
+.Agda a.Comment {
+  color: #6272A4;
+}
+
+.Agda a.Markup {
+  color: #6272A4;
+}
+
+.Agda a.Keyword {
+  color: #FF79C6;
+}
+
+.Agda a.String {
+  color: #F1FA8C;
+}
+
+.Agda a.Number {
+  color: #f8f8f2;
+}
+
+.Agda a.Symbol {
+  color: #f8f8f2;
+}
+
+.Agda a.PrimitiveType {
+  color: #BD93F9;
+}
+
+.Agda a.Pragma {
+  color: #FF79C6;
+}
+
+/* NameKinds. */
+.Agda a.Bound {
+  color: #f8f8f2;
+}
+
+.Agda a.Generalizable {
+  color: #50FA7B;
+}
+
+.Agda a.InductiveConstructor {
+  color: #BD93F9;
+}
+
+.Agda a.CoinductiveConstructor {
+  color: #BD93F9;
+}
+
+.Agda a.Datatype {
+  color: #BD93F9;
+}
+
+.Agda a.Field {
+  color: #BD93F9;
+}
+
+.Agda a.Function {
+  color: #50FA7B;
+}
+
+.Agda a.Module {
+  color: #f8f8f2;
+}
+
+.Agda a.Postulate {
+  color: #BD93F9;
+}
+
+.Agda a.Primitive {
+  color: #BD93F9;
+}
+
+.Agda a.Record {
+  color: #BD93F9;
+}
+
+/* OtherAspects. */
+.Agda a.UnsolvedMeta {
+  color: #f8f8f2;
+  background: #F1FA8C;
+}
+
+.Agda a.UnsolvedConstraint {
+  color: #f8f8f2;
+  background: #F1FA8C;
+}
+
+.Agda a.TerminationProblem {
+  color: #f8f8f2;
+  background: #FFA07A;
+}
+
+.Agda a.IncompletePattern {
+  color: #f8f8f2;
+  background: #F5DEB3;
+}
+
+.Agda a.Error {
+  color: #FF5555;
+  text-decoration: underline;
+}
+
+.Agda a.TypeChecks {
+  color: #f8f8f2;
+  background: #ADD8E6;
+}
+
+.Agda a.Deadcode {
+  color: #f8f8f2;
+  background: #808080;
+}
+
+.Agda a.ShadowingInTelescope {
+  color: #f8f8f2;
+  background: #808080;
+}
+
+/* Standard attributes. */
+.Agda a {
+  text-decoration: none;
+}
+
+/* .Agda a[href]:hover { background-color: #B4EEB4 } */
+/* .Agda [href].hover-highlight { background-color: #B4EEB4; } */
+html {
+  background-color: #282a36;
+}
+
+/*# sourceMappingURL=Agda.css.map */
+@charset "UTF-8";
+.photo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 25px;
+}
+
+html {
+  background-color: #282a36;
+}
+
+body {
+  max-width: 650px;
+  width: 85%;
+  margin: auto;
+  color: #f8f8f2;
+  font-family: "Source Code Pro", monospace;
+  line-height: 1.2;
+  font-size: 14px;
+}
+
+pre {
+  font-size: 12px;
+  font-weight: 50;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #44475A;
+}
+
+code {
+  color: #F1FA8C;
+}
+
+table {
+  width: 100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 30pt;
+  margin-bottom: 6pt;
+  text-align: center;
+  width: 100%;
+}
+
+h3 {
+  color: #BD93F9;
+}
+
+h2 {
+  color: #50FA7B;
+}
+
+h1 {
+  margin-top: 15pt !important;
+  color: #FF79C6;
+  font-size-adjust: 0.45;
+}
+
+ul {
+  padding-right: 40px;
+}
+
+pre.example {
+  margin: 20px 20px;
+}
+
+details {
+  color: #FF79C6;
+}
+
+details[open=""] {
+  border: 1px solid #6272A4;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+a:link, a:visited {
+  text-decoration: none;
+  color: #8BE9FD;
+}
+
+.Postulate {
+    text-decoration: none;
+    color: #8BE9FD;
+}
+
+th.org-left {
+  text-align: left;
+}
+
+.theorem {
+  display: block;
+  margin: 16px 20px;
+  font-style: italic;
+}
+
+.theorem p {
+  margin: 0px;
+}
+
+.theorem:before {
+  content: "Theorem.";
+  font-weight: bold;
+  font-style: normal;
+  color: #BD93F9;
+}
+
+.lemma {
+  display: block;
+  margin: 16px 20px;
+  font-style: italic;
+}
+
+.lemma:before {
+  content: "Lemma.";
+  font-weight: bold;
+  font-style: normal;
+  color: #BD93F9;
+}
+
+.lemma p {
+  margin: 0px;
+}
+
+.proof {
+  display: block;
+  margin: 16px 20px 36px 20px;
+  font-style: normal;
+}
+
+.proof:before {
+  content: "Proof.";
+  font-style: italic;
+  color: #BD93F9;
+}
+
+.proof:after {
+  content: "â—¼";
+  float: right;
+  color: #BD93F9;
+}
+
+.proof p {
+  margin: 0px;
+}
+
+.definition {
+  display: block;
+  margin: 16px 20px;
+  font-style: normal;
+}
+
+.definition:before {
+  content: "Definition.";
+  font-weight: bold;
+  font-style: normal;
+  color: #BD93F9;
+}
+
+.definition p {
+  margin: 0px;
+}
+
+#content {
+  max-width: 650px !important;
+}
+
+p {
+  text-align: justify;
+}
+
+.collapsible {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 5px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 14px;
+}
+
+.active, .collapsible:hover {
+    background-color: #ccc;
+}
+
+.collapsiblecontent {
+    display: none;
+}
+
+
+
+/*# sourceMappingURL=style-posts.css.map */
