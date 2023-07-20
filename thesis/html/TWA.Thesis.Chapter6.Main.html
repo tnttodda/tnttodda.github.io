@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>TWA.Thesis.Chapter6.Main</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="Agda.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="main">Main</h1>
+<pre class="Agda"><a id="17" class="Symbol">{-#</a> <a id="21" class="Keyword">OPTIONS</a> <a id="29" class="Pragma">--without-K</a> <a id="41" class="Pragma">--exact-split</a> <a id="55" class="Symbol">#-}</a>
+
+<a id="60" class="Keyword">open</a> <a id="65" class="Keyword">import</a> <a id="72" href="UF.FunExt.html" class="Module">UF.FunExt</a>
+<a id="82" class="Keyword">open</a> <a id="87" class="Keyword">import</a> <a id="94" href="UF.Subsingletons.html" class="Module">UF.Subsingletons</a>
+<a id="111" class="Keyword">open</a> <a id="116" class="Keyword">import</a> <a id="123" href="Integers.Type.html" class="Module">Integers.Type</a>
+<a id="137" class="Keyword">open</a> <a id="142" class="Keyword">import</a> <a id="149" href="MLTT.Spartan.html" class="Module">MLTT.Spartan</a>
+<a id="162" class="Keyword">open</a> <a id="167" class="Keyword">import</a> <a id="174" href="Unsafe.Haskell.html" class="Module">Unsafe.Haskell</a>
+
+<a id="190" class="Keyword">open</a> <a id="195" class="Keyword">import</a> <a id="202" href="TWA.Thesis.Chapter2.Vectors.html" class="Module">TWA.Thesis.Chapter2.Vectors</a>
+<a id="230" class="Keyword">open</a> <a id="235" class="Keyword">import</a> <a id="242" href="TWA.Thesis.Chapter2.Sequences.html" class="Module">TWA.Thesis.Chapter2.Sequences</a>
+<a id="272" class="Keyword">open</a> <a id="277" class="Keyword">import</a> <a id="284" href="TWA.Thesis.Chapter5.SignedDigit.html" class="Module">TWA.Thesis.Chapter5.SignedDigit</a>
+
+<a id="317" class="Keyword">module</a> <a id="324" href="TWA.Thesis.Chapter6.Main.html" class="Module">TWA.Thesis.Chapter6.Main</a> <a id="349" class="Keyword">where</a>
+
+<a id="356" class="Keyword">postulate</a> <a id="fe"></a><a id="366" href="TWA.Thesis.Chapter6.Main.html#366" class="Postulate">fe</a> <a id="369" class="Symbol">:</a> <a id="371" href="UF.FunExt.html#970" class="Function">FunExt</a>
+<a id="378" class="Keyword">postulate</a> <a id="pe"></a><a id="388" href="TWA.Thesis.Chapter6.Main.html#388" class="Postulate">pe</a> <a id="391" class="Symbol">:</a> <a id="393" href="UF.Subsingletons.html#14254" class="Function">PropExt</a>
+
+<a id="402" class="Keyword">open</a> <a id="407" class="Keyword">import</a> <a id="414" href="TWA.Thesis.Chapter6.SignedDigitSearch.html" class="Module">TWA.Thesis.Chapter6.SignedDigitSearch</a> <a id="452" href="TWA.Thesis.Chapter6.Main.html#366" class="Postulate">fe</a> <a id="455" href="TWA.Thesis.Chapter6.Main.html#388" class="Postulate">pe</a>
+<a id="458" class="Keyword">open</a> <a id="463" class="Keyword">import</a> <a id="470" href="TWA.Thesis.Chapter6.SignedDigitExamples.html" class="Module">TWA.Thesis.Chapter6.SignedDigitExamples</a> <a id="510" href="TWA.Thesis.Chapter6.Main.html#366" class="Postulate">fe</a> <a id="513" href="TWA.Thesis.Chapter6.Main.html#388" class="Postulate">pe</a>
+
+<a id="𝟛-to-ℤ"></a><a id="517" href="TWA.Thesis.Chapter6.Main.html#517" class="Function">𝟛-to-ℤ</a> <a id="524" class="Symbol">:</a> <a id="526" href="TWA.Thesis.Chapter5.SignedDigit.html#415" class="Datatype">𝟛</a> <a id="528" class="Symbol">→</a> <a id="530" href="Integers.Type.html#776" class="Datatype">ℤ</a>
+<a id="532" href="TWA.Thesis.Chapter6.Main.html#517" class="Function">𝟛-to-ℤ</a> <a id="539" href="TWA.Thesis.Chapter5.SignedDigit.html#432" class="InductiveConstructor">−1</a> <a id="542" class="Symbol">=</a> <a id="544" href="Integers.Type.html#809" class="InductiveConstructor">negsucc</a> <a id="552" class="Number">0</a>
+<a id="554" href="TWA.Thesis.Chapter6.Main.html#517" class="Function">𝟛-to-ℤ</a>  <a id="562" href="TWA.Thesis.Chapter5.SignedDigit.html#435" class="InductiveConstructor">O</a> <a id="564" class="Symbol">=</a> <a id="566" href="Integers.Type.html#792" class="InductiveConstructor">pos</a> <a id="570" class="Number">0</a>
+<a id="572" href="TWA.Thesis.Chapter6.Main.html#517" class="Function">𝟛-to-ℤ</a> <a id="579" href="TWA.Thesis.Chapter5.SignedDigit.html#437" class="InductiveConstructor">+1</a> <a id="582" class="Symbol">=</a> <a id="584" href="Integers.Type.html#792" class="InductiveConstructor">pos</a> <a id="588" class="Number">1</a>
+
+<a id="show𝟛"></a><a id="591" href="TWA.Thesis.Chapter6.Main.html#591" class="Function">show𝟛</a> <a id="597" class="Symbol">:</a> <a id="599" href="TWA.Thesis.Chapter5.SignedDigit.html#415" class="Datatype">𝟛</a> <a id="601" class="Symbol">→</a> <a id="603" href="Unsafe.Haskell.html#362" class="Postulate">String</a>
+<a id="610" href="TWA.Thesis.Chapter6.Main.html#591" class="Function">show𝟛</a> <a id="616" class="Symbol">=</a> <a id="618" href="Unsafe.Haskell.html#1693" class="Function">showℤ</a> <a id="624" href="MLTT.Pi.html#527" class="Function Operator">∘</a> <a id="626" href="TWA.Thesis.Chapter6.Main.html#517" class="Function">𝟛-to-ℤ</a>
+
+<a id="show𝟚ᴺ-prefix"></a><a id="634" href="TWA.Thesis.Chapter6.Main.html#634" class="Function">show𝟚ᴺ-prefix</a> <a id="648" class="Symbol">:</a> <a id="650" class="Symbol">(</a><a id="651" href="MLTT.Natural-Numbers-Type.html#110" class="Datatype">ℕ</a> <a id="653" class="Symbol">→</a> <a id="655" href="MLTT.Two.html#138" class="Datatype">𝟚</a><a id="656" class="Symbol">)</a> <a id="658" class="Symbol">→</a> <a id="660" href="MLTT.Natural-Numbers-Type.html#110" class="Datatype">ℕ</a> <a id="662" class="Symbol">→</a> <a id="664" href="Unsafe.Haskell.html#362" class="Postulate">String</a>
+<a id="671" href="TWA.Thesis.Chapter6.Main.html#634" class="Function">show𝟚ᴺ-prefix</a> <a id="685" href="TWA.Thesis.Chapter6.Main.html#685" class="Bound">x</a> <a id="687" class="Number">0</a> <a id="689" class="Symbol">=</a> <a id="691" class="String">&quot;&quot;</a>
+<a id="694" href="TWA.Thesis.Chapter6.Main.html#634" class="Function">show𝟚ᴺ-prefix</a> <a id="708" href="TWA.Thesis.Chapter6.Main.html#708" class="Bound">x</a> <a id="710" class="Symbol">(</a><a id="711" href="MLTT.Natural-Numbers-Type.html#137" class="InductiveConstructor">succ</a> <a id="716" href="TWA.Thesis.Chapter6.Main.html#716" class="Bound">n</a><a id="717" class="Symbol">)</a>
+ <a id="720" class="Symbol">=</a> <a id="722" href="TWA.Thesis.Chapter6.Main.html#591" class="Function">show𝟛</a> <a id="728" class="Symbol">(</a><a id="729" href="TWA.Thesis.Chapter6.SignedDigitSearch.html#4624" class="Function">𝟚→𝟛</a> <a id="733" class="Symbol">(</a><a id="734" href="TWA.Thesis.Chapter6.Main.html#708" class="Bound">x</a> <a id="736" class="Number">0</a><a id="737" class="Symbol">))</a> <a id="740" href="Unsafe.Haskell.html#1777" class="Function Operator">+++</a> <a id="744" class="String">&quot;,&quot;</a> <a id="748" href="Unsafe.Haskell.html#1777" class="Function Operator">+++</a> <a id="752" href="TWA.Thesis.Chapter6.Main.html#634" class="Function">show𝟚ᴺ-prefix</a> <a id="766" class="Symbol">(</a><a id="767" href="TWA.Thesis.Chapter6.Main.html#708" class="Bound">x</a> <a id="769" href="MLTT.Pi.html#527" class="Function Operator">∘</a> <a id="771" href="MLTT.Natural-Numbers-Type.html#137" class="InductiveConstructor">succ</a><a id="775" class="Symbol">)</a> <a id="777" href="TWA.Thesis.Chapter6.Main.html#716" class="Bound">n</a>
+
+<a id="show𝟛ᴺ-prefix"></a><a id="780" href="TWA.Thesis.Chapter6.Main.html#780" class="Function">show𝟛ᴺ-prefix</a> <a id="794" class="Symbol">:</a> <a id="796" href="TWA.Thesis.Chapter5.SignedDigit.html#879" class="Function">𝟛ᴺ</a> <a id="799" class="Symbol">→</a> <a id="801" href="MLTT.Natural-Numbers-Type.html#110" class="Datatype">ℕ</a> <a id="803" class="Symbol">→</a> <a id="805" href="Unsafe.Haskell.html#362" class="Postulate">String</a>
+<a id="812" href="TWA.Thesis.Chapter6.Main.html#780" class="Function">show𝟛ᴺ-prefix</a> <a id="826" href="TWA.Thesis.Chapter6.Main.html#826" class="Bound">x</a> <a id="828" class="Number">0</a> <a id="830" class="Symbol">=</a> <a id="832" class="String">&quot;&quot;</a>
+<a id="835" href="TWA.Thesis.Chapter6.Main.html#780" class="Function">show𝟛ᴺ-prefix</a> <a id="849" href="TWA.Thesis.Chapter6.Main.html#849" class="Bound">x</a> <a id="851" class="Symbol">(</a><a id="852" href="MLTT.Natural-Numbers-Type.html#137" class="InductiveConstructor">succ</a> <a id="857" href="TWA.Thesis.Chapter6.Main.html#857" class="Bound">n</a><a id="858" class="Symbol">)</a>
+ <a id="861" class="Symbol">=</a> <a id="863" href="TWA.Thesis.Chapter6.Main.html#591" class="Function">show𝟛</a> <a id="869" class="Symbol">(</a><a id="870" href="TWA.Thesis.Chapter6.Main.html#849" class="Bound">x</a> <a id="872" class="Number">0</a><a id="873" class="Symbol">)</a> <a id="875" href="Unsafe.Haskell.html#1777" class="Function Operator">+++</a> <a id="879" class="String">&quot;,&quot;</a> <a id="883" href="Unsafe.Haskell.html#1777" class="Function Operator">+++</a> <a id="887" href="TWA.Thesis.Chapter6.Main.html#780" class="Function">show𝟛ᴺ-prefix</a> <a id="901" class="Symbol">(</a><a id="902" href="TWA.Thesis.Chapter6.Main.html#849" class="Bound">x</a> <a id="904" href="MLTT.Pi.html#527" class="Function Operator">∘</a> <a id="906" href="MLTT.Natural-Numbers-Type.html#137" class="InductiveConstructor">succ</a><a id="910" class="Symbol">)</a> <a id="912" href="TWA.Thesis.Chapter6.Main.html#857" class="Bound">n</a>
+
+<a id="show𝟛ᴺ×𝟛ᴺ-prefix"></a><a id="915" href="TWA.Thesis.Chapter6.Main.html#915" class="Function">show𝟛ᴺ×𝟛ᴺ-prefix</a> <a id="932" class="Symbol">:</a> <a id="934" href="TWA.Thesis.Chapter5.SignedDigit.html#879" class="Function">𝟛ᴺ</a> <a id="937" href="MLTT.Sigma.html#572" class="Function Operator">×</a> <a id="939" href="TWA.Thesis.Chapter5.SignedDigit.html#879" class="Function">𝟛ᴺ</a> <a id="942" class="Symbol">→</a> <a id="944" href="MLTT.Natural-Numbers-Type.html#110" class="Datatype">ℕ</a> <a id="946" class="Symbol">→</a> <a id="948" href="Unsafe.Haskell.html#362" class="Postulate">String</a>
+<a id="955" href="TWA.Thesis.Chapter6.Main.html#915" class="Function">show𝟛ᴺ×𝟛ᴺ-prefix</a> <a id="972" class="Symbol">(</a><a id="973" href="TWA.Thesis.Chapter6.Main.html#973" class="Bound">x</a> <a id="975" href="MLTT.Sigma.html#409" class="InductiveConstructor Operator">,</a> <a id="977" href="TWA.Thesis.Chapter6.Main.html#977" class="Bound">y</a><a id="978" class="Symbol">)</a> <a id="980" href="TWA.Thesis.Chapter6.Main.html#980" class="Bound">n</a>
+ <a id="983" class="Symbol">=</a> <a id="985" href="TWA.Thesis.Chapter6.Main.html#780" class="Function">show𝟛ᴺ-prefix</a> <a id="999" href="TWA.Thesis.Chapter6.Main.html#973" class="Bound">x</a> <a id="1001" href="TWA.Thesis.Chapter6.Main.html#980" class="Bound">n</a> <a id="1003" href="Unsafe.Haskell.html#1777" class="Function Operator">+++</a> <a id="1007" class="String">&quot; ;\n&quot;</a> <a id="1014" href="Unsafe.Haskell.html#1777" class="Function Operator">+++</a> <a id="1018" href="TWA.Thesis.Chapter6.Main.html#780" class="Function">show𝟛ᴺ-prefix</a> <a id="1032" href="TWA.Thesis.Chapter6.Main.html#977" class="Bound">y</a> <a id="1034" href="TWA.Thesis.Chapter6.Main.html#980" class="Bound">n</a>
+
+<a id="show𝟚ᴺ×𝟚ᴺ-prefix"></a><a id="1037" href="TWA.Thesis.Chapter6.Main.html#1037" class="Function">show𝟚ᴺ×𝟚ᴺ-prefix</a> <a id="1054" class="Symbol">:</a> <a id="1056" href="TWA.Thesis.Chapter6.SignedDigitSearch.html#2486" class="Function">𝟚ᴺ</a> <a id="1059" href="MLTT.Sigma.html#572" class="Function Operator">×</a> <a id="1061" href="TWA.Thesis.Chapter6.SignedDigitSearch.html#2486" class="Function">𝟚ᴺ</a> <a id="1064" class="Symbol">→</a> <a id="1066" href="MLTT.Natural-Numbers-Type.html#110" class="Datatype">ℕ</a> <a id="1068" class="Symbol">→</a> <a id="1070" href="Unsafe.Haskell.html#362" class="Postulate">String</a>
+<a id="1077" href="TWA.Thesis.Chapter6.Main.html#1037" class="Function">show𝟚ᴺ×𝟚ᴺ-prefix</a> <a id="1094" class="Symbol">(</a><a id="1095" href="TWA.Thesis.Chapter6.Main.html#1095" class="Bound">x</a> <a id="1097" href="MLTT.Sigma.html#409" class="InductiveConstructor Operator">,</a> <a id="1099" href="TWA.Thesis.Chapter6.Main.html#1099" class="Bound">y</a><a id="1100" class="Symbol">)</a> <a id="1102" href="TWA.Thesis.Chapter6.Main.html#1102" class="Bound">n</a>
+ <a id="1105" class="Symbol">=</a> <a id="1107" href="TWA.Thesis.Chapter6.Main.html#634" class="Function">show𝟚ᴺ-prefix</a> <a id="1121" href="TWA.Thesis.Chapter6.Main.html#1095" class="Bound">x</a> <a id="1123" href="TWA.Thesis.Chapter6.Main.html#1102" class="Bound">n</a> <a id="1125" href="Unsafe.Haskell.html#1777" class="Function Operator">+++</a> <a id="1129" class="String">&quot; ;\n&quot;</a> <a id="1136" href="Unsafe.Haskell.html#1777" class="Function Operator">+++</a> <a id="1140" href="TWA.Thesis.Chapter6.Main.html#634" class="Function">show𝟚ᴺ-prefix</a> <a id="1154" href="TWA.Thesis.Chapter6.Main.html#1099" class="Bound">y</a> <a id="1156" href="TWA.Thesis.Chapter6.Main.html#1102" class="Bound">n</a>
+</pre>
+<p>Open the Example module here from SignedDigitExamples.lagda.md</p>
+<pre class="Agda"><a id="1231" class="Keyword">open</a> <a id="1236" href="TWA.Thesis.Chapter6.SignedDigitExamples.html#8183" class="Module">Regression-Example2</a>
+</pre>
+<p>Write the particular example run here, i.e. one of: * search-test-tb
+/ search-test / search-test-tb’ / serach-test’ * opt-test / opt-test’ *
+reg𝓞 / regΨ𝓞 / opt𝓞 / optΨ𝓞</p>
+<pre class="Agda"><a id="test"></a><a id="1438" href="TWA.Thesis.Chapter6.Main.html#1438" class="Function">test</a> <a id="1443" class="Symbol">=</a> <a id="1445" href="TWA.Thesis.Chapter6.SignedDigitExamples.html#5884" class="Function">reg𝓞</a>
+</pre>
+<p>Write the correct printer here, i.e. one of: * show𝟛ᴺ-prefix *
+show𝟚ᴺ-prefix * show𝟛ᴺ×𝟛ᴺ-prefix * show𝟚ᴺ×𝟚ᴺ-prefix</p>
+<pre class="Agda"><a id="print"></a><a id="1579" href="TWA.Thesis.Chapter6.Main.html#1579" class="Function">print</a> <a id="1585" class="Symbol">=</a> <a id="1587" href="TWA.Thesis.Chapter6.Main.html#1037" class="Function">show𝟚ᴺ×𝟚ᴺ-prefix</a>
+</pre>
+<p>Write the requested precision here, i.e. a natural number.</p>
+<pre class="Agda"><a id="prec"></a><a id="1673" href="TWA.Thesis.Chapter6.Main.html#1673" class="Function">prec</a> <a id="1678" class="Symbol">=</a> <a id="1680" class="Number">5</a>
+</pre>
+<pre class="Agda"><a id="main"></a><a id="1691" href="TWA.Thesis.Chapter6.Main.html#1691" class="Function">main</a> <a id="1696" class="Symbol">:</a> <a id="1698" href="Unsafe.Haskell.html#1233" class="Postulate">IO</a> <a id="1701" href="Unsafe.Haskell.html#1397" class="Record">Unit</a>
+<a id="1706" href="TWA.Thesis.Chapter6.Main.html#1691" class="Function">main</a> <a id="1711" class="Symbol">=</a> <a id="1713" href="Unsafe.Haskell.html#1520" class="Postulate">putStrLn</a> <a id="1722" class="Symbol">(</a><a id="1723" href="TWA.Thesis.Chapter6.Main.html#1579" class="Function">print</a> <a id="1729" class="Symbol">(</a><a id="1730" href="TWA.Thesis.Chapter6.Main.html#1438" class="Function">test</a> <a id="1735" class="Number">5</a><a id="1736" class="Symbol">)</a> <a id="1738" class="Number">30</a><a id="1740" class="Symbol">)</a>
+</pre>
+</body>
+</html>
