@@ -2,7 +2,7 @@ package Regression;
 
 import java.util.Arrays;
 import java.util.List;
-import DyadicsAndIntervals.TBIntervalCode;
+import DyadicsAndIntervals.TernaryIntervalCode;
 import FunctionsAndPredicates.CFunction;
 import FunctionsAndPredicates.UCBinaryPredicate;
 import FunctionsAndPredicates.UCUnaryPredicate;
@@ -19,12 +19,12 @@ public class Regression {
 	
 	CFunction oracle; //The oracle function O : T^n -> T	
 	CFunction model; //The model function   M : T^{m+n} -> T
-	List<List<TBEncoding>> observations; // The input observations
+	CFunction loss;
 	
 	public Regression(CFunction oracle, CFunction model, List<List<TBEncoding>> observations) {
 		this.oracle = oracle;
 		this.model = model;
-		this.observations = observations;
+		this.loss = averageModelOracleDistance(observations);
 	}
 	
 	public CFunction modelOracleDistance(List<TBEncoding> observation) {
@@ -35,49 +35,49 @@ public class Regression {
 	}
 	
 	// The loss function
-	public CFunction averageModelOracleDistance() {
+	public CFunction averageModelOracleDistance( List<List<TBEncoding>> observations) {
 		return CFunction.sum(model.getArity() - oracle.getArity(), 
 				observations.stream().map(x -> modelOracleDistance(x)).toList()
 				);
 	}
 		
 	// f(x) := averageModelOracleDistance(Model.apply(x,observations),Oracle(observations))
-	public void regressParametersViaOptimisation(TBIntervalCode compactInterval, int epsilon) {
-		new Optimisation(averageModelOracleDistance(), compactInterval, epsilon).minimise_verbose();
+	public void regressParametersViaOptimisation(TernaryIntervalCode compactInterval, int epsilon) {
+		new Optimisation(loss, compactInterval, epsilon).minimise_verbose();
 	}
 	
-	public void regressParametersViaOptimisationBranchAndBound(TBIntervalCode compactInterval, int epsilon) {
-		new OptimisationHeuristic(averageModelOracleDistance(), compactInterval, epsilon).minimise_verbose();
+	public void regressParametersViaOptimisationBranchAndBound(TernaryIntervalCode compactInterval, int epsilon) {
+		new OptimisationHeuristic(loss, compactInterval, epsilon).minimise_verbose();
 	}
 	
 	// p(x) := averageModelOracleDistance(Model.apply(x,observations),Oracle(observations)) <= 2^epsilon
-	public void regressParametersViaSearchUnary(TBIntervalCode compactInterval, int epsilon) {
+	public void regressParametersViaSearchUnary(TernaryIntervalCode compactInterval, int epsilon) {
 		UCUnaryPredicate p = 
-				new UCUnaryPredicate(averageModelOracleDistance(),
+				new UCUnaryPredicate(loss,
 									 UCUnaryPredicate.eq(new TBEncoding(0), epsilon),
 									 compactInterval);
 		new SearchUnary(p, compactInterval).search_verbose();
 	}
 
-	public void regressParametersViaSearchUnaryBranch(TBIntervalCode compactInterval, int epsilon) {
+	public void regressParametersViaSearchUnaryBranch(TernaryIntervalCode compactInterval, int epsilon) {
 		UCUnaryPredicate p = 
-				new UCUnaryPredicate(averageModelOracleDistance(),
+				new UCUnaryPredicate(loss,
 									 UCUnaryPredicate.eq(new TBEncoding(0), epsilon),
 									 compactInterval);
 		new SearchUnaryBranchAndBound(p, compactInterval).search_verbose();
 	}
 	
-	public void regressParametersViaSearchBinary(Pair<TBIntervalCode,TBIntervalCode> compactInterval, int epsilon) {
+	public void regressParametersViaSearchBinary(Pair<TernaryIntervalCode,TernaryIntervalCode> compactInterval, int epsilon) {
 		UCBinaryPredicate p = 
-				new UCBinaryPredicate(averageModelOracleDistance(),
+				new UCBinaryPredicate(loss,
 									 UCUnaryPredicate.eq(new TBEncoding(0), epsilon),
 									 compactInterval);
 		new SearchBinary(p, compactInterval).search_verbose();
 	}
 
-	public void regressParametersViaSearchBinaryBranch(Pair<TBIntervalCode,TBIntervalCode> compactInterval, int epsilon) {
+	public void regressParametersViaSearchBinaryBranch(Pair<TernaryIntervalCode,TernaryIntervalCode> compactInterval, int epsilon) {
 		UCBinaryPredicate p = 
-				new UCBinaryPredicate(averageModelOracleDistance(),
+				new UCBinaryPredicate(loss,
 									 UCUnaryPredicate.eq(new TBEncoding(0), epsilon),
 									 compactInterval);
 		new SearchBinaryBranchAndBound(p, compactInterval).search_verbose();

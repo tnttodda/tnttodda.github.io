@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import DyadicsAndIntervals.DyadicIntervalCode;
-import DyadicsAndIntervals.TBIntervalCode;
+import DyadicsAndIntervals.TernaryIntervalCode;
 import FunctionsAndPredicates.CFunction;
 import TernaryBoehm.TBEncoding;
 import Utilities.Pair;
@@ -23,8 +23,8 @@ import Utilities.Pair;
 public class Optimisation {
     CFunction function; // The function to search
     int epsilon; // The requested output precision level
-    TBIntervalCode compactInterval; // The compact interval in which to optimise the function
-    TBIntervalCode input; // The current interval that contains the minimum
+    TernaryIntervalCode compactInterval; // The compact interval in which to optimise the function
+    TernaryIntervalCode input; // The current interval that contains the minimum
     DyadicIntervalCode output; // The output of the function on the current minimum interval
     int intervalsChecked = 0; // The number of intervals checked
     long timeTaken; // The time taken to perform the search
@@ -32,17 +32,17 @@ public class Optimisation {
     // Array to keep track of intermediate minimum intervals
     ArrayList<DyadicIntervalCode> answers = new ArrayList<DyadicIntervalCode>();
     // Array to keep track of the intervals to check, along with their corresponding outputs
-    ArrayList<Pair<TBIntervalCode,DyadicIntervalCode>> frontier = new ArrayList<Pair<TBIntervalCode,DyadicIntervalCode>>(); 
+    ArrayList<Pair<TernaryIntervalCode,DyadicIntervalCode>> frontier = new ArrayList<Pair<TernaryIntervalCode,DyadicIntervalCode>>(); 
 
     // Constructor
-    public Optimisation(CFunction function, TBIntervalCode compactInterval, int epsilon) {
+    public Optimisation(CFunction function, TernaryIntervalCode compactInterval, int epsilon) {
         this.function = function;
         this.compactInterval = compactInterval;
         this.epsilon = epsilon;
     }
 
     // Getters
-    public ArrayList<Pair<TBIntervalCode,DyadicIntervalCode>> getFrontier() {
+    public ArrayList<Pair<TernaryIntervalCode,DyadicIntervalCode>> getFrontier() {
         return frontier;
     }
 
@@ -50,7 +50,7 @@ public class Optimisation {
         return frontier.size();
     }
 
-    public TBIntervalCode getAnswer() {
+    public TernaryIntervalCode getAnswer() {
         return input;
     }
 
@@ -133,12 +133,12 @@ public class Optimisation {
 
     // Methods
     
-    ArrayList<Pair<TBIntervalCode,DyadicIntervalCode>> initialise() {
+    ArrayList<Pair<TernaryIntervalCode,DyadicIntervalCode>> initialise() {
         int delta = function.getUniformContinuityOracle(compactInterval).apply(epsilon).get(0);
-        List<TBIntervalCode> inputs = compactInterval.discretize(delta);
-        for (TBIntervalCode interval : inputs) {
-            DyadicIntervalCode output = function.applyApproximator(interval.getVariableIntervalCode());
-            frontier.add(new Pair<TBIntervalCode,DyadicIntervalCode>(interval, output));
+        List<TernaryIntervalCode> inputs = compactInterval.discretize(delta);
+        for (TernaryIntervalCode interval : inputs) {
+            DyadicIntervalCode output = function.applyApproximator(interval.getDyadicIntervalCode());
+            frontier.add(new Pair<TernaryIntervalCode,DyadicIntervalCode>(interval, output));
         }
 
         input = frontier.get(0).getFst();
@@ -148,13 +148,13 @@ public class Optimisation {
     }
 
     Boolean check() {
-        Pair<TBIntervalCode,DyadicIntervalCode> intervalOutput = frontier.remove(0);
-        TBIntervalCode interval = intervalOutput.getFst();
+        Pair<TernaryIntervalCode,DyadicIntervalCode> intervalOutput = frontier.remove(0);
+        TernaryIntervalCode interval = intervalOutput.getFst();
         DyadicIntervalCode output = intervalOutput.getSnd();
-        if (TBIntervalCode.lessThan(output, this.output)) {
+        if (TernaryIntervalCode.lessThan(output, this.output)) {
         	this.input = interval;
             this.output = output;
-            answers.add(interval.getVariableIntervalCode());
+            answers.add(interval.getDyadicIntervalCode());
             return true;
         } else {
             return false;

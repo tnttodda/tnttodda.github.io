@@ -21,8 +21,14 @@ public class DyadicIntervalCode {
 		this.prec = prec;
 	}
 	
-	// Getters
+	public DyadicIntervalCode(int left, int right, int prec) {
+		this.left = BigInteger.valueOf(left);
+		this.right = BigInteger.valueOf(right);
+		this.prec = prec;
+	}
 	
+	// Getters
+
 	public BigInteger getLeftCode() {
 		return left;
 	}
@@ -86,11 +92,8 @@ public class DyadicIntervalCode {
 		}
 	}
 	
-	/*
-	 * TODO description
-	 */
-	public TBIntervalCode join_prime() { // TODO Not sure about this
-		return new TBIntervalCode(getLeftEndpoint().upRight(right.subtract(left).bitLength() - 2));
+	public TernaryIntervalCode join_prime() {
+		return new TernaryIntervalCode(getLeftEndpoint().upRight(right.subtract(left).bitLength() - 2));
 	}
 
 	// Arithmetic operations
@@ -161,8 +164,8 @@ public class DyadicIntervalCode {
 	// Comparisons
 	
 	public boolean intersectsWith(TBEncoding y) {
-		BigInteger yleft = y.approxAsSpecificIntervalCode(prec).getVariableIntervalCode().getLeftCode();
-		BigInteger yright = y.approxAsSpecificIntervalCode(prec).getVariableIntervalCode().getRightCode();
+		BigInteger yleft = y.approxAsTernaryIntervalCode(prec).getDyadicIntervalCode().getLeftCode();
+		BigInteger yright = y.approxAsTernaryIntervalCode(prec).getDyadicIntervalCode().getRightCode();
 		return !(right.compareTo(yleft) < 0 || yright.compareTo(left) < 0);
 	}
 

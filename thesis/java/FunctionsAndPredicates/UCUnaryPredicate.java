@@ -3,7 +3,7 @@ package FunctionsAndPredicates;
 import java.math.BigInteger;
 import java.util.function.Function;
 
-import DyadicsAndIntervals.TBIntervalCode;
+import DyadicsAndIntervals.TernaryIntervalCode;
 import TernaryBoehm.TBEncoding;
 
 public class UCUnaryPredicate {
@@ -16,7 +16,7 @@ public class UCUnaryPredicate {
 		this.delta = delta;
 	}
 
-	public UCUnaryPredicate(CFunction f, UCUnaryPredicate predicate, TBIntervalCode compactInterval) {
+	public UCUnaryPredicate(CFunction f, UCUnaryPredicate predicate, TernaryIntervalCode compactInterval) {
 		this.predicate = (x) -> {
 //			System.out.println(x);
 //			System.out.println(f.apply(x));

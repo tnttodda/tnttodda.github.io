@@ -6,7 +6,7 @@ import java.util.function.Function;
 
 import DyadicsAndIntervals.Dyadic;
 import DyadicsAndIntervals.DyadicIntervalCode;
-import DyadicsAndIntervals.TBIntervalCode;
+import DyadicsAndIntervals.TernaryIntervalCode;
 import FunctionsAndPredicates.CFunction;
 
 public class TBEncoding {
@@ -42,14 +42,14 @@ public class TBEncoding {
 		};
 	}
 	
-	public TBEncoding(Function<Integer,TBIntervalCode> x) {
+	public TBEncoding(Function<Integer,TernaryIntervalCode> x) {
 		this.approx = (prec) -> {
 			Dyadic kp = x.apply(prec).getLeftEndpoint();
 			return kp.upRight(kp.getDen() - prec).getNum();
 		};
 	}
 	
-	public TBEncoding(TBIntervalCode s) {
+	public TBEncoding(TernaryIntervalCode s) {
 		this.approx = (prec) -> {
 			Dyadic x = s.getLeftEndpoint();
 			int p = x.getDen();
@@ -69,18 +69,18 @@ public class TBEncoding {
 		return approx.apply(prec);
 	}
 	
-	public TBIntervalCode approxAsSpecificIntervalCode(int prec) {
-		return new TBIntervalCode(approx(prec), prec);
+	public TernaryIntervalCode approxAsTernaryIntervalCode(int prec) {
+		return new TernaryIntervalCode(approx(prec), prec);
 	}
 	
 	// TODO: To GBR
 	
-	public Function<Integer,TBIntervalCode> toSpecificFunction() {
-		return (n -> new TBIntervalCode(approx(n), n));
+	public Function<Integer,TernaryIntervalCode> toSpecificFunction() {
+		return (n -> new TernaryIntervalCode(approx(n), n));
 	}
 	
 	public Function<Integer,DyadicIntervalCode> toVariableFunction() {
-		return (n -> toSpecificFunction().apply(n).getVariableIntervalCode());
+		return (n -> toSpecificFunction().apply(n).getDyadicIntervalCode());
 	}
 	
 	// To Dyadics
@@ -134,7 +134,7 @@ public class TBEncoding {
 				right = approx(prec_).add(BigInteger.TWO);
 			}
 			BigInteger fourPowP = BigInteger.valueOf(4).pow(prec_);
-			return new TBIntervalCode(fourPowP.divide(left), prec_);
+			return new TernaryIntervalCode(fourPowP.divide(left), prec_);
 		});
 	}
 	

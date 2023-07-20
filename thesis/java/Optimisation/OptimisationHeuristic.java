@@ -3,7 +3,7 @@ package Optimisation;
 import java.util.ArrayList;
 
 import DyadicsAndIntervals.DyadicIntervalCode;
-import DyadicsAndIntervals.TBIntervalCode;
+import DyadicsAndIntervals.TernaryIntervalCode;
 import FunctionsAndPredicates.CFunction;
 import Utilities.Pair;
 
@@ -34,7 +34,7 @@ import Utilities.Pair;
 public class OptimisationHeuristic extends Optimisation {
 	int delta;
 	
-    public OptimisationHeuristic(CFunction function, TBIntervalCode compactInterval, int epsilon) {
+    public OptimisationHeuristic(CFunction function, TernaryIntervalCode compactInterval, int epsilon) {
         super(function, compactInterval, epsilon);
         delta = function.getUniformContinuityOracle(compactInterval).apply(epsilon).get(0);
     }
@@ -44,10 +44,10 @@ public class OptimisationHeuristic extends Optimisation {
     /*
      * Initialise the frontier with the initial interval and its output.
      */
-    ArrayList<Pair<TBIntervalCode,DyadicIntervalCode>> initialise() {
-        DyadicIntervalCode input = compactInterval.getVariableIntervalCode();
+    ArrayList<Pair<TernaryIntervalCode,DyadicIntervalCode>> initialise() {
+        DyadicIntervalCode input = compactInterval.getDyadicIntervalCode();
         DyadicIntervalCode output = function.applyApproximator(input);
-        frontier.add(new Pair<TBIntervalCode,DyadicIntervalCode>(compactInterval, output));
+        frontier.add(new Pair<TernaryIntervalCode,DyadicIntervalCode>(compactInterval, output));
         return frontier;
     }
 
@@ -61,15 +61,15 @@ public class OptimisationHeuristic extends Optimisation {
      * a new minimum output, and we can add the interval to the answers.
      */
     Boolean check() {
-        Pair<TBIntervalCode,DyadicIntervalCode> intervalOutput = frontier.remove(0);
-        TBIntervalCode interval = intervalOutput.getFst();
-        TBIntervalCode leftsi = interval.downLeft();
-        TBIntervalCode rightsi = interval.downRight();
-        DyadicIntervalCode leftvi = function.applyApproximator(leftsi.getVariableIntervalCode());
-        DyadicIntervalCode rightvi = function.applyApproximator(rightsi.getVariableIntervalCode());
+        Pair<TernaryIntervalCode,DyadicIntervalCode> intervalOutput = frontier.remove(0);
+        TernaryIntervalCode interval = intervalOutput.getFst();
+        TernaryIntervalCode leftsi = interval.downLeft();
+        TernaryIntervalCode rightsi = interval.downRight();
+        DyadicIntervalCode leftvi = function.applyApproximator(leftsi.getDyadicIntervalCode());
+        DyadicIntervalCode rightvi = function.applyApproximator(rightsi.getDyadicIntervalCode());
 
-        Pair<TBIntervalCode,DyadicIntervalCode> left = new Pair<TBIntervalCode,DyadicIntervalCode>(leftsi, leftvi);
-        Pair<TBIntervalCode,DyadicIntervalCode> right = new Pair<TBIntervalCode,DyadicIntervalCode>(rightsi, rightvi);
+        Pair<TernaryIntervalCode,DyadicIntervalCode> left = new Pair<TernaryIntervalCode,DyadicIntervalCode>(leftsi, leftvi);
+        Pair<TernaryIntervalCode,DyadicIntervalCode> right = new Pair<TernaryIntervalCode,DyadicIntervalCode>(rightsi, rightvi);
 
 //        System.out.println(leftsi.getVariableIntervalCode().toDoubleString() + " ---> " + leftvi.toDoubleString());
 //        System.out.println(rightsi.getVariableIntervalCode().toDoubleString() + " ---> " + rightvi.toDoubleString());
@@ -81,7 +81,7 @@ public class OptimisationHeuristic extends Optimisation {
                     this.output = leftvi;
                     answers.add(leftvi);
                 } else {
-                    if (TBIntervalCode.lessThan(leftvi, this.output)) {
+                    if (TernaryIntervalCode.lessThan(leftvi, this.output)) {
                         this.input = leftsi;
                         this.output = leftvi;
                         answers.add(leftvi);
@@ -101,7 +101,7 @@ public class OptimisationHeuristic extends Optimisation {
                     this.output = rightvi;
                     answers.add(rightvi);
                 } else {
-                    if (TBIntervalCode.lessThan(rightvi, this.output)) {
+                    if (TernaryIntervalCode.lessThan(rightvi, this.output)) {
                         this.input = rightsi;
                         this.output = rightvi;
                         answers.add(rightvi);
@@ -133,7 +133,7 @@ public class OptimisationHeuristic extends Optimisation {
      * the intervals in the frontier.
      */
     boolean eclipsed(DyadicIntervalCode vi) {
-        for (Pair<TBIntervalCode,DyadicIntervalCode> p : frontier) {
+        for (Pair<TernaryIntervalCode,DyadicIntervalCode> p : frontier) {
             if (DyadicIntervalCode.eclipses(p.getSnd() , vi)) {
                 return true;
             }
@@ -171,7 +171,7 @@ public class OptimisationHeuristic extends Optimisation {
      */
     public void removeEclipsedFromFrontier(DyadicIntervalCode output) {
         for (int i = 0; i < frontier.size(); i++) {
-            Pair<TBIntervalCode,DyadicIntervalCode> intervalOutput = frontier.get(i);
+            Pair<TernaryIntervalCode,DyadicIntervalCode> intervalOutput = frontier.get(i);
             DyadicIntervalCode output2 = intervalOutput.getSnd();
             if (DyadicIntervalCode.eclipses(output, output2)) {
             	frontier.remove(i);

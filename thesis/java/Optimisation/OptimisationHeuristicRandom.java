@@ -1,7 +1,7 @@
 package Optimisation;
 
 import DyadicsAndIntervals.DyadicIntervalCode;
-import DyadicsAndIntervals.TBIntervalCode;
+import DyadicsAndIntervals.TernaryIntervalCode;
 import FunctionsAndPredicates.CFunction;
 import Utilities.Pair;
 
@@ -11,13 +11,13 @@ import Utilities.Pair;
  * checking the first interval in the frontier.
  */
 public class OptimisationHeuristicRandom extends OptimisationHeuristic {
-    public OptimisationHeuristicRandom(CFunction function, TBIntervalCode compactInterval, int epsilon) {
+    public OptimisationHeuristicRandom(CFunction function, TernaryIntervalCode compactInterval, int epsilon) {
         super(function, compactInterval, epsilon);
     }
 
     void sort() {
         int index = (int) (Math.random() * frontier.size());
-        Pair<TBIntervalCode,DyadicIntervalCode> intervalOutput = frontier.remove(index);
+        Pair<TernaryIntervalCode,DyadicIntervalCode> intervalOutput = frontier.remove(index);
         frontier.add(0, intervalOutput);
     }
 

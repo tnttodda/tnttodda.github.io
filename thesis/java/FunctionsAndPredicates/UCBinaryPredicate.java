@@ -3,7 +3,7 @@ package FunctionsAndPredicates;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiFunction;
-import DyadicsAndIntervals.TBIntervalCode;
+import DyadicsAndIntervals.TernaryIntervalCode;
 import TernaryBoehm.TBEncoding;
 import Utilities.Pair;
 
@@ -17,9 +17,9 @@ public class UCBinaryPredicate {
 		this.delta = delta;
 	}
 
-	public UCBinaryPredicate(CFunction f, UCUnaryPredicate predicate, Pair<TBIntervalCode,TBIntervalCode> compactInterval) {
+	public UCBinaryPredicate(CFunction f, UCUnaryPredicate predicate, Pair<TernaryIntervalCode,TernaryIntervalCode> compactInterval) {
 		this.predicate = (x,y) -> predicate.apply(f.apply(x,y));
-		List<TBIntervalCode> compactIntervals = Arrays.asList(compactInterval.getFst(), compactInterval.getSnd());
+		List<TernaryIntervalCode> compactIntervals = Arrays.asList(compactInterval.getFst(), compactInterval.getSnd());
 		List<Integer> deltas = f.getUniformContinuityOracle(compactIntervals).apply(predicate.getDelta());
 		this.delta = new Pair<>(deltas.get(0),deltas.get(1));
 	}

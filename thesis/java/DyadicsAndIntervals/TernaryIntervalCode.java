@@ -8,31 +8,31 @@ import java.util.List;
 import TernaryBoehm.TBEncoding;
 
 /*
- * This class implements the type Z^2 of ternary Boehm interval codes.
+ * This class implements the type Z^2 of ternary interval codes.
  * The idea is that an element (l,p) : Z^2 is used to represent the interval [l/2^p,(l+2)/2^p].
  */
-public class TBIntervalCode {
+public class TernaryIntervalCode {
 	
-	// Every ternary Boehm interval code (l1,p1) : Z^2 is just the dyadic interval code (l,l+2,p) : Z^3
+	// Every ternary interval code (l1,p1) : Z^2 is just the dyadic interval code (l,l+2,p) : Z^3
 	private DyadicIntervalCode code;
 	
 	// Constructors
 	
-	public TBIntervalCode(BigInteger left, int prec) {
+	public TernaryIntervalCode(BigInteger left, int prec) {
 		this.code = new DyadicIntervalCode(left, left.add(BigInteger.TWO), prec);
 	}
 	
-	public TBIntervalCode(Dyadic dyadic) {
+	public TernaryIntervalCode(Dyadic dyadic) {
 		this.code = new DyadicIntervalCode(dyadic.getNum(), dyadic.getNum().add(BigInteger.TWO), dyadic.getDen());
 	}
 	
-	public TBIntervalCode(TBEncoding x, int prec) {
+	public TernaryIntervalCode(TBEncoding x, int prec) {
 		this.code = new DyadicIntervalCode(x.approx(prec), x.approx(prec).add(BigInteger.TWO), prec);
 	}
 	
 	// Getter
 	
-	public DyadicIntervalCode getVariableIntervalCode() {
+	public DyadicIntervalCode getDyadicIntervalCode() {
 		return code;
 	}
 	
@@ -54,46 +54,46 @@ public class TBIntervalCode {
 	
 	// Structural operations
 	
-	public TBIntervalCode prev() {
-		return new TBIntervalCode(new Dyadic(code.getLeftCode().subtract(BigInteger.TWO), code.getPrec()));
+	public TernaryIntervalCode prev() {
+		return new TernaryIntervalCode(new Dyadic(code.getLeftCode().subtract(BigInteger.TWO), code.getPrec()));
 	}
 	
-	public TBIntervalCode next() {
-		return new TBIntervalCode(new Dyadic(code.getLeftCode().add(BigInteger.TWO), code.getPrec()));
+	public TernaryIntervalCode next() {
+		return new TernaryIntervalCode(new Dyadic(code.getLeftCode().add(BigInteger.TWO), code.getPrec()));
 	}
 	
-	public TBIntervalCode downLeft() {
-		return new TBIntervalCode(code.downLeft());
+	public TernaryIntervalCode downLeft() {
+		return new TernaryIntervalCode(code.downLeft());
 	}
 	
-	public TBIntervalCode downMid() {
-		return new TBIntervalCode(new Dyadic(code.getLeftCode().add(BigInteger.ONE), code.getPrec() + 1));
+	public TernaryIntervalCode downMid() {
+		return new TernaryIntervalCode(new Dyadic(code.getLeftCode().add(BigInteger.ONE), code.getPrec() + 1));
 	}
 	
-	public TBIntervalCode downRight() {
-		return new TBIntervalCode(code.downRight());
+	public TernaryIntervalCode downRight() {
+		return new TernaryIntervalCode(code.downRight());
 	}
 	
-	public TBIntervalCode downLeft(int n) {
-		return new TBIntervalCode(code.downLeft(n));
+	public TernaryIntervalCode downLeft(int n) {
+		return new TernaryIntervalCode(code.downLeft(n));
 	}
 	
-	public TBIntervalCode downRight(int n) {
-		return new TBIntervalCode(code.downRight(n));
+	public TernaryIntervalCode downRight(int n) {
+		return new TernaryIntervalCode(code.downRight(n));
 	}
 	
-	public TBIntervalCode upRight() {
-		return new TBIntervalCode(code.getLeftEndpoint().upRight());
+	public TernaryIntervalCode upRight() {
+		return new TernaryIntervalCode(code.getLeftEndpoint().upRight());
 	}
 	
-	public TBIntervalCode upRight(int n) {
-		return new TBIntervalCode(code.getLeftEndpoint().upRight(n));
+	public TernaryIntervalCode upRight(int n) {
+		return new TernaryIntervalCode(code.getLeftEndpoint().upRight(n));
 	}
 	
-	// Conversion from dyadic interval code to ternary Boehm interval code
+	// Conversion from dyadic interval code to ternary interval code
 	
-	public TBIntervalCode(DyadicIntervalCode variable) {
-		this.code = variable.join_prime().getVariableIntervalCode();
+	public TernaryIntervalCode(DyadicIntervalCode variable) {
+		this.code = variable.join_prime().getDyadicIntervalCode();
 	}
 	
 	// toString
@@ -105,13 +105,13 @@ public class TBIntervalCode {
 	// Comparisons
 	
     /*
-     * A specific interval code is less than another specific interval code if
+     * A ternary interval code is less than another ternary interval code if
      * the left endpoint of the first is less than the left endpoint of the
      * second.
      */
-    public boolean lessThan(TBIntervalCode sx, TBIntervalCode sy) {
-        DyadicIntervalCode fx = sx.getVariableIntervalCode();
-        DyadicIntervalCode fy = sy.getVariableIntervalCode();
+    public boolean lessThan(TernaryIntervalCode sx, TernaryIntervalCode sy) {
+        DyadicIntervalCode fx = sx.getDyadicIntervalCode();
+        DyadicIntervalCode fy = sy.getDyadicIntervalCode();
         if (fx.getPrec() > fy.getPrec()) {
 			fy = fy.down(fx.getPrec() - fy.getPrec());
 		} else if (fx.getPrec() < fy.getPrec()) {
@@ -121,7 +121,7 @@ public class TBIntervalCode {
     }
 
     /*
-     * A variable interval code is less than another variable interval code if
+     * A dyadic interval code is less than another dyadic interval code if
      * the left endpoint of the first is less than the left endpoint of the
      * second.
      */
@@ -146,12 +146,12 @@ public class TBIntervalCode {
 	// Discretize functions
 
 	//discretize the range [a,b] into 2^Epsilon intervals
-    public List<TBIntervalCode> discretize(int delta) {
-		List<TBIntervalCode> frontier = new ArrayList<>();
+    public List<TernaryIntervalCode> discretize(int delta) {
+		List<TernaryIntervalCode> frontier = new ArrayList<>();
         BigInteger current = downLeft(delta - getPrec()).getCode();
         BigInteger end = downRight(delta - getPrec()).getCode();
         while (current.compareTo(end) < 1) {
-            frontier.add(new TBIntervalCode(new Dyadic(current,delta)));
+            frontier.add(new TernaryIntervalCode(new Dyadic(current,delta)));
             current = current.add(BigInteger.TWO);
         }  
         return frontier;
@@ -169,8 +169,8 @@ public class TBIntervalCode {
 		return newCollection;
     }
     
-    public static List<List<TBIntervalCode>> discretize(List<Integer> deltas, List<TBIntervalCode> inputs) {
-    	List<List<TBIntervalCode>> discretised= Arrays.asList(new ArrayList<>());
+    public static List<List<TernaryIntervalCode>> discretize(List<Integer> deltas, List<TernaryIntervalCode> inputs) {
+    	List<List<TernaryIntervalCode>> discretised = Arrays.asList(new ArrayList<>());
     	for (int i = 0; i < inputs.size(); i++) {
     		discretised = addMany(discretised, inputs.get(i).discretize(deltas.get(i)));
     		

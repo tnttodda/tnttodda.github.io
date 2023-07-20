@@ -3,7 +3,7 @@ package Optimisation;
 import java.math.BigInteger;
 
 import DyadicsAndIntervals.DyadicIntervalCode;
-import DyadicsAndIntervals.TBIntervalCode;
+import DyadicsAndIntervals.TernaryIntervalCode;
 import FunctionsAndPredicates.CFunction;
 import Utilities.Pair;
 
@@ -19,7 +19,7 @@ import Utilities.Pair;
 * reduce the number of intervals that need to be checked.
 */ 
 public class OptimisationHeuristicDifferential extends OptimisationHeuristic {
-    public OptimisationHeuristicDifferential(CFunction function, TBIntervalCode compactInterval, int epsilon) {
+    public OptimisationHeuristicDifferential(CFunction function, TernaryIntervalCode compactInterval, int epsilon) {
         super(function, compactInterval, epsilon);
     }
 
@@ -44,7 +44,7 @@ public class OptimisationHeuristicDifferential extends OptimisationHeuristic {
                 largest = frontier.get(i).getSnd();
             }
         }
-        Pair<TBIntervalCode,DyadicIntervalCode> intervalOutput = frontier.remove(index);
+        Pair<TernaryIntervalCode,DyadicIntervalCode> intervalOutput = frontier.remove(index);
         frontier.add(0, intervalOutput);
     }
 

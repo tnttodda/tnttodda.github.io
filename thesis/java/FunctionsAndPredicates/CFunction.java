@@ -9,7 +9,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import DyadicsAndIntervals.DyadicIntervalCode;
-import DyadicsAndIntervals.TBIntervalCode;
+import DyadicsAndIntervals.TernaryIntervalCode;
 import TernaryBoehm.TBEncoding;
 import Utilities.Pair;
 
@@ -46,7 +46,7 @@ public class CFunction {
 	/*
 	 * TODO describe
 	 */
-	public Function<Integer,List<Integer>> getUniformContinuityOracle(TBIntervalCode ki) {
+	public Function<Integer,List<Integer>> getUniformContinuityOracle(TernaryIntervalCode ki) {
 		Function<Integer,List<Integer>> left 
 		 = n -> continuityOracle.apply(Arrays.asList(new TBEncoding(ki.downLeft(n - ki.getPrec()).getLeftEndpoint())), n);
 		Function<Integer,List<Integer>> right 
@@ -54,7 +54,7 @@ public class CFunction {
 		return (n -> zipMax(Arrays.asList(left.apply(n),right.apply(n))));
 	}
 	
-	public Function<Integer,List<Integer>> getUniformContinuityOracle(List<TBIntervalCode> compactIntervals) {
+	public Function<Integer,List<Integer>> getUniformContinuityOracle(List<TernaryIntervalCode> compactIntervals) {
 		return (epsilon) -> {
 			List<TBEncoding> lefts = compactIntervals.stream().map(
 						x -> new TBEncoding(x.downLeft(epsilon - x.getPrec()).getLeftEndpoint())
@@ -100,7 +100,6 @@ public class CFunction {
 	// Compose functions
 	
 	private static List<DyadicIntervalCode> map(List<CFunction> gs, List<DyadicIntervalCode> args) {
-//		System.out.println(args.size());
 		return gs.stream().map(g -> g.applyApproximator(args)).toList();
 	}
 	
@@ -190,7 +189,7 @@ public class CFunction {
 	}
 	
 	public static CFunction constant(int arity, TBEncoding y) {
-		return new CFunction(arity, (xs -> new TBIntervalCode(y, xs.get(0).getPrec()).getVariableIntervalCode()),
+		return new CFunction(arity, (xs -> new TernaryIntervalCode(y, xs.get(0).getPrec()).getDyadicIntervalCode()),
 				(xs,q) -> {
 					List<Integer> qs = new ArrayList<>();
 					for (int j = 0; j < arity; j++) {
@@ -338,7 +337,7 @@ public class CFunction {
 		};
 	}
 	
-	public static Function<Integer,TBIntervalCode> join(Function<Integer,DyadicIntervalCode> x) {
+	public static Function<Integer,TernaryIntervalCode> join(Function<Integer,DyadicIntervalCode> x) {
 		return (n -> x.apply(n).join_prime());
 	}
 	

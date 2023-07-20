@@ -1,7 +1,7 @@
 package Search;
 
 import FunctionsAndPredicates.UCBinaryPredicate;
-import DyadicsAndIntervals.TBIntervalCode;
+import DyadicsAndIntervals.TernaryIntervalCode;
 import TernaryBoehm.TBEncoding;
 import Utilities.Pair;
 
@@ -12,14 +12,14 @@ import Utilities.Pair;
 public class SearchBinaryBranchAndBound {
     UCBinaryPredicate predicate; // The predicate to search for
     Pair<Integer,Integer> delta; // The modulus of uniform continuity of the predicate
-    Pair<TBIntervalCode,TBIntervalCode> compactInterval; // The range of each argument
+    Pair<TernaryIntervalCode,TernaryIntervalCode> compactInterval; // The range of each argument
     Boolean found = false; // Whether a real has been found
-    Pair<TBIntervalCode,TBIntervalCode> answer; // The interval that contains the real, once found
+    Pair<TernaryIntervalCode,TernaryIntervalCode> answer; // The interval that contains the real, once found
     int intervalsChecked = 0; // The number of intervals checked
     long timeTaken; // The time taken to do the search
 
     // Constructor    
-    public SearchBinaryBranchAndBound(UCBinaryPredicate predicate, Pair<TBIntervalCode, TBIntervalCode> compactInterval) {
+    public SearchBinaryBranchAndBound(UCBinaryPredicate predicate, Pair<TernaryIntervalCode, TernaryIntervalCode> compactInterval) {
         this.predicate = predicate;
         this.delta = predicate.getDelta();
         this.compactInterval = compactInterval;
@@ -34,7 +34,7 @@ public class SearchBinaryBranchAndBound {
         return found;
     }
 
-    public Pair<TBIntervalCode, TBIntervalCode> getAnswer() {
+    public Pair<TernaryIntervalCode, TernaryIntervalCode> getAnswer() {
         return answer;
     }
 
@@ -47,7 +47,7 @@ public class SearchBinaryBranchAndBound {
     					, getAnswerReal().getSnd().toDouble(delta.getSnd()));
     }
 
-    public TBIntervalCode getAnswer2() {
+    public TernaryIntervalCode getAnswer2() {
         return answer.getSnd();
     }
 
@@ -82,13 +82,13 @@ public class SearchBinaryBranchAndBound {
         } else {
         	for (int prec1 = compactInterval.getFst().getPrec()+1; prec1 <= delta.getFst(); prec1++) {
         		if (found) { break; }
-        		TBIntervalCode current1 = compactInterval.getFst().downLeft(prec1 - compactInterval.getFst().getPrec());
-                TBIntervalCode end1 = compactInterval.getFst().downRight(prec1 - compactInterval.getFst().getPrec());
+        		TernaryIntervalCode current1 = compactInterval.getFst().downLeft(prec1 - compactInterval.getFst().getPrec());
+                TernaryIntervalCode end1 = compactInterval.getFst().downRight(prec1 - compactInterval.getFst().getPrec());
                 for (int prec2 = compactInterval.getSnd().getPrec()+1; prec2 <= delta.getSnd(); prec2++) {
                 	if (found) { break; }
-                	TBIntervalCode start2 = compactInterval.getFst().downLeft(delta.getSnd() - compactInterval.getSnd().getPrec());
-                	TBIntervalCode current2 = start2;
-                    TBIntervalCode end2 = compactInterval.getFst().downRight(delta.getSnd() - compactInterval.getSnd().getPrec());
+                	TernaryIntervalCode start2 = compactInterval.getFst().downLeft(delta.getSnd() - compactInterval.getSnd().getPrec());
+                	TernaryIntervalCode current2 = start2;
+                    TernaryIntervalCode end2 = compactInterval.getFst().downRight(delta.getSnd() - compactInterval.getSnd().getPrec());
                     while (!found && current1.getCode().compareTo(end1.getCode()) < 0) {
                         while (!found && current2.getCode().compareTo(end2.getCode()) < 0) {
                         	intervalsChecked++;

@@ -5,14 +5,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import DyadicsAndIntervals.Dyadic;
-import DyadicsAndIntervals.DyadicIntervalCode;
-import DyadicsAndIntervals.TBIntervalCode;
+import DyadicsAndIntervals.TernaryIntervalCode;
 import FunctionsAndPredicates.CFunction;
 import FunctionsAndPredicates.UCBinaryPredicate;
 import FunctionsAndPredicates.UCUnaryPredicate;
 import Optimisation.OptimisationHeuristic;
-import Optimisation.OptimisationHeuristicDifferential;
-import Optimisation.OptimisationHeuristicRandom;
 import Optimisation.Optimisation;
 import Regression.Regression;
 import Search.SearchBinary;
@@ -29,6 +26,7 @@ public class Examples {
 	TBEncoding three = new TBEncoding(3);
     TBEncoding minus_one = new TBEncoding(-1);
     TBEncoding half = new TBEncoding(new Dyadic(BigInteger.ONE, 1));
+    TBEncoding quarter = new TBEncoding(new Dyadic(BigInteger.ONE, 2));
     TBEncoding minus_half = half.negate();
     TBEncoding third = one.divide(three);
     TBEncoding ninethousand = new TBEncoding(9000);
@@ -37,15 +35,15 @@ public class Examples {
     // Intervals
 
     // [-1,1]
-    TBIntervalCode minus_one_one = new TBIntervalCode(BigInteger.valueOf(-1), 0);
+    TernaryIntervalCode minus_one_one = new TernaryIntervalCode(BigInteger.valueOf(-1), 0);
     // [-2,2]
-    TBIntervalCode minus_two_two = new TBIntervalCode(BigInteger.valueOf(-1), -1);
+    TernaryIntervalCode minus_two_two = new TernaryIntervalCode(BigInteger.valueOf(-1), -1);
     // [-4,4]
-    TBIntervalCode minus_four_four = new TBIntervalCode(BigInteger.valueOf(-1), -2);
+    TernaryIntervalCode minus_four_four = new TernaryIntervalCode(BigInteger.valueOf(-1), -2);
     // [-32,-16]
-    TBIntervalCode minus_thirtytwo_minus_sixteen = new TBIntervalCode(BigInteger.valueOf(-4), -3);
+    TernaryIntervalCode minus_thirtytwo_minus_sixteen = new TernaryIntervalCode(BigInteger.valueOf(-4), -3);
     // [16, 24]
-    TBIntervalCode sixteen_twentyfour = new TBIntervalCode(BigInteger.valueOf(4), -2);
+    TernaryIntervalCode sixteen_twentyfour = new TernaryIntervalCode(BigInteger.valueOf(4), -2);
     
     // p(x) := | mul(x,x) - 1/2 | <= 2^-epsilon
     public void search_1(int epsilon) {
@@ -124,7 +122,7 @@ public class Examples {
     					CFunction.compose(2, CFunction.negate(),
     						Arrays.asList(CFunction.proj(2, 0))),
     					CFunction.proj(2, 1)));
-    	CFunction oracle = model.fixPrefixArguments(Arrays.asList(third));
+    	CFunction oracle = CFunction.mid().fixPrefixArguments(Arrays.asList(third));
     	List<List<TBEncoding>> observations 
     		= Arrays.asList(Arrays.asList(minus_one),
     						Arrays.asList(zero),
@@ -138,7 +136,7 @@ public class Examples {
     					CFunction.compose(2, CFunction.negate(),
     						Arrays.asList(CFunction.proj(2, 0))),
     					CFunction.proj(2, 1)));
-    	CFunction oracle = model.fixPrefixArguments(Arrays.asList(third));
+    	CFunction oracle = CFunction.mid().fixPrefixArguments(Arrays.asList(third));
     	List<List<TBEncoding>> observations 
     		= Arrays.asList(Arrays.asList(minus_one),
     						Arrays.asList(zero),
@@ -152,7 +150,7 @@ public class Examples {
     					CFunction.compose(2, CFunction.negate(),
     						Arrays.asList(CFunction.proj(2, 0))),
     					CFunction.proj(2, 1)));
-    	CFunction oracle = model.fixPrefixArguments(Arrays.asList(third));
+    	CFunction oracle = CFunction.mid().fixPrefixArguments(Arrays.asList(third));
     	List<List<TBEncoding>> observations 
     		= Arrays.asList(Arrays.asList(minus_one),
     						Arrays.asList(zero),
@@ -166,13 +164,30 @@ public class Examples {
     					CFunction.compose(2, CFunction.negate(),
     						Arrays.asList(CFunction.proj(2, 0))),
     					CFunction.proj(2, 1)));
-    	CFunction oracle = model.fixPrefixArguments(Arrays.asList(third));
+    	CFunction oracle = CFunction.mid().fixPrefixArguments(Arrays.asList(third));
     	List<List<TBEncoding>> observations 
     		= Arrays.asList(Arrays.asList(minus_one),
     						Arrays.asList(zero),
     						Arrays.asList(one));
     	new Regression(oracle, model, observations).regressParametersViaSearchUnaryBranch(minus_one_one, epsilon);
     }
+    
+    public void regression_1_distortion(int epsilon) {
+    	CFunction model = CFunction.compose(2, CFunction.mid(), 
+    			Arrays.asList(
+    					CFunction.compose(2, CFunction.negate(),
+    						Arrays.asList(CFunction.proj(2, 0))),
+    					CFunction.proj(2, 1)));
+    	CFunction oracle = CFunction.mid().fixPrefixArguments(Arrays.asList(third));
+    	List<List<TBEncoding>> observations 
+    		= Arrays.asList(Arrays.asList(minus_one),
+    						Arrays.asList(zero),
+    						Arrays.asList(one));
+    	CFunction distortedOracle = CFunction.compose(1, oracle, 
+    				Arrays.asList(CFunction.mid().fixPostfixArguments(Arrays.asList(quarter))));
+    	new Regression(distortedOracle, model, observations).regressParametersViaOptimisation(
+    			minus_one_one, epsilon);
+    	}
     
     public void regression_2_search(int epsilon) {
     	CFunction model = CFunction.compose(3, CFunction.add(), 
@@ -181,7 +196,7 @@ public class Examples {
     					CFunction.compose(3, CFunction.multiply(),
     							Arrays.asList(CFunction.proj(3, 1), CFunction.proj(3, 2))
     							)));
-    	CFunction oracle = model.fixPrefixArguments(Arrays.asList(half,minus_one));
+    	CFunction oracle = model.fixPrefixArguments(Arrays.asList(third,minus_one));
     	List<List<TBEncoding>> observations 
     		= Arrays.asList(Arrays.asList(minus_half),
     						Arrays.asList(half));
@@ -196,7 +211,7 @@ public class Examples {
     					CFunction.compose(3, CFunction.multiply(),
     							Arrays.asList(CFunction.proj(3, 1), CFunction.proj(3, 2))
     							)));
-    	CFunction oracle = model.fixPrefixArguments(Arrays.asList(half,minus_one));
+    	CFunction oracle = model.fixPrefixArguments(Arrays.asList(third,minus_one));
     	List<List<TBEncoding>> observations 
     		= Arrays.asList(Arrays.asList(minus_half),
     						Arrays.asList(half));

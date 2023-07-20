@@ -1,7 +1,7 @@
 package Search;
 
 import FunctionsAndPredicates.UCUnaryPredicate;
-import DyadicsAndIntervals.TBIntervalCode;
+import DyadicsAndIntervals.TernaryIntervalCode;
 import TernaryBoehm.TBEncoding;
 
 /*
@@ -11,14 +11,14 @@ import TernaryBoehm.TBEncoding;
 public class SearchUnaryBranchAndBound {
     UCUnaryPredicate predicate; // The predicate to search for
     int delta; // The modulus of uniform continuity of the predicate
-    TBIntervalCode compactInterval; // The range [a,b]
+    TernaryIntervalCode compactInterval; // The range [a,b]
     Boolean found = false; // Whether a real has been found
-    TBIntervalCode answer; // The interval that contains the real, once found
+    TernaryIntervalCode answer; // The interval that contains the real, once found
     int intervalsChecked = 0; // The number of intervals checked
     long timeTaken; // The time taken to do the search
 
     // Constructor    
-    public SearchUnaryBranchAndBound(UCUnaryPredicate predicate, TBIntervalCode compactInterval) {
+    public SearchUnaryBranchAndBound(UCUnaryPredicate predicate, TernaryIntervalCode compactInterval) {
         this.predicate = predicate;
         this.delta = predicate.getDelta();
         this.compactInterval = compactInterval;
@@ -33,7 +33,7 @@ public class SearchUnaryBranchAndBound {
         return found;
     }
 
-    public TBIntervalCode getAnswer() {
+    public TernaryIntervalCode getAnswer() {
         return answer;
     }
 
@@ -68,8 +68,8 @@ public class SearchUnaryBranchAndBound {
         } else {
 	        for (int prec = compactInterval.getPrec()+1; prec <= delta; prec++) {
 	        	if (found) { break; }
-	        	TBIntervalCode current = compactInterval.downLeft(prec - compactInterval.getPrec());
-	            TBIntervalCode end = compactInterval.downRight(prec - compactInterval.getPrec());
+	        	TernaryIntervalCode current = compactInterval.downLeft(prec - compactInterval.getPrec());
+	            TernaryIntervalCode end = compactInterval.downRight(prec - compactInterval.getPrec());
 	            while (!found && current.getCode().compareTo(end.getCode()) < 0) {
 	            	intervalsChecked++;
 	            	if (predicate.apply(new TBEncoding(current))) {
