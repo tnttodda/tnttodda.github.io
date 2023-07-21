@@ -72,9 +72,7 @@ public class TBEncoding {
 	public TernaryIntervalCode approxAsTernaryIntervalCode(int prec) {
 		return new TernaryIntervalCode(approx(prec), prec);
 	}
-	
-	// TODO: To GBR
-	
+		
 	public Function<Integer,TernaryIntervalCode> toSpecificFunction() {
 		return (n -> new TernaryIntervalCode(approx(n), n));
 	}

@@ -43,9 +43,6 @@ public class CFunction {
 		return continuityOracle;
 	}
 	
-	/*
-	 * TODO describe
-	 */
 	public Function<Integer,List<Integer>> getUniformContinuityOracle(TernaryIntervalCode ki) {
 		Function<Integer,List<Integer>> left 
 		 = n -> continuityOracle.apply(Arrays.asList(new TBEncoding(ki.downLeft(n - ki.getPrec()).getLeftEndpoint())), n);
