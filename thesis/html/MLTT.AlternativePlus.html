@@ -1,18 +1,18 @@
 <!DOCTYPE HTML>
-<html><head><meta charset="utf-8"><title>MLTT.AlternativePlus</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Background">Alternative of _+_:
+<html><head><meta charset="utf-8"><title>MLTT.AlternativePlus</title><link rel="stylesheet" href="https://www.cs.bham.ac.uk/~txw467/tychonoff/Agda.css"></head><body><pre class="Agda"><a id="1" class="Background">Alternative of _+_:
 
 </a><a id="22" class="Markup">\begin{code}</a>
 
-<a id="36" class="Symbol">{-#</a> <a id="40" class="Keyword">OPTIONS</a> <a id="48" class="Pragma">--safe</a> <a id="55" class="Pragma">--without-K</a> <a id="67" class="Pragma">--exact-split</a> <a id="81" class="Symbol">#-}</a>
+<a id="36" class="Symbol">{-#</a> <a id="40" class="Keyword">OPTIONS</a> <a id="48" class="Pragma">--safe</a> <a id="55" class="Pragma">--without-K</a> <a id="67" class="Symbol">#-}</a>
 
-<a id="86" class="Keyword">module</a> <a id="93" href="MLTT.AlternativePlus.html" class="Module">MLTT.AlternativePlus</a> <a id="114" class="Keyword">where</a>
+<a id="72" class="Keyword">module</a> <a id="79" href="MLTT.AlternativePlus.html" class="Module">MLTT.AlternativePlus</a> <a id="100" class="Keyword">where</a>
 
-<a id="121" class="Keyword">open</a> <a id="126" class="Keyword">import</a> <a id="133" href="MLTT.Universes.html" class="Module">MLTT.Universes</a>
-<a id="148" class="Keyword">open</a> <a id="153" class="Keyword">import</a> <a id="160" href="MLTT.Two.html" class="Module">MLTT.Two</a>
-<a id="169" class="Keyword">open</a> <a id="174" class="Keyword">import</a> <a id="181" href="MLTT.Sigma.html" class="Module">MLTT.Sigma</a>
+<a id="107" class="Keyword">open</a> <a id="112" class="Keyword">import</a> <a id="119" href="MLTT.Universes.html" class="Module">MLTT.Universes</a>
+<a id="134" class="Keyword">open</a> <a id="139" class="Keyword">import</a> <a id="146" href="MLTT.Two.html" class="Module">MLTT.Two</a>
+<a id="155" class="Keyword">open</a> <a id="160" class="Keyword">import</a> <a id="167" href="MLTT.Sigma.html" class="Module">MLTT.Sigma</a>
 
-<a id="_+&#39;_"></a><a id="193" href="MLTT.AlternativePlus.html#193" class="Function Operator">_+&#39;_</a> <a id="198" class="Symbol">:</a> <a id="200" href="MLTT.Universes.html#265" class="Generalizable">𝓤</a> <a id="202" href="MLTT.Universes.html#408" class="Function Operator">̇</a> <a id="204" class="Symbol">→</a> <a id="206" href="MLTT.Universes.html#265" class="Generalizable">𝓤</a> <a id="208" href="MLTT.Universes.html#408" class="Function Operator">̇</a> <a id="210" class="Symbol">→</a> <a id="212" href="MLTT.Universes.html#265" class="Generalizable">𝓤</a> <a id="214" href="MLTT.Universes.html#408" class="Function Operator">̇</a>
-<a id="216" href="MLTT.AlternativePlus.html#216" class="Bound">X₀</a> <a id="219" href="MLTT.AlternativePlus.html#193" class="Function Operator">+&#39;</a> <a id="222" href="MLTT.AlternativePlus.html#222" class="Bound">X₁</a> <a id="225" class="Symbol">=</a> <a id="227" href="MLTT.Sigma.html#437" class="Function">Σ</a> <a id="229" href="MLTT.AlternativePlus.html#229" class="Bound">i</a> <a id="231" href="MLTT.Sigma.html#437" class="Function">꞉</a> <a id="233" href="MLTT.Two.html#138" class="Datatype">𝟚</a> <a id="235" href="MLTT.Sigma.html#437" class="Function">,</a> <a id="237" href="MLTT.Two.html#270" class="Function">𝟚-cases</a> <a id="245" href="MLTT.AlternativePlus.html#216" class="Bound">X₀</a> <a id="248" href="MLTT.AlternativePlus.html#222" class="Bound">X₁</a> <a id="251" href="MLTT.AlternativePlus.html#229" class="Bound">i</a>
+<a id="_+&#39;_"></a><a id="179" href="MLTT.AlternativePlus.html#179" class="Function Operator">_+&#39;_</a> <a id="184" class="Symbol">:</a> <a id="186" href="MLTT.Universes.html#251" class="Generalizable">𝓤</a> <a id="188" href="MLTT.Universes.html#394" class="Function Operator">̇</a> <a id="190" class="Symbol">→</a> <a id="192" href="MLTT.Universes.html#251" class="Generalizable">𝓤</a> <a id="194" href="MLTT.Universes.html#394" class="Function Operator">̇</a> <a id="196" class="Symbol">→</a> <a id="198" href="MLTT.Universes.html#251" class="Generalizable">𝓤</a> <a id="200" href="MLTT.Universes.html#394" class="Function Operator">̇</a>
+<a id="202" href="MLTT.AlternativePlus.html#202" class="Bound">X₀</a> <a id="205" href="MLTT.AlternativePlus.html#179" class="Function Operator">+&#39;</a> <a id="208" href="MLTT.AlternativePlus.html#208" class="Bound">X₁</a> <a id="211" class="Symbol">=</a> <a id="213" href="MLTT.Sigma.html#423" class="Function">Σ</a> <a id="215" href="MLTT.AlternativePlus.html#215" class="Bound">i</a> <a id="217" href="MLTT.Sigma.html#423" class="Function">꞉</a> <a id="219" href="MLTT.Two.html#124" class="Datatype">𝟚</a> <a id="221" href="MLTT.Sigma.html#423" class="Function">,</a> <a id="223" href="MLTT.Two.html#256" class="Function">𝟚-cases</a> <a id="231" href="MLTT.AlternativePlus.html#202" class="Bound">X₀</a> <a id="234" href="MLTT.AlternativePlus.html#208" class="Bound">X₁</a> <a id="237" href="MLTT.AlternativePlus.html#215" class="Bound">i</a>
 
-<a id="254" class="Markup">\end{code}</a><a id="264" class="Background">
+<a id="240" class="Markup">\end{code}</a><a id="250" class="Background">
 </a></pre></body></html>
